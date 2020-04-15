@@ -26,7 +26,7 @@ public class LoginInterceptor extends HandlerInterceptorAdapter {
 		
 		//세션의 로그인 정보 읽기
 		HttpSession session = request.getSession(); //request 더블클릭 이면 getSession은 session 이란 하드디스크를 클릭해서  왼쪽에 담는거
-		Member loginId = (Member) session.getAttribute("loginEmail");
+		Member loginId = (Member) session.getAttribute("login");
 		
 		//로그인되지 않은 경우 로그인 페이지로 이동
 		if (loginId == null) {

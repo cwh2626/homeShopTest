@@ -21,13 +21,13 @@ public class MemberController {
 	
 	private static final Logger logger = LoggerFactory.getLogger(MemberController.class);
 	
-	@RequestMapping(value ="singUpMain", method = RequestMethod.GET)
-	public String singUpMain() {
-		return "member/singUp";
+	@RequestMapping(value ="signUpMain", method = RequestMethod.GET)
+	public String signUpMain() {
+		return "member/signUp";
 	}
 	
-	@RequestMapping(value ="singUp", method = RequestMethod.POST)
-	public String singUp(Member member) {
+	@RequestMapping(value ="signUp", method = RequestMethod.POST)
+	public String signUp(Member member) {
 		logger.debug("Meber ==> {}", member);
 		int result = mdao.insert(member);
 		
@@ -35,7 +35,7 @@ public class MemberController {
 			return "redirect:/member/loginMain";
 		}
 		
-		return "member/singUp";
+		return "member/signUp";
 	}
 	
 	@RequestMapping(value ="loginMain", method = RequestMethod.GET)
@@ -49,6 +49,7 @@ public class MemberController {
 		Member result = mdao.login(member.getEmail());
 		
 		if(result != null && result.getPassword().equals(member.getPassword())) {
+			session.setAttribute("login", result);
 			session.setAttribute("loginNickname", result.getNickname());
 			session.setAttribute("loginName", result.getName());
 			session.setAttribute("loginEmail", result.getEmail());
