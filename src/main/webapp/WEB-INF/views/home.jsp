@@ -170,15 +170,15 @@
 	       			<span> | </span>
 	       		</td>
 	       		<td>
-			       <a href="Member/logout">로그아웃</a>
+			       <a href="member/logout">로그아웃</a>
 	       		</td>
 	       	</tr>
 	       </table>
 	   	</c:if>   	
 	   	<c:if test="${sessionScope.loginNickname == null}">
-	       <a href="Member/loginMain">로그인</a>
+	       <a href="member/loginMain">로그인</a>
 	       <span> | </span>
-	       <a  href="Member/singUpMain">회원가입</a>
+	       <a  href="member/singUpMain">회원가입</a>
 	   	</c:if>   	
       </div>
       <div class="navbar-collapse collapse justify-content-center" id="navbarDefault">
@@ -238,16 +238,16 @@
 	       			<span> | </span>
 	       		</td>
 	       		<td>
-			       <a href="Member/logout">로그아웃</a>
+			       <a href="member/logout">로그아웃</a>
 	       		</td>
 	       	</tr>
 	       </table>
 	   	</c:if>   	
 	   	<c:if test="${sessionScope.loginNickname == null}">
 	       &nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;
-	       <a href="Member/loginMain">로그인</a>
+	       <a href="member/loginMain">로그인</a>
 	       <span> | </span>
-	       <a  href="Member/singUpMain">회원가입</a>
+	       <a  href="member/singUpMain">회원가입</a>
 	   	</c:if> 
       </div>
     </div>
