@@ -73,6 +73,11 @@ public class ProductController {
             
             String callback = request.getParameter("CKEditorFuncNum");
             printWriter = response.getWriter();
+            
+            //ckeditor는 이미지업로드 url를 말그대로 url형식으로 보내야 하기 때문에 처음에는 서버안에 저장한 파일을 url를 보냈지만
+            //업로드는 성고하였으나 미리보기에서 서버에올라가는 시간차로 인한 엑박이 뜨기 시작한다.
+            //그래서 새로운 시도는 url형식으로 컨트롤에 값을 보내어 컨트롤러 내에서 서버가 아닌 로컬컴퓨터의 하드디스크를 직접파일을 접근하여 
+            //보여주었더니 성공하였다.
             String fileUrl = "ckImgSubmit.do?fileName=" + savedfile;  // 작성화면
             
 	  		printWriter.println(
