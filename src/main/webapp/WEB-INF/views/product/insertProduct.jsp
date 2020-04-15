@@ -152,6 +152,39 @@
         data-target="#navbarTogglerDemo01" aria-expanded="false">
         <span class="fa fa-search" aria-hidden="true"></span>
       </button>
+      <div class="d-md-none">
+	   	<c:if test="${sessionScope.loginNickname != null}">
+	          <table>
+	       	<tr>
+	       		<td>
+			       <div class="dropdown">
+		          	<a class="nav-link dropdown-toggle" href="#" id="navbarDropdown" role="button" data-toggle="dropdown"
+		             aria-haspopup="true" aria-expanded="false">
+		             ${sessionScope.loginNickname}
+		          	</a>
+			         <div class="dropdown-menu" aria-labelledby="navbarDropdown">
+			            <a class="dropdown-item" href="property-single.html">Property Single</a>
+			            <a class="dropdown-item" href="blog-single.html">Blog Single</a>
+			            <a class="dropdown-item" href="agents-grid.html">Agents Grid</a>
+			            <a class="dropdown-item" href="product/insertSaleMain">판매</a>
+			         </div>
+		    		</div>
+	       		</td>
+	       		<td style="padding-left: 10px; padding-right: 10px">
+	       			<span> | </span>
+	       		</td>
+	       		<td>
+			       <a href="../logout">로그아웃</a>
+	       		</td>
+	       	</tr>
+	       </table>
+	   	</c:if>   	
+	   	<c:if test="${sessionScope.loginNickname == null}">
+	       <a href="../member/loginMain">로그인</a>
+	       <span> | </span>
+	       <a  href="../member/singUpMain">회원가입</a>
+	   	</c:if>   	
+      </div>
       <div class="navbar-collapse collapse justify-content-center" id="navbarDefault">
         <ul class="navbar-nav">
           <li class="nav-item">
@@ -178,18 +211,49 @@
               <a class="dropdown-item" href="agent-single.html">Agent Single</a>
             </div>
           </li>
-            <li class="nav-item">
-            <a class="nav-link" href="./singUpMain">회원가입</a>
-          </li>
-           <li class="nav-item">
-            <a class="nav-link" href="./loginMain">로그인</a>
-          </li>
         </ul>
       </div>
       <button type="button" class="btn btn-b-n navbar-toggle-box-collapse d-none d-md-block" data-toggle="collapse"
         data-target="#navbarTogglerDemo01" aria-expanded="false">
         <span class="fa fa-search" aria-hidden="true"></span>
       </button>
+       <div class="d-none d-md-block">
+		<c:if test="${sessionScope.loginNickname != null}">
+	       <table>
+	       	<tr>
+	       		<td>
+			       &nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;
+	       		</td>
+	       		<td>
+			       <div class="dropdown">
+		          	<a class="nav-link dropdown-toggle" href="#" id="navbarDropdown" role="button" data-toggle="dropdown"
+		             aria-haspopup="true" aria-expanded="false">
+		             ${sessionScope.loginNickname}
+		          	</a>
+			         <div class="dropdown-menu" aria-labelledby="navbarDropdown">
+			            <a class="dropdown-item" href="property-single.html">Property Single</a>
+			            <a class="dropdown-item" href="blog-single.html">Blog Single</a>
+			            <a class="dropdown-item" href="agents-grid.html">Agents Grid</a>
+			            <a class="dropdown-item" href="product/insertSaleMain">판매</a>
+			         </div>
+		    		</div>
+	       		</td>
+	       		<td style="padding-left: 10px; padding-right: 10px">
+	       			<span> | </span>
+	       		</td>
+	       		<td>
+			       <a href="../member/logout">로그아웃</a>
+	       		</td>
+	       	</tr>
+	       </table>
+	   	</c:if>   	
+	   	<c:if test="${sessionScope.loginNickname == null}">
+	       &nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;
+	       <a href="../member/loginMain">로그인</a>
+	       <span> | </span>
+	       <a  href="../member/singUpMain">회원가입</a>
+	   	</c:if> 
+      </div>
     </div>
   </nav>
   <!--/ Nav End /-->

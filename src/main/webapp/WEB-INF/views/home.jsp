@@ -162,7 +162,7 @@
 			            <a class="dropdown-item" href="property-single.html">Property Single</a>
 			            <a class="dropdown-item" href="blog-single.html">Blog Single</a>
 			            <a class="dropdown-item" href="agents-grid.html">Agents Grid</a>
-			            <a class="dropdown-item" href="Product/insertSaleMain">판매</a>
+			            <a class="dropdown-item" href="product/insertSaleMain">판매</a>
 			         </div>
 		    		</div>
 	       		</td>
@@ -230,7 +230,7 @@
 			            <a class="dropdown-item" href="property-single.html">Property Single</a>
 			            <a class="dropdown-item" href="blog-single.html">Blog Single</a>
 			            <a class="dropdown-item" href="agents-grid.html">Agents Grid</a>
-			            <a class="dropdown-item" href="Product/insertSaleMain">판매</a>
+			            <a class="dropdown-item" href="product/insertSaleMain">판매</a>
 			         </div>
 		    		</div>
 	       		</td>
