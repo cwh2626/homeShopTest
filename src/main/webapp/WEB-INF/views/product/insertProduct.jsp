@@ -37,9 +37,31 @@
     License: https://bootstrapmade.com/license/
   ======================================================= -->
   
-  <!-- script -->	
+  <!-- ======== script ======== -->	
   <script type="text/javascript" src="../resources/ckeditor/ckeditor.js"></script>
+  
+  
+  <!-- ======== style ========= -->
+  <style>
+  .productMainView th, .productMainView td {
+    border-bottom: 1px solid #BDBDBD;
+    padding: 30px;
+  }
+  .productMainView select {
 
+    width: 400px; /* 원하는 너비설정 */
+    padding: .8em .5em; /* 여백으로 높이 설정 */
+    height: 35px;
+    /* font-family: inherit;   폰트 상속 */
+    /* background: url('이미지 경로') no-repeat 95% 50%;  네이티브 화살표를 커스텀 화살표로 대체 */
+    /*  border: 1px solid9 #99; */
+    /*border-radius: 0px;  iOS 둥근모서리 제거 */
+    /*-webkit-appearance: none; 네이티브 외형 감추기 
+    -moz-appearance: none; 
+    appearance: none;
+  	*/
+  }
+ </style>
 </head>
 
 <body>
@@ -258,87 +280,106 @@
   </nav>
   <!--/ Nav End /-->
    
+   
+  <main id="main">
+   <!-- ======= Intro Single ======= -->
+    <section class="intro-single">
+      <div class="container">
+        <div class="row">
+          <div class="col-md-12 col-lg-8">
+            <div class="title-single-box">
+              <h1 class="title-single">Commodity registration</h1>
+            </div>
+          </div>
+          <div class="col-md-12 col-lg-4">
+            <nav aria-label="breadcrumb" class="breadcrumb-box d-flex justify-content-lg-end">
+              <ol class="breadcrumb">
+                <li class="breadcrumb-item">
+                  <a href="#">Home</a>
+                </li>
+                <li class="breadcrumb-item active" aria-current="page">
+                  About
+                </li>
+              </ol>
+            </nav>
+          </div>
+        </div>
+      </div>
+    </section><!-- End Intro Single-->
+ 
+    
   <!--/ textarea start /-->
-  <div style="  position: relative;
-  top: 50%; 
-  left: 50%;
-  margin-top: 200px; 
-  margin-left: -225px;  
-  width: 1000px;
-  " >
-	  <div class="container">
-	    <div class="content" >
-	    
-	        <div class="row justify-content-md-center">
-	            <div class="col-sm-9">
-	            <div class="input-group mb-3">
-	                <div class="input-group-prepend">
-	                    <label class="input-group-text">제목</label>
-	                  </div>            
-	                  <input type="text" class="form-control">              
-	                </div>
-	            </div>
-	            <div class="col-sm-3">
-	                <div class="input-group mb-3">
-	                    <select class="custom-select" id="inputGroupSelect03">
-	                    <option selected>분류</option>
-	                    <option value="1">One</option>
-	                    <option value="2">Two</option>
-	                    <option value="3">Three</option>
-	                  </select>  
-	                </div>
-	            </div>            
-	      </div>
-	      
-	      <hr>
-	      
-	      <div class="row justify-content-md-center">
-	          <div class="col_c" style="margin-bottom: 30px">
-	                <div class="input-group">
-	                <!--현재 테스트 결과 코드가 컨트롤러에 스트링으로 받아지는것을 확인했다 이내용들을 텍스트 파일로 저장하던가 아니면 그대로 DB에 저장하던가 생각해보 --> 
-	                 <form action="insertSale" method="post">
-	                  <textarea class="form-control" id="p_content" name="test"></textarea>
-	                  <input type="submit" value="test">
-	                 </form>                 
-	                  <script type="text/javascript">
-	                  CKEDITOR.replace('p_content'
-	                                                  , {height: 500 
-	                	  ,filebrowserUploadUrl : "imageUpload.do"  // 이것을 잘이용해보자 업로드: 주소는 컨트롤 value로 따진                                            
-	                                                  });
-	                  </script>
-	                </div>
-	            </div> 
-	      </div>
-	      
-	      <div class="row justify-content-md-center">
-	            <div class="input-group mb-3">
-	              <div class="input-group-prepend">
-	                <span class="input-group-text">GitHub</span>
-	              </div>
-	              <input type="text" class="form-control">
-	            </div>
-	      </div>
-	      
-	      <div class="row justify-content-md-center">
-	            <div class="input-group mb-3">
-	              <div class="input-group-prepend">
-	                <span class="input-group-text" id="inputGroupFileAddon01">썸네일</span>
-	              </div>
-	              <div class="custom-file">
-	                  &nbsp;<input type="file" class="form-control-file" id="exampleFormControlFile1">
-	              </div>
-	            </div>
-	      </div>
-	      
-	      <div class="row justify-content-md-center">
-	        <button type="submit" class="btn btn-outline-secondary" style="width: 20%; font-weight: bold">
-	             등   록          
-	            </button>
-	        </div>
-	  </div>
-	</div>
- </div>
+    <section class="section-about">
+      <div class="container">
+        <div class="row">
+        	<div class="col-md-12">
+        	<table class="productMainView form-a" style="
+		  			width : 100%;
+		  		">
+		  	<tr>
+		  		<td>
+  					<h5>Category</h5>
+  					<br>
+  					<select>
+						<optgroup label="상의">
+							<option>반팔 티셔츠</option>
+							<option>긴팔 티셔츠</option>
+							<option>민소매 티셔츠</option>
+							<option>셔츠/블라우스</option>
+						</optgroup>
+						<optgroup label="하의">
+							<option>데님 팬츠</option>
+							<option>코튼 팬츠</option>
+							<option>슬랙스</option>
+							<option>트레이닝</option>
+						</optgroup>
+						<optgroup label="아우터">
+							<option>레더/라이더스 재킷</option>
+							<option>수트/블레이저 재킷</option>
+							<option>트레이닝 재킷</option>
+							<option>롱 패</option>
+						</optgroup>
+					</select>
+		  		</td>
+		  	</tr>
+		  	<tr>
+		  		<td>
+					<h5>Product name</h5><br>  
+            		<input type="text" name="" style="width : 600px;" class="form-control form-control-lg form-control-a" placeholder="상품명을 입력하세요">
+					<pre style="color: #A4A4A4;">자기소비 목적으로 해외에서 직구한 상품을 온라인 등을 통해 되파는 경우,
+관세법 위반으로 형사처벌 대상이 되오니 유의해주시기 바랍니다.</pre>
+		  		</td>
+		  	</tr>
+		  	<tr> 
+		  		<td>  
+		  			<h5>Price</h5><br>
+            		<input type="text" name="" style="width : 400px; float : left;" class="form-control form-control-lg form-control-a" placeholder="가격을 입력하세요">
+            		<div style="float:left; width: 50px; font-size: x-large; margin-top: 8px; padding-left: 10px; color: #A4A4A4; ">원</div>   
+		  		</td> 
+		  	</tr>
+		  	<tr >
+		  		<td> 
+		  			<form action="insertSale" method="post">
+			                  <textarea class="form-control" id="p_content" name="test"></textarea>
+			                  <input type="submit" value="test">
+		            </form>                 
+		            <script type="text/javascript">
+		            CKEDITOR.replace('p_content'
+		                                            , {height: 500 
+		          	  ,filebrowserUploadUrl : "imageUpload.do"  // 이것을 잘이용해보자 업로드: 주소는 컨트롤 value로 따진                                            
+		                                            });
+		            </script>
+		  		</td>
+		  		<td>
+		  		</td>		
+		  	</tr>
+		  </table>
+        	</div>
+        </div>
+      </div>
+    </section>
   <!--/ textarea End /-->
+    </main>
   	
   <!--/ footer Star /-->
   <section class="section-footer">
