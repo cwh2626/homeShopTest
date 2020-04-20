@@ -37,9 +37,9 @@
     License: https://bootstrapmade.com/license/
   ======================================================= -->
   
-  <!-- ======== script ======== -->	
+  <!-- ======== script ======== -->	 
   <script type="text/javascript" src="../resources/ckeditor/ckeditor.js"></script>
-  
+  <script type="text/javascript" src="../resources/jquery/jquery-3.4.1.min.js"></script>
   
   <!-- ======== style ========= -->
   <style>
@@ -357,6 +357,71 @@
             		<div style="float:left; width: 50px; font-size: x-large; margin-top: 8px; padding-left: 10px; color: #A4A4A4; ">원</div>   
 		  		</td> 
 		  	</tr>
+	  	 	<tr>  
+		  		<td>
+		  		  <script type="text/javascript">
+				  $(document).ready(function () {
+					  alert("dd");
+
+					  $('#upload').on('click', function() {
+						  alert("dd");
+						  $('#examplePhoto').css('display', 'none');
+						  $('#mainPhoto').css('display','block');  
+					  });
+				  }); 
+				  </script>    
+		  			<h5>Photo</h5><br> 
+		  			<div class="col-md-4" > 
+		  			<input type="button" value="ddd" id="upload">
+		  			<input type="file" name="upload" size="30"> 
+		  				<img id="examplePhoto"src="../resources/ckeditor/images/img_no_286x286.gif" style="width : 350px; height: 350px;"> 
+			            <div id="mainPhoto" class="card-box-a card-shadow" style="width : 350px; height: 350px; display: none;">
+			              <div class="img-box-a" style="line-height: 350px;">
+			                <img src="../resources/ckeditor/images/img_no_286x286.gif" alt="" class="img-a img-fluid">
+			              </div>
+			              <div class="card-overlay">
+			                <div class="card-overlay-a-content">
+			                  <div class="card-header-a">
+			                    <h2 class="card-title-a">
+			                      <a href="#">샘플</a>
+			                    </h2>
+			                  </div>
+			                  <div class="card-body-a">
+			                    <div class="price-box d-flex">
+			                      <span class="price-a">$ 12.000</span>
+			                    </div>
+			                    <a href="property-single.html" class="link-a">Click here to view
+			                      <span class="ion-ios-arrow-forward"></span>
+			                    </a>
+			                  </div>
+			                  <div class="card-footer-a">
+			                    <ul class="card-info d-flex justify-content-around">
+			                      <li>
+			                        <h4 class="card-info-title">Area</h4>
+			                        <span>340m
+			                          <sup>2</sup>
+			                        </span>
+			                      </li>
+			                      <li>
+			                        <h4 class="card-info-title">Beds</h4>
+			                        <span>2</span>
+			                      </li>
+			                      <li>
+			                        <h4 class="card-info-title">Baths</h4>
+			                        <span>4</span>
+			                      </li>
+			                      <li>
+			                        <h4 class="card-info-title">Garages</h4>
+			                        <span>1</span>
+			                      </li>
+			                    </ul>
+			                  </div>
+			                </div>
+			              </div>
+			            </div>
+			          </div>
+		  		</td> 
+		  	</tr>
 		  	<tr >
 		  		<td> 
 		  			<form action="insertSale" method="post">
@@ -546,7 +611,6 @@
   <div id="preloader"></div>
 
   <!-- JavaScript Libraries -->
-  <script src="../resources/bootstrap/lib/jquery/jquery.min.js"></script>
   <script src="../resources/bootstrap/lib/jquery/jquery-migrate.min.js"></script>
   <script src="../resources/bootstrap/lib/popper/popper.min.js"></script>
   <script src="../resources/bootstrap/lib/bootstrap/js/bootstrap.min.js"></script>
