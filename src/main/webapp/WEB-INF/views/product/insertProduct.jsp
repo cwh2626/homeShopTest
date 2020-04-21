@@ -60,7 +60,41 @@
     -moz-appearance: none; 
     appearance: none;
   	*/
-  }
+  	}  
+  	 
+	.filebox label {
+	  display: inline-block;
+	  padding: .5em .75em;
+	  color: #fff;
+	  font-size: small;
+	  line-height: normal;
+	  vertical-align: middle;
+	  background-color: #2eca6a; 
+	  cursor: pointer;
+	  border: 1px solid #2eca6a;
+	  border-radius: .25em;
+	  -webkit-transition: background-color 0.2s;
+	  transition: background-color 0.2s;
+	}
+	
+	.filebox label:hover {
+	  background-color: #6ed36e;
+	}
+	
+	.filebox label:active {
+	  background-color: #367c36;
+	}
+	
+	.filebox input[type="file"] {
+	  position: absolute;
+	  width: 1px;
+	  height: 1px;
+	  padding: 0;
+	  margin: -1px;
+	  overflow: hidden;
+	  clip: rect(0, 0, 0, 0);
+	  border: 0;
+	}
  </style>
 </head>
 
@@ -360,66 +394,34 @@
 	  	 	<tr>  
 		  		<td>
 		  		  <script type="text/javascript">
-				  $(document).ready(function () {
-					  alert("dd");
+				   $(document).ready(function () {
 
-					  $('#upload').on('click', function() {
-						  alert("dd");
-						  $('#examplePhoto').css('display', 'none');
-						  $('#mainPhoto').css('display','block');  
-					  });
-				  }); 
-				  </script>    
-		  			<h5>Photo</h5><br> 
-		  			<div class="col-md-4" > 
-		  			<input type="button" value="ddd" id="upload">
-		  			<input type="file" name="upload" size="30"> 
-		  				<img id="examplePhoto"src="../resources/ckeditor/images/img_no_286x286.gif" style="width : 350px; height: 350px;"> 
-			            <div id="mainPhoto" class="card-box-a card-shadow" style="width : 350px; height: 350px; display: none;">
-			              <div class="img-box-a" style="line-height: 350px;">
-			                <img src="../resources/ckeditor/images/img_no_286x286.gif" alt="" class="img-a img-fluid">
-			              </div>
-			              <div class="card-overlay">
-			                <div class="card-overlay-a-content">
-			                  <div class="card-header-a">
-			                    <h2 class="card-title-a">
-			                      <a href="#">샘플</a>
-			                    </h2>
-			                  </div>
-			                  <div class="card-body-a">
-			                    <div class="price-box d-flex">
-			                      <span class="price-a">$ 12.000</span>
-			                    </div>
-			                    <a href="property-single.html" class="link-a">Click here to view
-			                      <span class="ion-ios-arrow-forward"></span>
-			                    </a>
-			                  </div>
-			                  <div class="card-footer-a">
-			                    <ul class="card-info d-flex justify-content-around">
-			                      <li>
-			                        <h4 class="card-info-title">Area</h4>
-			                        <span>340m
-			                          <sup>2</sup>
-			                        </span>
-			                      </li>
-			                      <li>
-			                        <h4 class="card-info-title">Beds</h4>
-			                        <span>2</span>
-			                      </li>
-			                      <li>
-			                        <h4 class="card-info-title">Baths</h4>
-			                        <span>4</span>
-			                      </li>
-			                      <li>
-			                        <h4 class="card-info-title">Garages</h4>
-			                        <span>1</span>
-			                      </li>
-			                    </ul>
-			                  </div>
-			                </div>
-			              </div>
-			            </div>
-			          </div>
+					  $('#ex_file').change(function() {
+						  let name = $('#ex_file').val();
+						  alert(name);
+						 // $('#examplePhoto').css('display', 'none');
+						  //$('#mainPhoto').css('display','block');  
+					  }); 
+				  });  
+				  </script>  
+				    
+		  			<h5>Photo</h5><br>   
+		  			<table>  
+		  				<tr>  
+		  					<td style=" position:relative; width: 350px; height: 350px;  border: 1px solid #444444; border-spacing: 0px;  padding: 0px; "> 
+			  					<img id="examplePhoto"src="../resources/ckeditor/images/img_no_286x286.gif" style="position:relative; width : 350px; height: 350px;"> 
+					            <button type="button" class="close" aria-label="Close"
+								style="position: absolute; top: 20px; right: 20px; ">   
+								  <span aria-hidden="true">&times;</span>   
+								</button> 
+								<div class="filebox" style="position:absolute; width: 100px; top: 200px; left: 142px; ">
+								  <label for="ex_file">필수등록</label>  
+								  <input type="file" id="ex_file">
+								</div>		
+		  					</td>
+		  				</tr>
+		  			</table>
+		  				  			
 		  		</td> 
 		  	</tr>
 		  	<tr >
