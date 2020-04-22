@@ -394,30 +394,86 @@
 	  	 	<tr>  
 		  		<td>
 		  		  <script type="text/javascript">
+		  		  /* 
+		  		  페이지가 켜지는 순서 
+		  		  1.head 사이에있는 script 
+		  		  2.body
+		  		  3.$(document).ready(function(){}); //이것은 자바스크립트의onload와 똑같지만 굳이 순서를 따지면 이게 먼저
+		  		  4.script의 window.onload
+		  		  
+		  		  간단히말하자면 그냥 위에서부터 순서대로 내려오면된다 그리고 나서
+	  			  3.$(document).ready(function(){}); 
+		  		  4.script의 window.onload
+		  		  가 차례로 나온다
+		  		  */
+		  		  function asas(data) {
+					  $.ajax({
+			    		  url: 'uploadExamplePhotoCheck',
+			    	  	  type: 'POST', 
+			    	  	  data: {imgSrcCheck : data},
+			    	  	  dataType:'text',
+			    	  	  success: function(result) {
+			    	  		  if(result == '1'){
+						    	  $('#examplePhoto').attr('src','http://localhost:8888/shop/resources/product/mainImages/'+data);
+			    	  			  
+			    	  		  }else {
+			    	  			asas(data);
+			    	  		  }
+					     	  
+			    	  	  },
+						  error: function(error) {
+						        alert('error.status의 값 : ' + error.status);
+						  }					    	 
+			    	  }); 
+					  
+				  }  
+			 
+		  		
+		  		   
 				   $(document).ready(function () {
-
+					  
 					  $('#ex_file').change(function() {
-						  let name = $('#ex_file').val();
-						  alert(name);
+						  alert('dd');
+						  var formData = new FormData($('#file-form')[0]);
+						  formData.append("imgSrc", $('#ex_file')[0].files[0]);
+						  
+						  $.ajax( {
+						      url:'uploadExamplePhoto', // 응답을 받아 줄 경로, 경로는 현재 페이지에서의 상대경로 값을 가리킨다.
+						      type:'POST', // 요청 방식, get, post, put, del
+						      processData: false,
+						      contentType: false,
+						      data: formData, // 서버단으로 전송하는 데이터, 따라서, 객체가 들어간다. 속성명, 값
+						      dataType:'text', // 데이터타입, 돌아올 때 서버로부터 받는 값의 종류, 보통 둘 중 하나 1.text, 2.json
+						      success: function(data) {
+						    	  
+						    	  asas(data);
+						      }, 
+						      error: function(error) {
+						        alert('error.status의 값 : ' + error.status);
+						      }
+						    }); 
 						 // $('#examplePhoto').css('display', 'none');
 						  //$('#mainPhoto').css('display','block');  
-					  }); 
-				  });  
+					  });  
+				  
+				  });
 				  </script>  
 				    
 		  			<h5>Photo</h5><br>   
 		  			<table>  
 		  				<tr>  
 		  					<td style=" position:relative; width: 350px; height: 350px;  border: 1px solid #444444; border-spacing: 0px;  padding: 0px; "> 
-			  					<img id="examplePhoto"src="../resources/ckeditor/images/img_no_286x286.gif" style="position:relative; width : 350px; height: 350px;"> 
+			  					<img id="examplePhoto"src="/Users/jounghui/Desktop/IMG_0032.jpeg" style="position:relative; width : 350px; height: 350px;"> 
 					            <button type="button" class="close" aria-label="Close"
 								style="position: absolute; top: 20px; right: 20px; ">   
 								  <span aria-hidden="true">&times;</span>   
-								</button> 
-								<div class="filebox" style="position:absolute; width: 100px; top: 200px; left: 142px; ">
-								  <label for="ex_file">필수등록</label>  
-								  <input type="file" id="ex_file">
-								</div>		
+								</button>
+								<form id="file_form" action="" method="post">
+									<div class="filebox" style="position:absolute; width: 100px; top: 200px; left: 142px; ">
+									  <label for="ex_file">필수등록</label>  
+									  <input type="file" id="ex_file">
+									</div>		
+								</form> 
 		  					</td>
 		  				</tr>
 		  			</table>

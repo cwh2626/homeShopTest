@@ -5,6 +5,8 @@ import java.io.File;
 import java.io.FileInputStream;
 import java.io.IOException;
 import java.io.PrintWriter;
+import java.net.HttpURLConnection;
+import java.net.URL;
 
 import javax.servlet.ServletException;
 import javax.servlet.ServletOutputStream;
@@ -17,6 +19,7 @@ import org.springframework.stereotype.Controller;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestMethod;
 import org.springframework.web.bind.annotation.RequestParam;
+import org.springframework.web.bind.annotation.ResponseBody;
 import org.springframework.web.multipart.MultipartFile;
 import org.springframework.web.multipart.MultipartHttpServletRequest;
 
@@ -154,6 +157,64 @@ public class ProductController {
             }
         }
     }
+    
+	@ResponseBody
+	@RequestMapping(value = "/uploadExamplePhoto", method = RequestMethod.POST,
+			produces = "application/json;charset=UTF-8") 
+	public String uploadExamplePhoto(MultipartFile imgSrc) {
+		
+		String exampleFileDir = "/Users/jounghui/Desktop/springTestTest/homeShopTest/src/main/webapp/resources/product/mainImages/"; //ckeditor의 이미지 저장위
+
+		logger.debug(imgSrc.getOriginalFilename());	//파일이름
+		logger.debug(imgSrc.getContentType());		//업로드한 파일의 종류
+		logger.debug(""+imgSrc.getSize());			//파일 사이즈
+		logger.debug(""+imgSrc.isEmpty());			//Empty와 비어있다라는 뜻이다 즉 저것이 true뜨면 파일이 비었다는 뜻이다  반대로 false면 파일이 잘들어갔다는 소리겠죠
+        
+		String savedfile = null;
+		if(!imgSrc.isEmpty()) {
+			savedfile =FileService.saveFile(imgSrc,exampleFileDir);
+//			board.setOriginalfile(upload.getOriginalFilename());
+//			board.setSavedfile(savedfile);
+		}
+		return savedfile;
+	}
+	
+	@ResponseBody
+	@RequestMapping(value = "/uploadExamplePhotoCheck", method = RequestMethod.POST,
+			produces = "application/json;charset=UTF-8") 
+	public String uploadExamplePhotoCheck(String imgSrcCheck) {
+		String exampleFileDir = "http://localhost:8888/shop/resources/product/mainImages/"; //ckeditor의 이미지 저장위
+		String URLName = exampleFileDir + imgSrcCheck;
+
+	             try {
+	                   
+	                    // Sets whether HTTP redirects  (requests with response code 3xx)
+	                    // should be automatically followed by this class.  True by default.
+	                   // HttpURLConnection.setFollowRedirects(false);
+	                   
+	                    /** HTTP 요청 메소드 SET
+	                     * https://javaplant.tistory.com/18
+	                     * https://docs.oracle.com/javase/8/docs/api/java/net/HttpURLConnection.html 참고사이트
+	                     * 본 예제는 파일의 존재여부만 확인하려니 간단히 HEAD 요청을 보냄
+	                     * HEAD요청에 대해 웹서버는 수정된 시간이 포함된 리소스의 해더 정보를 간단히 리턴
+	                  *  GET,POST,HEAD,OPTIONS,PUT,DELETE,TRACE 값등이 올 수 있다.
+	                  * 디폴트는 GET
+	                  **/                 
+	                    HttpURLConnection con = (HttpURLConnection) new URL(URLName).openConnection();
+	                    con.setRequestMethod("HEAD");
+	                   
+	                    //FILE이 있는 경우 HTTP_OK 200
+	                    if (con.getResponseCode() == HttpURLConnection.HTTP_OK) {
+	                           return "1"; //파일있음
+	                    } else {
+	                           return "2"; //파일없음
+	                    }
+	             } catch (Exception e) {
+	                    e.printStackTrace();
+	                    return "3"; //파일없음
+	             }
+		
+	}	
 
 	
 
