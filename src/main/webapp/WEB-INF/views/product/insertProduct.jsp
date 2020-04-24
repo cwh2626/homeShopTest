@@ -406,7 +406,7 @@
 		  		  4.script의 window.onload
 		  		  가 차례로 나온다
 		  		  */
-		  		  function asas(data) {
+		  		  function uploadExamplePhotoCheck(data) {
 					  $.ajax({
 			    		  url: 'uploadExamplePhotoCheck',
 			    	  	  type: 'POST', 
@@ -415,9 +415,9 @@
 			    	  	  success: function(result) {
 			    	  		  if(result == '1'){
 						    	  $('#examplePhoto').attr('src','http://localhost:8888/shop/resources/product/mainImages/'+data);
-			    	  			  
+			    	  			  $('#file_form').css('visibility','hidden');
 			    	  		  }else {
-			    	  			asas(data);
+			    	  			uploadExamplePhotoCheck(data);
 			    	  		  }
 					     	  
 			    	  	  },
@@ -427,13 +427,34 @@
 			    	  }); 
 					  
 				  }  
+		  		  
+		  		  function   examplePhotoDelete(src) {
+		  			 
+		  			  $.ajax({
+						  url : 'examplePhotoDelete',
+						  type : 'POST',
+						  data : {imgSrc : src},
+						  dataType : 'text',
+						  success : function(result) {
+							  if(result = '1'){
+						    	
+							  }else{
+								  alert("파일삭제오류");
+								  
+							  }
+						  },
+						  error : function(error) {
+						        alert('error.status의 값 : ' + error.status);
+
+						  }
+				  	  });
+		  		  }
 			 
 		  		
 		  		   
 				   $(document).ready(function () {
-					  
+					   
 					  $('#ex_file').change(function() {
-						  alert('dd');
 						  var formData = new FormData($('#file-form')[0]);
 						  formData.append("imgSrc", $('#ex_file')[0].files[0]);
 						  
@@ -445,8 +466,7 @@
 						      data: formData, // 서버단으로 전송하는 데이터, 따라서, 객체가 들어간다. 속성명, 값
 						      dataType:'text', // 데이터타입, 돌아올 때 서버로부터 받는 값의 종류, 보통 둘 중 하나 1.text, 2.json
 						      success: function(data) {
-						    	  
-						    	  asas(data);
+						    	  uploadExamplePhotoCheck(data);
 						      }, 
 						      error: function(error) {
 						        alert('error.status의 값 : ' + error.status);
@@ -455,6 +475,16 @@
 						 // $('#examplePhoto').css('display', 'none');
 						  //$('#mainPhoto').css('display','block');  
 					  });  
+					  
+					  $('#examplePhotoClose').on('click', function(){
+						  var src = $('#examplePhoto').attr('src');
+						  examplePhotoDelete(src);
+						  $('#examplePhoto').attr('src','http://localhost:8888/shop/resources/product/fixedPhoto/img_no_286x286.gif');
+	    	  			  $('#file_form').css('visibility','visible');
+
+					  }); 
+					  
+					  
 				  
 				  });
 				  </script>  
@@ -462,16 +492,70 @@
 		  			<h5>Photo</h5><br>   
 		  			<table>  
 		  				<tr>  
-		  					<td style=" position:relative; width: 350px; height: 350px;  border: 1px solid #444444; border-spacing: 0px;  padding: 0px; "> 
-			  					<img id="examplePhoto"src="/Users/jounghui/Desktop/IMG_0032.jpeg" style="position:relative; width : 350px; height: 350px;"> 
-					            <button type="button" class="close" aria-label="Close"
-								style="position: absolute; top: 20px; right: 20px; ">   
+		  					<td rowspan="2" style=" position:relative; width: 350px; height: 350px; border-bottom: none;  "> 
+			  					<img id="examplePhoto"src="http://localhost:8888/shop/resources/product/fixedPhoto/img_no_286x286.gif" style="border: 1px solid #444444; position:relative; width : 350px; height: 350px;"> 
+					            <button type="button" id="examplePhotoClose" class="close" aria-label="Close"
+								style="position: absolute; top: 80px; right: 60px; ">   
 								  <span aria-hidden="true">&times;</span>   
-								</button>
+								</button> 
 								<form id="file_form" action="" method="post">
-									<div class="filebox" style="position:absolute; width: 100px; top: 200px; left: 142px; ">
+									<div class="filebox" style="position:absolute; width: 100px; top: 260px; left: 172px; ">  
 									  <label for="ex_file">필수등록</label>  
 									  <input type="file" id="ex_file">
+									</div>		
+								</form>  
+		  					</td>
+		  					<td style=" position:relative; width: 170px; height: 170px; border-bottom: none;"> 
+			  					<img id="subExamplePhoto1"src="http://localhost:8888/shop/resources/product/fixedPhoto/img_no_137x137.gif" style="border: 1px solid #444444; position:relative; width : 170px; height: 170px;"> 
+					            <button type="button" id="subExamplePhotoClose1" class="close" aria-label="Close"
+								style="position: absolute; top: 40px; right: 40px; ">   
+								  <span aria-hidden="true">&times;</span>   
+								</button> 
+								<form id="subFile_form1" action="" method="post">
+									<div class="filebox" style="position:absolute; width: 100px; top: 115px; left: 83px; "> 
+									  <label for="subEx_file1">선택등록</label>  
+									  <input type="file" id="subEx_file1">
+									</div>		
+								</form> 
+		  					</td>
+		  					<td style=" position:relative; width: 170px; height: 170px; border-bottom: none; "> 
+			  					<img id="subExamplePhoto2"src="http://localhost:8888/shop/resources/product/fixedPhoto/img_no_137x137.gif" style=" border: 1px solid #444444; position:relative; width : 170px; height: 170px;"> 
+					            <button type="button" id="subExamplePhotoClose2" class="close" aria-label="Close"
+								style="position: absolute; top: 40px; right: 40px;   ">   
+								  <span aria-hidden="true">&times;</span>   
+								</button>
+								<form id="subFile_form2" action="" method="post">
+									<div class="filebox" style="position:absolute; width: 100px; top: 115px; left: 83px;  ">
+									  <label for="subEx_file2">선택등록</label>  
+									  <input type="file" id="subEx_file2">
+									</div>		
+								</form> 
+		  					</td>
+		  				</tr>
+		  				<tr>
+		  					<td style=" position:relative; width: 170px; height: 170px; border-bottom: none;"> 
+			  					<img id="subExamplePhoto3"src="http://localhost:8888/shop/resources/product/fixedPhoto/img_no_137x137.gif" style="border: 1px solid #444444; position:relative; width : 170px; height: 170px;"> 
+					            <button type="button" id="subExamplePhotoClose3" class="close" aria-label="Close"
+								style="position: absolute;top: 40px; right: 40px;   ">   
+								  <span aria-hidden="true">&times;</span>   
+								</button>
+								<form id="subFile_form3" action="" method="post">
+									<div class="filebox" style="position:absolute; width: 100px; top: 115px; left: 83px;  ">
+									  <label for="subEx_file3">선택등록</label>  
+									  <input type="file" id="subEx_file3"> 
+									</div>		
+								</form> 
+		  					</td>
+		  					<td style=" position:relative; width: 170px; height: 170px; border-bottom: none; "> 
+			  					<img id="subExamplePhoto4"src="http://localhost:8888/shop/resources/product/fixedPhoto/img_no_137x137.gif" style="border: 1px solid #444444; position:relative; width : 170px; height: 170px;"> 
+					            <button type="button" id="subExamplePhotoClose4" class="close" aria-label="Close"
+								style="position: absolute; top: 40px; right: 40px;  ">   
+								  <span aria-hidden="true">&times;</span>   
+								</button>
+								<form id="file_form4" action="" method="post">
+									<div class="filebox" style="position:absolute; width: 100px; top: 115px; left: 83px; ">
+									  <label for="subEx_file4">선택등록</label>  
+									  <input type="file" id="subEx_file4">
 									</div>		
 								</form> 
 		  					</td>

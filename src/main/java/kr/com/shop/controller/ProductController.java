@@ -33,6 +33,7 @@ public class ProductController {
 	//주의할점 윈도우의 경우 절대경로를 지정시에 C,D드라이브가 있어서 그냥 복붙하면 되지만 
 	//맥의 경우는 전체경로 중 /Users부터 시작으로 한다 주의!!!
 	final String fileDir = "/Users/jounghui/Desktop/springTestTest/homeShopTest/src/main/webapp/resources/ckeditor/images/"; //ckeditor의 이미지 저장위
+	final String exampleFileDir = "/Users/jounghui/Desktop/springTestTest/homeShopTest/src/main/webapp/resources/product/mainImages/"; //ckeditor의 이미지 저장위
 
 	
 	private static final Logger logger = LoggerFactory.getLogger(ProductController.class);
@@ -163,7 +164,6 @@ public class ProductController {
 			produces = "application/json;charset=UTF-8") 
 	public String uploadExamplePhoto(MultipartFile imgSrc) {
 		
-		String exampleFileDir = "/Users/jounghui/Desktop/springTestTest/homeShopTest/src/main/webapp/resources/product/mainImages/"; //ckeditor의 이미지 저장위
 
 		logger.debug(imgSrc.getOriginalFilename());	//파일이름
 		logger.debug(imgSrc.getContentType());		//업로드한 파일의 종류
@@ -183,8 +183,8 @@ public class ProductController {
 	@RequestMapping(value = "/uploadExamplePhotoCheck", method = RequestMethod.POST,
 			produces = "application/json;charset=UTF-8") 
 	public String uploadExamplePhotoCheck(String imgSrcCheck) {
-		String exampleFileDir = "http://localhost:8888/shop/resources/product/mainImages/"; //ckeditor의 이미지 저장위
-		String URLName = exampleFileDir + imgSrcCheck;
+		String exampleUrl = "http://localhost:8888/shop/resources/product/mainImages/"; //ckeditor의 이미지 저장위
+		String URLName = exampleUrl + imgSrcCheck;
 
 	             try {
 	                   
@@ -213,6 +213,30 @@ public class ProductController {
 	                    e.printStackTrace();
 	                    return "3"; //파일없음
 	             }
+		
+	}
+	
+	@ResponseBody
+	@RequestMapping(value = "/examplePhotoDelete", method = RequestMethod.POST,
+	produces = "application/json;charset=UTF-8") 
+	public String examplePhotoDelete(String imgSrc) {
+		 int lastIndex = imgSrc.lastIndexOf("/");
+		 String imgName = imgSrc.substring(lastIndex + 1);
+		 String fullpath = exampleFileDir + imgName;
+		 
+		 logger.debug("fullpath : {}", fullpath);
+		 
+		 boolean result = false;
+		 result = FileService.deleteFile(fullpath);
+		 
+		 if(result) {
+			 return "1";
+			 
+		 }else {
+			 
+			 return "2";
+		 }
+		
 		
 	}	
 
