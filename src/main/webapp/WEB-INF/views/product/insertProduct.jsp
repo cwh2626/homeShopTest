@@ -411,9 +411,11 @@
 		  		   
 				   $(document).ready(function () {
 					   
-					  $('#ex_file').change(function() {
-						  var formData = new FormData($('#file-form')[0]);
-						  formData.append("imgSrc", $('#ex_file')[0].files[0]);
+					  $('.filebox').change(function() { 
+						  alert($(this).find('label').html())
+						  var formData = new FormData($(this).parents('form')[0]);
+						  formData.append("imgSrc", $(this).find('input')[0].files[0]);
+						  var num = $(this).attr('num');
 						  
 						  $.ajax( {
 						      url:'uploadExamplePhoto', // 응답을 받아 줄 경로, 경로는 현재 페이지에서의 상대경로 값을 가리킨다.
@@ -423,7 +425,7 @@
 						      data: formData, // 서버단으로 전송하는 데이터, 따라서, 객체가 들어간다. 속성명, 값
 						      dataType:'text', // 데이터타입, 돌아올 때 서버로부터 받는 값의 종류, 보통 둘 중 하나 1.text, 2.json
 						      success: function(data) {
-						    	  uploadExamplePhotoCheck(data);
+						    	  uploadExamplePhotoCheck(data,num);
 						      }, 
 						      error: function(error) {
 						        alert('error.status의 값 : ' + error.status);
@@ -431,34 +433,58 @@
 						    }); 
 						 // $('#examplePhoto').css('display', 'none');
 						  //$('#mainPhoto').css('display','block');  
+					  
+					  
 					  });  
 					  
-					  $('#examplePhotoClose').on('click', function(){
-						  var src = $('#examplePhoto').attr('src');
+					   $('.close').on('click', function(){
+						  var imgId = '#' + $(this).closest('td').find('img').attr('id');
+						  var src = $(imgId).attr('src');
+						  var fileboxNum = $(this).closest('td').find('.filebox').attr('num');
+						  var srcFull
+						  
+						  if(fileboxNum == '0'){
+							  srcFull ='http://localhost:8888/shop/resources/product/fixedPhoto/img_no_286x286.gif';
+						  }else{
+							  srcFull ='http://localhost:8888/shop/resources/product/fixedPhoto/img_no_137x137.gif';
+						  }
 						  examplePhotoDelete(src);
-						  $('#examplePhoto').attr('src','http://localhost:8888/shop/resources/product/fixedPhoto/img_no_286x286.gif');
-	    	  			  $('#file_form').css('visibility','visible');
-
+						  $(imgId).attr('src',srcFull);
+						  $(this).closest('td').find('form').css('visibility','visible');
+ 
 					  }); 
-					  
 					  
 				  
 				  });
 		  		  
-		  		 function uploadExamplePhotoCheck(data) {
+		  		  function uploadExamplePhotoCheck(data,num) {
 					  $.ajax({
 			    		  url: 'uploadExamplePhotoCheck',
 			    	  	  type: 'POST', 
 			    	  	  data: {imgSrcCheck : data},
 			    	  	  dataType:'text',
 			    	  	  success: function(result) {
-			    	  		  if(result == '1'){
-						    	  $('#examplePhoto').attr('src','http://localhost:8888/shop/resources/product/mainImages/'+data);
+			    	  			  /* 
+			    	  			  alert($('.filebox').attr('num'));			    			  
+				    	  		 	alert($('.filebox').closest('td').find('img').attr('id'));   
+				    	  		 	$('.filebox').closest('td').find('img').attr('src','http://localhost:8888/shop/resources/product/mainImages/'+data);
 			    	  			  $('#file_form').css('visibility','hidden');
+			    	  			    */
+			    	  		 if(result == '1'){
+				    	  		 //$('.filebox').attr('num',num).closest('td').find('img').attr('src','http://localhost:8888/shop/resources/product/mainImages/'+data);
+				    	  		 $('#' + $('div[num='+num+']').closest('td').find('img').attr('id')).attr('src',
+				    	  				 'http://localhost:8888/shop/resources/product/mainImages/'+data);
+				    	  		 
+								 $('div[num='+num+']').closest('td').find('form').css('visibility','hidden');
+ 
+						    	 // $('#examplePhoto').attr('src','http://localhost:8888/shop/resources/product/mainImages/'+data);
+			    	  			 //$('#file_form').css('visibility','hidden');
+			    	  		  
 			    	  		  }else {
-			    	  			uploadExamplePhotoCheck(data);
-			    	  		  }
-					     	  
+			    	  			uploadExamplePhotoCheck(data,num);
+ 			    	  		  } 
+			    	  			
+
 			    	  	  },
 						  error: function(error) {
 						        alert('error.status의 값 : ' + error.status);
@@ -488,20 +514,20 @@
 						  }
 				  	  });
 		  		  }
-			 
+	
 				  </script>  
 				    
 		  			<h5>Photo</h5><br>   
 		  			<table>  
 		  				<tr>  
-		  					<td rowspan="2" style=" position:relative; width: 350px; height: 350px; border-bottom: none;  "> 
+		  					<td rowspan="2"  style=" position:relative; width: 350px; height: 350px; border-bottom: none;  "> 
 			  					<img id="examplePhoto"src="http://localhost:8888/shop/resources/product/fixedPhoto/img_no_286x286.gif" style="border: 1px solid #444444; position:relative; width : 350px; height: 350px;"> 
 					            <button type="button" id="examplePhotoClose" class="close" aria-label="Close"
 								style="position: absolute; top: 80px; right: 60px; ">   
 								  <span aria-hidden="true">&times;</span>   
 								</button> 
-								<form id="file_form" action="" method="post">
-									<div class="filebox" style="position:absolute; width: 100px; top: 260px; left: 172px; ">  
+								<form action=""  method="post">
+									<div class="filebox" num="0" style="position:absolute; width: 100px; top: 260px; left: 172px; ">  
 									  <label for="ex_file">필수등록</label>  
 									  <input type="file" id="ex_file">
 									</div>		
@@ -513,8 +539,8 @@
 								style="position: absolute; top: 40px; right: 40px; ">   
 								  <span aria-hidden="true">&times;</span>   
 								</button> 
-								<form id="subFile_form1" action="" method="post">
-									<div class="filebox" style="position:absolute; width: 100px; top: 115px; left: 79px; ">  
+								<form  action="" method="post">
+									<div class="filebox" num="1" style="position:absolute; width: 100px; top: 115px; left: 79px; ">  
 									  <label for="subEx_file1">1 선택등록</label>  
 									  <input type="file" id="subEx_file1">
 									</div>		
@@ -527,7 +553,7 @@
 								  <span aria-hidden="true">&times;</span>   
 								</button>
 								<form id="subFile_form2" action="" method="post">
-									<div class="filebox" style="position:absolute; width: 100px; top: 115px; left: 83px;  ">
+									<div class="filebox" num="2"style="position:absolute; width: 100px; top: 115px; left: 83px;  ">
 									  <label for="subEx_file2">2 선택등록</label>  
 									  <input type="file" id="subEx_file2">
 									</div>		
@@ -542,7 +568,7 @@
 								  <span aria-hidden="true">&times;</span>   
 								</button>
 								<form id="subFile_form3" action="" method="post">
-									<div class="filebox" style="position:absolute; width: 100px; top: 115px; left: 83px;  ">
+									<div class="filebox"  num="3" style="position:absolute; width: 100px; top: 115px; left: 83px;  ">
 									  <label for="subEx_file3">3 선택등록</label>  
 									  <input type="file" id="subEx_file3"> 
 									</div>		
@@ -555,7 +581,7 @@
 								  <span aria-hidden="true">&times;</span>   
 								</button>
 								<form id="file_form4" action="" method="post">
-									<div class="filebox" style="position:absolute; width: 100px; top: 115px; left: 83px; ">
+									<div class="filebox"  num="4"style="position:absolute; width: 100px; top: 115px; left: 83px; ">
 									  <label for="subEx_file4">4 선택등록</label>  
 									  <input type="file" id="subEx_file4">
 									</div>		
