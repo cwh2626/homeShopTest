@@ -406,7 +406,46 @@
 		  		  4.script의 window.onload
 		  		  가 차례로 나온다
 		  		  */
-		  		  function uploadExamplePhotoCheck(data) {
+		  		 
+		  		
+		  		   
+				   $(document).ready(function () {
+					   
+					  $('#ex_file').change(function() {
+						  var formData = new FormData($('#file-form')[0]);
+						  formData.append("imgSrc", $('#ex_file')[0].files[0]);
+						  
+						  $.ajax( {
+						      url:'uploadExamplePhoto', // 응답을 받아 줄 경로, 경로는 현재 페이지에서의 상대경로 값을 가리킨다.
+						      type:'POST', // 요청 방식, get, post, put, del
+						      processData: false,
+						      contentType: false,
+						      data: formData, // 서버단으로 전송하는 데이터, 따라서, 객체가 들어간다. 속성명, 값
+						      dataType:'text', // 데이터타입, 돌아올 때 서버로부터 받는 값의 종류, 보통 둘 중 하나 1.text, 2.json
+						      success: function(data) {
+						    	  uploadExamplePhotoCheck(data);
+						      }, 
+						      error: function(error) {
+						        alert('error.status의 값 : ' + error.status);
+						      }
+						    }); 
+						 // $('#examplePhoto').css('display', 'none');
+						  //$('#mainPhoto').css('display','block');  
+					  });  
+					  
+					  $('#examplePhotoClose').on('click', function(){
+						  var src = $('#examplePhoto').attr('src');
+						  examplePhotoDelete(src);
+						  $('#examplePhoto').attr('src','http://localhost:8888/shop/resources/product/fixedPhoto/img_no_286x286.gif');
+	    	  			  $('#file_form').css('visibility','visible');
+
+					  }); 
+					  
+					  
+				  
+				  });
+		  		  
+		  		 function uploadExamplePhotoCheck(data) {
 					  $.ajax({
 			    		  url: 'uploadExamplePhotoCheck',
 			    	  	  type: 'POST', 
@@ -450,43 +489,6 @@
 				  	  });
 		  		  }
 			 
-		  		
-		  		   
-				   $(document).ready(function () {
-					   
-					  $('#ex_file').change(function() {
-						  var formData = new FormData($('#file-form')[0]);
-						  formData.append("imgSrc", $('#ex_file')[0].files[0]);
-						  
-						  $.ajax( {
-						      url:'uploadExamplePhoto', // 응답을 받아 줄 경로, 경로는 현재 페이지에서의 상대경로 값을 가리킨다.
-						      type:'POST', // 요청 방식, get, post, put, del
-						      processData: false,
-						      contentType: false,
-						      data: formData, // 서버단으로 전송하는 데이터, 따라서, 객체가 들어간다. 속성명, 값
-						      dataType:'text', // 데이터타입, 돌아올 때 서버로부터 받는 값의 종류, 보통 둘 중 하나 1.text, 2.json
-						      success: function(data) {
-						    	  uploadExamplePhotoCheck(data);
-						      }, 
-						      error: function(error) {
-						        alert('error.status의 값 : ' + error.status);
-						      }
-						    }); 
-						 // $('#examplePhoto').css('display', 'none');
-						  //$('#mainPhoto').css('display','block');  
-					  });  
-					  
-					  $('#examplePhotoClose').on('click', function(){
-						  var src = $('#examplePhoto').attr('src');
-						  examplePhotoDelete(src);
-						  $('#examplePhoto').attr('src','http://localhost:8888/shop/resources/product/fixedPhoto/img_no_286x286.gif');
-	    	  			  $('#file_form').css('visibility','visible');
-
-					  }); 
-					  
-					  
-				  
-				  });
 				  </script>  
 				    
 		  			<h5>Photo</h5><br>   
@@ -512,8 +514,8 @@
 								  <span aria-hidden="true">&times;</span>   
 								</button> 
 								<form id="subFile_form1" action="" method="post">
-									<div class="filebox" style="position:absolute; width: 100px; top: 115px; left: 83px; "> 
-									  <label for="subEx_file1">선택등록</label>  
+									<div class="filebox" style="position:absolute; width: 100px; top: 115px; left: 79px; ">  
+									  <label for="subEx_file1">1 선택등록</label>  
 									  <input type="file" id="subEx_file1">
 									</div>		
 								</form> 
@@ -526,7 +528,7 @@
 								</button>
 								<form id="subFile_form2" action="" method="post">
 									<div class="filebox" style="position:absolute; width: 100px; top: 115px; left: 83px;  ">
-									  <label for="subEx_file2">선택등록</label>  
+									  <label for="subEx_file2">2 선택등록</label>  
 									  <input type="file" id="subEx_file2">
 									</div>		
 								</form> 
@@ -541,7 +543,7 @@
 								</button>
 								<form id="subFile_form3" action="" method="post">
 									<div class="filebox" style="position:absolute; width: 100px; top: 115px; left: 83px;  ">
-									  <label for="subEx_file3">선택등록</label>  
+									  <label for="subEx_file3">3 선택등록</label>  
 									  <input type="file" id="subEx_file3"> 
 									</div>		
 								</form> 
@@ -554,7 +556,7 @@
 								</button>
 								<form id="file_form4" action="" method="post">
 									<div class="filebox" style="position:absolute; width: 100px; top: 115px; left: 83px; ">
-									  <label for="subEx_file4">선택등록</label>  
+									  <label for="subEx_file4">4 선택등록</label>  
 									  <input type="file" id="subEx_file4">
 									</div>		
 								</form> 
