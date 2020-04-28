@@ -38,6 +38,7 @@
   ======================================================= -->
   
   <!-- ======== script ======== -->	 
+  
   <script type="text/javascript" src="../resources/ckeditor/ckeditor.js"></script>
   <script type="text/javascript" src="../resources/jquery/jquery-3.4.1.min.js"></script>
   
@@ -408,15 +409,15 @@
 		  		  */
 		  		 
 		  		
-		  		   
-				   $(document).ready(function () {
-					   
+		  		    
+				   $(document).ready(function () { 
 					  $('.filebox').change(function() { 
-						  alert($(this).find('label').html())
+						  //alert($(this).find('label').html())
 						  var formData = new FormData($(this).parents('form')[0]);
 						  formData.append("imgSrc", $(this).find('input')[0].files[0]);
 						  var num = $(this).attr('num');
-						  
+				    	  var imgId = '#' + $(this).closest('td').find('img').attr('id'); 
+
 						  $.ajax( {
 						      url:'uploadExamplePhoto', // 응답을 받아 줄 경로, 경로는 현재 페이지에서의 상대경로 값을 가리킨다.
 						      type:'POST', // 요청 방식, get, post, put, del
@@ -425,6 +426,9 @@
 						      data: formData, // 서버단으로 전송하는 데이터, 따라서, 객체가 들어간다. 속성명, 값
 						      dataType:'text', // 데이터타입, 돌아올 때 서버로부터 받는 값의 종류, 보통 둘 중 하나 1.text, 2.json
 						      success: function(data) {
+								  $(imgId).closest('td').find('form').css('visibility','hidden');
+								  $(imgId).closest('td').find('button').css('visibility','hidden');
+						    	  $(imgId).attr('src','http://localhost:8888/shop/resources/product/fixedPhoto/loading.gif');
 						    	  uploadExamplePhotoCheck(data,num);
 						      }, 
 						      error: function(error) {
@@ -464,21 +468,11 @@
 			    	  	  data: {imgSrcCheck : data},
 			    	  	  dataType:'text',
 			    	  	  success: function(result) {
-			    	  			  /* 
-			    	  			  alert($('.filebox').attr('num'));			    			  
-				    	  		 	alert($('.filebox').closest('td').find('img').attr('id'));   
-				    	  		 	$('.filebox').closest('td').find('img').attr('src','http://localhost:8888/shop/resources/product/mainImages/'+data);
-			    	  			  $('#file_form').css('visibility','hidden');
-			    	  			    */
 			    	  		 if(result == '1'){
-				    	  		 //$('.filebox').attr('num',num).closest('td').find('img').attr('src','http://localhost:8888/shop/resources/product/mainImages/'+data);
 				    	  		 $('#' + $('div[num='+num+']').closest('td').find('img').attr('id')).attr('src',
 				    	  				 'http://localhost:8888/shop/resources/product/mainImages/'+data);
 				    	  		 
-								 $('div[num='+num+']').closest('td').find('form').css('visibility','hidden');
- 
-						    	 // $('#examplePhoto').attr('src','http://localhost:8888/shop/resources/product/mainImages/'+data);
-			    	  			 //$('#file_form').css('visibility','hidden');
+								 $('div[num='+num+']').closest('td').find('button').css('visibility','visible');
 			    	  		  
 			    	  		  }else {
 			    	  			uploadExamplePhotoCheck(data,num);
@@ -521,7 +515,7 @@
 		  			<table>  
 		  				<tr>  
 		  					<td rowspan="2"  style=" position:relative; width: 350px; height: 350px; border-bottom: none;  "> 
-			  					<img id="examplePhoto"src="http://localhost:8888/shop/resources/product/fixedPhoto/img_no_286x286.gif" style="border: 1px solid #444444; position:relative; width : 350px; height: 350px;"> 
+			  					<img id="examplePhoto"src="http://localhost:8888/shop/resources/product/fixedPhoto/img_no_286x286.gif" style="border: 1px solid #A4A4A4; position:relative; width : 350px; height: 350px;"> 
 					            <button type="button" id="examplePhotoClose" class="close" aria-label="Close"
 								style="position: absolute; top: 80px; right: 60px; ">   
 								  <span aria-hidden="true">&times;</span>   
@@ -534,7 +528,7 @@
 								</form>  
 		  					</td>
 		  					<td style=" position:relative; width: 170px; height: 170px; border-bottom: none;"> 
-			  					<img id="subExamplePhoto1"src="http://localhost:8888/shop/resources/product/fixedPhoto/img_no_137x137.gif" style="border: 1px solid #444444; position:relative; width : 170px; height: 170px;"> 
+			  					<img id="subExamplePhoto1"src="http://localhost:8888/shop/resources/product/fixedPhoto/img_no_137x137.gif" style="border: 1px solid #A4A4A4; position:relative; width : 170px; height: 170px;"> 
 					            <button type="button" id="subExamplePhotoClose1" class="close" aria-label="Close"
 								style="position: absolute; top: 40px; right: 40px; ">   
 								  <span aria-hidden="true">&times;</span>   
@@ -547,13 +541,13 @@
 								</form> 
 		  					</td>
 		  					<td style=" position:relative; width: 170px; height: 170px; border-bottom: none; "> 
-			  					<img id="subExamplePhoto2"src="http://localhost:8888/shop/resources/product/fixedPhoto/img_no_137x137.gif" style=" border: 1px solid #444444; position:relative; width : 170px; height: 170px;"> 
+			  					<img id="subExamplePhoto2"src="http://localhost:8888/shop/resources/product/fixedPhoto/img_no_137x137.gif" style=" border: 1px solid #A4A4A4; position:relative; width : 170px; height: 170px;"> 
 					            <button type="button" id="subExamplePhotoClose2" class="close" aria-label="Close"
 								style="position: absolute; top: 40px; right: 40px;   ">   
 								  <span aria-hidden="true">&times;</span>   
 								</button>
 								<form id="subFile_form2" action="" method="post">
-									<div class="filebox" num="2"style="position:absolute; width: 100px; top: 115px; left: 83px;  ">
+									<div class="filebox" num="2"style="position:absolute; width: 100px; top: 115px; left: 79px;  ">
 									  <label for="subEx_file2">2 선택등록</label>  
 									  <input type="file" id="subEx_file2">
 									</div>		
@@ -562,26 +556,26 @@
 		  				</tr>
 		  				<tr>
 		  					<td style=" position:relative; width: 170px; height: 170px; border-bottom: none;"> 
-			  					<img id="subExamplePhoto3"src="http://localhost:8888/shop/resources/product/fixedPhoto/img_no_137x137.gif" style="border: 1px solid #444444; position:relative; width : 170px; height: 170px;"> 
+			  					<img id="subExamplePhoto3"src="http://localhost:8888/shop/resources/product/fixedPhoto/img_no_137x137.gif" style="border: 1px solid #A4A4A4; position:relative; width : 170px; height: 170px;"> 
 					            <button type="button" id="subExamplePhotoClose3" class="close" aria-label="Close"
 								style="position: absolute;top: 40px; right: 40px;   ">   
 								  <span aria-hidden="true">&times;</span>   
 								</button>
 								<form id="subFile_form3" action="" method="post">
-									<div class="filebox"  num="3" style="position:absolute; width: 100px; top: 115px; left: 83px;  ">
+									<div class="filebox"  num="3" style="position:absolute; width: 100px; top: 115px; left: 79px; ">
 									  <label for="subEx_file3">3 선택등록</label>  
 									  <input type="file" id="subEx_file3"> 
 									</div>		
 								</form> 
 		  					</td>
 		  					<td style=" position:relative; width: 170px; height: 170px; border-bottom: none; "> 
-			  					<img id="subExamplePhoto4"src="http://localhost:8888/shop/resources/product/fixedPhoto/img_no_137x137.gif" style="border: 1px solid #444444; position:relative; width : 170px; height: 170px;"> 
+			  					<img id="subExamplePhoto4"src="http://localhost:8888/shop/resources/product/fixedPhoto/img_no_137x137.gif" style="border: 1px solid #A4A4A4; position:relative; width : 170px; height: 170px;"> 
 					            <button type="button" id="subExamplePhotoClose4" class="close" aria-label="Close"
 								style="position: absolute; top: 40px; right: 40px;  ">   
 								  <span aria-hidden="true">&times;</span>   
 								</button>
 								<form id="file_form4" action="" method="post">
-									<div class="filebox"  num="4"style="position:absolute; width: 100px; top: 115px; left: 83px; ">
+									<div class="filebox"  num="4"style="position:absolute; width: 100px; top: 115px; left: 79px; ">
 									  <label for="subEx_file4">4 선택등록</label>  
 									  <input type="file" id="subEx_file4">
 									</div>		
@@ -594,15 +588,66 @@
 		  	</tr>
 		  	<tr >
 		  		<td> 
+	  			<h5>Product Description</h5><br>   
 		  			<form action="insertSale" method="post">
 			                  <textarea class="form-control" id="p_content" name="test"></textarea>
 			                  <input type="submit" value="test">
 		            </form>                 
 		            <script type="text/javascript">
+		            
+		            
+		            //ckeditor 다이얼로그 관리 함수
+		            CKEDITOR.on('dialogDefinition', function (ev) {
+		    			var dialogName = ev.data.name;
+		    			var dialog = ev.data.definition.dialog;
+		    			var dialogDefinition = ev.data.definition;
+							
+		    			  	//링크 다이얼로그
+		    				if (dialogName == 'link') {
+		    				/* 	
+		    				dialog.on('show', function (obj) {
+		    					this.selectPage('Upload'); //업로드탭으로 시작
+		    				});
+		    				*/
+
+		    				dialogDefinition.removeContents('advanced'); // 자세히탭 제거
+		    				dialogDefinition.removeContents('upload'); // 업로드탭 제거
+		    				}	
+		    			  	
+		    				/* 
+		    				//이미지 다이얼로그
+		    				if (dialogName == 'image') {
+			    				dialog.on('show', function (obj) {
+			    					this.selectPage('Upload'); //업로드탭으로 시작
+			    				});
+
+			    				dialogDefinition.removeContents('advanced'); // 자세히탭 제거
+			    			}
+		    				*/
+		    		});
+		            
+		            
 		            CKEDITOR.replace('p_content'
-		                                            , {height: 500 
-		          	  ,filebrowserUploadUrl : "imageUpload.do"  // 이것을 잘이용해보자 업로드: 주소는 컨트롤 value로 따진                                            
-		                                            });
+                                      	, {height: 500 
+		          	  					,filebrowserUploadUrl : "imageUpload.do"  // 이것을 잘이용해보자 업로드: 주소는 컨트롤 value로 따진                                            
+		          	  					,uiColor : '#2eca6a' 
+		          	  					,toolbar : [ 
+			          	  					{ name: 'document', items: [ 'Source', '-', 'Preview', 'NewPage','-' ] },
+				          	  				{ name: 'clipboard', items: [  '-', 'Undo', 'Redo' ] }, 
+				          	  				{ name: 'editing', items: [ 'Find', '-', 'SelectAll'] }, 
+				          	  				'/', 
+				          	  				{ name: 'basicstyles', items: [ 'Bold', 'Italic', 'Underline', 'Strike', 'Subscript', 'Superscript' ] },
+				          	  				{ name: 'paragraph', items: [ 'NumberedList', 'BulletedList', '-', 'Outdent', 'Indent', '-', 'Blockquote', '-', 'JustifyLeft', 'JustifyCenter', 'JustifyRight', 'JustifyBlock', '-', 'BidiLtr', 'BidiRtl'] },
+				          	  				{ name: 'links', items: [ 'Link', 'Unlink' ] },
+				          	  				{ name: 'insert', items: [ 'Image','Table', 'HorizontalRule', 'Smiley', 'SpecialChar', 'Iframe' ] },
+				          	  				'/',
+				          	  				{ name: 'styles', items: [ 'Styles', 'Format', 'Font', 'FontSize' ] },
+				          	  				{ name: 'colors', items: [ 'TextColor', 'BGColor' ] },
+				          	  				{ name: 'tools', items: [ 'Maximize', 'ShowBlocks' ] }
+			          	  				]                        
+		            });
+		            
+		            
 		            </script>
 		  		</td>
 		  		<td>
