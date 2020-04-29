@@ -24,6 +24,7 @@ import org.springframework.web.multipart.MultipartFile;
 import org.springframework.web.multipart.MultipartHttpServletRequest;
 
 import kr.com.shop.util.FileService;
+import kr.com.shop.vo.Product;
 
 
 @Controller
@@ -41,6 +42,18 @@ public class ProductController {
 	@RequestMapping(value ="insertSaleMain", method = RequestMethod.GET)
 	public String insertSaleMain() { 
 		return "product/insertProduct";
+	}
+	
+	@RequestMapping(value ="insertSaleWrite", method = RequestMethod.POST)
+	public String insertSaleWrite(Product product, MultipartFile productFirstPhoto, MultipartFile productSubPhoto1
+												, MultipartFile productSubPhoto2 , MultipartFile productSubPhoto3
+												, MultipartFile productSubPhoto4) { 
+		logger.debug(product.toString());
+		logger.debug("첫번째 파일 : {}, 두번쨰 파일 : {}, 세번쨰 파일 : {}, 네번쨰 파일 : {}, 다섯번째 파일 : {}"
+				,productFirstPhoto.getOriginalFilename(), productSubPhoto1.getOriginalFilename()
+				,productSubPhoto2.getOriginalFilename(), productSubPhoto3.getOriginalFilename()
+				,productSubPhoto4.getOriginalFilename()); 
+		return "redirect:/";
 	}
 	
 	/**

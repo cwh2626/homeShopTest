@@ -348,6 +348,7 @@
       <div class="container">
         <div class="row">
         	<div class="col-md-12">
+			<form action="insertSaleWrite"  method="post" enctype="multipart/form-data">
         	<table class="productMainView form-a" style="
 		  			width : 100%;
 		  		">
@@ -355,24 +356,24 @@
 		  		<td>
   					<h5>Category</h5>
   					<br>
-  					<select>
+  					<select name="category">
 						<optgroup label="상의">
-							<option>반팔 티셔츠</option>
-							<option>긴팔 티셔츠</option>
-							<option>민소매 티셔츠</option>
-							<option>셔츠/블라우스</option>
+							<option value="0">반팔 티셔츠</option>
+							<option value="1">긴팔 티셔츠</option>
+							<option value="2">민소매 티셔츠</option>
+							<option value="3">셔츠/블라우스</option>
 						</optgroup>
 						<optgroup label="하의">
-							<option>데님 팬츠</option>
-							<option>코튼 팬츠</option>
-							<option>슬랙스</option>
-							<option>트레이닝</option>
+							<option value="4">데님 팬츠</option>
+							<option value="5">코튼 팬츠</option>
+							<option value="6">슬랙스</option>
+							<option value="7">트레이닝</option>
 						</optgroup>
 						<optgroup label="아우터">
-							<option>레더/라이더스 재킷</option>
-							<option>수트/블레이저 재킷</option>
-							<option>트레이닝 재킷</option>
-							<option>롱 패</option>
+							<option value="8">레더/라이더스 재킷</option>
+							<option value="9">수트/블레이저 재킷</option>
+							<option value="10">트레이닝 재킷</option>
+							<option value="11">롱 패</option>
 						</optgroup>
 					</select>
 		  		</td>
@@ -380,7 +381,7 @@
 		  	<tr>
 		  		<td>
 					<h5>Product name</h5><br>  
-            		<input type="text" name="" style="width : 600px;" class="form-control form-control-lg form-control-a" placeholder="상품명을 입력하세요">
+            		<input type="text" name="productName" style="width : 600px;" class="form-control form-control-lg form-control-a" placeholder="상품명을 입력하세요">
 					<pre style="color: #A4A4A4;">자기소비 목적으로 해외에서 직구한 상품을 온라인 등을 통해 되파는 경우,
 관세법 위반으로 형사처벌 대상이 되오니 유의해주시기 바랍니다.</pre>
 		  		</td>
@@ -388,7 +389,7 @@
 		  	<tr> 
 		  		<td>  
 		  			<h5>Price</h5><br>
-            		<input type="text" name="" style="width : 400px; float : left;" class="form-control form-control-lg form-control-a" placeholder="가격을 입력하세요">
+            		<input type="text" name="productPrice" style="width : 400px; float : left;" class="form-control form-control-lg form-control-a" placeholder="가격을 입력하세요">
             		<div style="float:left; width: 50px; font-size: x-large; margin-top: 8px; padding-left: 10px; color: #A4A4A4; ">원</div>   
 		  		</td> 
 		  	</tr>
@@ -407,29 +408,35 @@
 		  		  4.script의 window.onload
 		  		  가 차례로 나온다
 		  		  */
-		  		 
 		  		
-		  		    
-				   $(document).ready(function () { 
+				   $(document).ready(function () {
+					   
+					  //Photo에서 사진등록버튼을 클릭하고 사진을 선택했을때 발동
 					  $('.filebox').change(function() { 
-						  //alert($(this).find('label').html())
-						  var formData = new FormData($(this).parents('form')[0]);
-						  formData.append("imgSrc", $(this).find('input')[0].files[0]);
-						  var num = $(this).attr('num');
-				    	  var imgId = '#' + $(this).closest('td').find('img').attr('id'); 
+						  //alert($(this).find('label').html() 태스트용
+						  
+						  //ajax로 파일을 보낼때는 FormData를이용한다 
+						  //FoRmData는 ajax로 파일을 보낼 떄 유용하며 생성할떄 기존에 form태그가 있으면 new FormData(form태그);를 입력하면 자동으로 내용들이 append된다.
+						  var formData = new FormData(); //parents는 조상들(여러개) 요소를 선택할떄 사용한다.그렇기에[0]을 이용하여 제일가까운녀석만선택
+						  formData.append("imgSrc", $(this).find('input')[0].files[0]); //생성된 formData에 보낼파일 input을 추가해주면된다
+
+						  var num = $(this).attr('num'); //사진등록ajax를 하나로 통합하여 사용하기 위하여 각 등록에 num이라는 속성을 대입하여 코드를 줄였다.
+				    	  var imgId = '#' + $(this).closest('td').find('img').attr('id'); //closest는 parents와 기능이 비슷하나 차이점은 closest는 단하나만 가져오는것이라고 할 수 있다.
+				    	  																  //find는 자식요소중에서 찾는 기능이다.
+				    	  																  
 
 						  $.ajax( {
 						      url:'uploadExamplePhoto', // 응답을 받아 줄 경로, 경로는 현재 페이지에서의 상대경로 값을 가리킨다.
 						      type:'POST', // 요청 방식, get, post, put, del
-						      processData: false,
-						      contentType: false,
+						      processData: false, // 기본값은 true이다 하지만 기본값일때  key1=value1&key2=value2 이런식으로 전달되기에 false로 바꿔어  { key1 : 'value1', key2 : 'value2' }  이런식으로 전달해야 파일을 보낼 수 가 있다고한다
+						      contentType: false, // 이거는 false여야지 보내진단다
 						      data: formData, // 서버단으로 전송하는 데이터, 따라서, 객체가 들어간다. 속성명, 값
 						      dataType:'text', // 데이터타입, 돌아올 때 서버로부터 받는 값의 종류, 보통 둘 중 하나 1.text, 2.json
 						      success: function(data) {
-								  $(imgId).closest('td').find('form').css('visibility','hidden');
-								  $(imgId).closest('td').find('button').css('visibility','hidden');
-						    	  $(imgId).attr('src','http://localhost:8888/shop/resources/product/fixedPhoto/loading.gif');
-						    	  uploadExamplePhotoCheck(data,num);
+								  $(imgId).closest('td').find('div').css('visibility','hidden');//파일 전송시에 등록버튼 숨기기
+								  $(imgId).closest('td').find('button').css('visibility','hidden'); //파일 전송시에 삭제버튼 숨기기
+						    	  $(imgId).attr('src','http://localhost:8888/shop/resources/product/fixedPhoto/loading.gif'); //파일 전송시에 로딩화면으로 대체
+						    	  uploadExamplePhotoCheck(data,num); // 파일전송 후 서버에 등록이 되었는지 계속확인하기
 						      }, 
 						      error: function(error) {
 						        alert('error.status의 값 : ' + error.status);
@@ -441,26 +448,32 @@
 					  
 					  });  
 					  
+					   // 삭제버튼을 클릭할시에 발동
 					   $('.close').on('click', function(){
 						  var imgId = '#' + $(this).closest('td').find('img').attr('id');
 						  var src = $(imgId).attr('src');
 						  var fileboxNum = $(this).closest('td').find('.filebox').attr('num');
 						  var srcFull
 						  
+						  //필수등록(num =0)과 선택등록(num= 1~4)의 기본값사진의 구분을 위한 if절
 						  if(fileboxNum == '0'){
 							  srcFull ='http://localhost:8888/shop/resources/product/fixedPhoto/img_no_286x286.gif';
 						  }else{
 							  srcFull ='http://localhost:8888/shop/resources/product/fixedPhoto/img_no_137x137.gif';
 						  }
-						  examplePhotoDelete(src);
-						  $(imgId).attr('src',srcFull);
-						  $(this).closest('td').find('form').css('visibility','visible');
+						  
+						  examplePhotoDelete(src);// 삭제시에 서버에 저장된 사진 삭제함수
+						  $(imgId).attr('src',srcFull); // 다시 기본값 사진 대체
+						  $(this).closest('td').find('div').css('visibility','visible'); // 등록버튼 숨김해제
  
 					  }); 
 					  
 				  
 				  });
 		  		  
+		  		  
+				  //사진등록에서 사진이 서버에 전달되었는지 재귀함수로 계속확인하는 함수
+				  //data : 파일명, num : form위치찾기를 위한 자식의 속성인(num)
 		  		  function uploadExamplePhotoCheck(data,num) {
 					  $.ajax({
 			    		  url: 'uploadExamplePhotoCheck',
@@ -468,14 +481,15 @@
 			    	  	  data: {imgSrcCheck : data},
 			    	  	  dataType:'text',
 			    	  	  success: function(result) {
-			    	  		 if(result == '1'){
+			    	  		  
+			    	  		 if(result == '1'){ //서버에 전달된경우
 				    	  		 $('#' + $('div[num='+num+']').closest('td').find('img').attr('id')).attr('src',
 				    	  				 'http://localhost:8888/shop/resources/product/mainImages/'+data);
 				    	  		 
-								 $('div[num='+num+']').closest('td').find('button').css('visibility','visible');
+								 $('div[num='+num+']').closest('td').find('button').css('visibility','visible'); //단기버튼 숨김해제
 			    	  		  
 			    	  		  }else {
-			    	  			uploadExamplePhotoCheck(data,num);
+			    	  			uploadExamplePhotoCheck(data,num); //서버전달이 안된경우 다시 반복
  			    	  		  } 
 			    	  			
 
@@ -487,7 +501,9 @@
 					  
 				  }  
 		  		  
-		  		  function   examplePhotoDelete(src) {
+				  //서버에 등록된 사진 삭제 함수
+				  //src : 사진경로
+		  		  function examplePhotoDelete(src) {
 		  			 
 		  			  $.ajax({
 						  url : 'examplePhotoDelete',
@@ -520,12 +536,10 @@
 								style="position: absolute; top: 80px; right: 60px; ">   
 								  <span aria-hidden="true">&times;</span>   
 								</button> 
-								<form action=""  method="post">
 									<div class="filebox" num="0" style="position:absolute; width: 100px; top: 260px; left: 172px; ">  
 									  <label for="ex_file">필수등록</label>  
-									  <input type="file" id="ex_file">
+									  <input type="file" name="productFirstPhoto" id="ex_file">
 									</div>		
-								</form>  
 		  					</td>
 		  					<td style=" position:relative; width: 170px; height: 170px; border-bottom: none;"> 
 			  					<img id="subExamplePhoto1"src="http://localhost:8888/shop/resources/product/fixedPhoto/img_no_137x137.gif" style="border: 1px solid #A4A4A4; position:relative; width : 170px; height: 170px;"> 
@@ -533,12 +547,10 @@
 								style="position: absolute; top: 40px; right: 40px; ">   
 								  <span aria-hidden="true">&times;</span>   
 								</button> 
-								<form  action="" method="post">
 									<div class="filebox" num="1" style="position:absolute; width: 100px; top: 115px; left: 79px; ">  
 									  <label for="subEx_file1">1 선택등록</label>  
-									  <input type="file" id="subEx_file1">
+									  <input type="file" name="productSubPhoto1" id="subEx_file1">
 									</div>		
-								</form> 
 		  					</td>
 		  					<td style=" position:relative; width: 170px; height: 170px; border-bottom: none; "> 
 			  					<img id="subExamplePhoto2"src="http://localhost:8888/shop/resources/product/fixedPhoto/img_no_137x137.gif" style=" border: 1px solid #A4A4A4; position:relative; width : 170px; height: 170px;"> 
@@ -546,12 +558,10 @@
 								style="position: absolute; top: 40px; right: 40px;   ">   
 								  <span aria-hidden="true">&times;</span>   
 								</button>
-								<form id="subFile_form2" action="" method="post">
 									<div class="filebox" num="2"style="position:absolute; width: 100px; top: 115px; left: 79px;  ">
 									  <label for="subEx_file2">2 선택등록</label>  
-									  <input type="file" id="subEx_file2">
+									  <input type="file" name="productSubPhoto2" id="subEx_file2">
 									</div>		
-								</form> 
 		  					</td>
 		  				</tr>
 		  				<tr>
@@ -561,12 +571,10 @@
 								style="position: absolute;top: 40px; right: 40px;   ">   
 								  <span aria-hidden="true">&times;</span>   
 								</button>
-								<form id="subFile_form3" action="" method="post">
 									<div class="filebox"  num="3" style="position:absolute; width: 100px; top: 115px; left: 79px; ">
 									  <label for="subEx_file3">3 선택등록</label>  
-									  <input type="file" id="subEx_file3"> 
+									  <input type="file"name="productSubPhoto3" id="subEx_file3"> 
 									</div>		
-								</form> 
 		  					</td>
 		  					<td style=" position:relative; width: 170px; height: 170px; border-bottom: none; "> 
 			  					<img id="subExamplePhoto4"src="http://localhost:8888/shop/resources/product/fixedPhoto/img_no_137x137.gif" style="border: 1px solid #A4A4A4; position:relative; width : 170px; height: 170px;"> 
@@ -574,12 +582,10 @@
 								style="position: absolute; top: 40px; right: 40px;  ">   
 								  <span aria-hidden="true">&times;</span>   
 								</button>
-								<form id="file_form4" action="" method="post">
 									<div class="filebox"  num="4"style="position:absolute; width: 100px; top: 115px; left: 79px; ">
 									  <label for="subEx_file4">4 선택등록</label>  
-									  <input type="file" id="subEx_file4">
+									  <input type="file" name="productSubPhoto4" id="subEx_file4">
 									</div>		
-								</form> 
 		  					</td>
 		  				</tr>
 		  			</table>
@@ -589,13 +595,8 @@
 		  	<tr >
 		  		<td> 
 	  			<h5>Product Description</h5><br>   
-		  			<form action="insertSale" method="post">
-			                  <textarea class="form-control" id="p_content" name="test"></textarea>
-			                  <input type="submit" value="test">
-		            </form>                 
+			                  <textarea class="form-control" id="p_content" name="prodcutDescription"></textarea>
 		            <script type="text/javascript">
-		            
-		            
 		            //ckeditor 다이얼로그 관리 함수
 		            CKEDITOR.on('dialogDefinition', function (ev) {
 		    			var dialogName = ev.data.name;
@@ -630,7 +631,7 @@
 		            CKEDITOR.replace('p_content'
                                       	, {height: 500 
 		          	  					,filebrowserUploadUrl : "imageUpload.do"  // 이것을 잘이용해보자 업로드: 주소는 컨트롤 value로 따진                                            
-		          	  					,uiColor : '#2eca6a' 
+		          	  					,uiColor : '#2eca6a' //ckeditor UI 컬러
 		          	  					,toolbar : [ 
 			          	  					{ name: 'document', items: [ 'Source', '-', 'Preview', 'NewPage','-' ] },
 				          	  				{ name: 'clipboard', items: [  '-', 'Undo', 'Redo' ] }, 
@@ -650,10 +651,24 @@
 		            
 		            </script>
 		  		</td>
+		  	</tr>
+		  	<tr>
 		  		<td>
-		  		</td>		
+	  				<h5>Delivery Method</h5><br>
+		  			<select name="deliveryMethod">
+							<option value="0">무료(판매자 부담)</option>
+							<option value="1">착불(구매자 부담)</option>
+							<option value="3">직접배달</option>
+					</select>   
+		  		</td>
+		  	</tr>
+		  	<tr>
+		  		<td style=" border-bottom: none; text-align: center; padding-top: 100px;" >
+		  			<input class="btn btn-a" type="submit" value="물품등록">
+		  		</td>
 		  	</tr>
 		  </table>
+		  </form>
         	</div>
         </div>
       </div>

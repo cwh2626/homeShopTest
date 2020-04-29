@@ -25,7 +25,6 @@ public class MemberController {
 	public String signUpMain() {
 		return "member/signUp";
 	}
-	
 	@RequestMapping(value ="signUp", method = RequestMethod.POST)
 	public String signUp(Member member) {
 		logger.debug("Meber ==> {}", member);
