@@ -11,7 +11,7 @@
 	</page_setting>
 	<category_index>0</category_index>
 	<zoom>1.0</zoom>
-	<x>337</x>
+	<x>0</x>
 	<y>0</y>
 	<default_color>
 		<r>128</r>
@@ -135,7 +135,7 @@
 			</connections>
 			<display>false</display>
 			<creation_date>2020-04-30 13:17:03</creation_date>
-			<updated_date>2020-04-30 15:41:20</updated_date>
+			<updated_date>2020-05-04 21:11:33</updated_date>
 			<model_property>
 				<name>프로젝트명</name>
 				<value></value>
@@ -196,8 +196,8 @@
 			<args></args>
 			<char_semantics>false</char_semantics>
 			<description></description>
-			<logical_name>delivery_method</logical_name>
-			<physical_name>delivery_method</physical_name>
+			<logical_name>deliveryMethod</logical_name>
+			<physical_name>deliveryMethod</physical_name>
 			<type>decimal</type>
 		</word>
 		<word>
@@ -228,8 +228,8 @@
 			<args></args>
 			<char_semantics>false</char_semantics>
 			<description></description>
-			<logical_name>first_photo</logical_name>
-			<physical_name>first_photo</physical_name>
+			<logical_name>firstPhoto</logical_name>
+			<physical_name>firstPhoto</physical_name>
 			<type>varchar(n)</type>
 		</word>
 		<word>
@@ -308,8 +308,8 @@
 			<args></args>
 			<char_semantics>false</char_semantics>
 			<description></description>
-			<logical_name>postal_code&#x0A;</logical_name>
-			<physical_name>postal_code&#x0A;</physical_name>
+			<logical_name>postalCode&#x0A;</logical_name>
+			<physical_name>postalCode&#x0A;</physical_name>
 			<type>varchar(n)</type>
 		</word>
 		<word>
@@ -324,8 +324,8 @@
 			<args></args>
 			<char_semantics>false</char_semantics>
 			<description></description>
-			<logical_name>prodcut_table_seq</logical_name>
-			<physical_name>prodcut_table_seq</physical_name>
+			<logical_name>prodcutTableSeq</logical_name>
+			<physical_name>prodcutTableSeq</physical_name>
 			<type>decimal</type>
 		</word>
 		<word>
@@ -340,8 +340,8 @@
 			<args></args>
 			<char_semantics>false</char_semantics>
 			<description></description>
-			<logical_name>product_description</logical_name>
-			<physical_name>product_description</physical_name>
+			<logical_name>productDescription</logical_name>
+			<physical_name>productDescription</physical_name>
 			<type>varchar(n)</type>
 		</word>
 		<word>
@@ -356,8 +356,8 @@
 			<args></args>
 			<char_semantics>false</char_semantics>
 			<description></description>
-			<logical_name>product_name</logical_name>
-			<physical_name>product_name</physical_name>
+			<logical_name>productName</logical_name>
+			<physical_name>productName</physical_name>
 			<type>varchar(n)</type>
 		</word>
 		<word>
@@ -372,8 +372,8 @@
 			<args></args>
 			<char_semantics>false</char_semantics>
 			<description></description>
-			<logical_name>sub_photo1</logical_name>
-			<physical_name>sub_photo1</physical_name>
+			<logical_name>subPhoto1</logical_name>
+			<physical_name>subPhoto1</physical_name>
 			<type>varchar(n)</type>
 		</word>
 		<word>
@@ -388,8 +388,8 @@
 			<args></args>
 			<char_semantics>false</char_semantics>
 			<description></description>
-			<logical_name>sub_photo2</logical_name>
-			<physical_name>sub_photo2</physical_name>
+			<logical_name>subPhoto2</logical_name>
+			<physical_name>subPhoto2</physical_name>
 			<type>varchar(n)</type>
 		</word>
 		<word>
@@ -404,8 +404,8 @@
 			<args></args>
 			<char_semantics>false</char_semantics>
 			<description></description>
-			<logical_name>sub_photo3</logical_name>
-			<physical_name>sub_photo3</physical_name>
+			<logical_name>subPhoto3</logical_name>
+			<physical_name>subPhoto3</physical_name>
 			<type>varchar(n)</type>
 		</word>
 		<word>
@@ -420,8 +420,8 @@
 			<args></args>
 			<char_semantics>false</char_semantics>
 			<description></description>
-			<logical_name>sub_photo4</logical_name>
-			<physical_name>sub_photo4</physical_name>
+			<logical_name>subPhoto4</logical_name>
+			<physical_name>subPhoto4</physical_name>
 			<type>varchar(n)</type>
 		</word>
 	</dictionary>

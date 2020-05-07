@@ -6,11 +6,11 @@
 <mapper namespace="kr.com.shop.dao.MemberMapper">
 <!-- 회원정보입력 -->
 <insert id="insert" parameterType="Member">
-	insert into site_Member values (#{email} , #{password} , #{name} , #{phonenum} , #{nickname})
+	insert into Member values (#{email} , #{password} , #{name} , #{phonenum} , #{nickname}, #{address}, #{postalCode})
 </insert>
 
-<select id="login" parameterType="string" resultType="Member">
-	select * from site_Member where email = #{e}
+<select id="emailAllInformation" parameterType="string" resultType="Member">
+	select * from Member where email = #{e}
 </select>
 </mapper>
 

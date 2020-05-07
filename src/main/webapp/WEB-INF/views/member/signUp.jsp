@@ -36,6 +36,10 @@
     Author: BootstrapMade.com
     License: https://bootstrapmade.com/license/
   ======================================================= -->
+   <!-- ======== script ======== -->	 
+  <script type="text/javascript" src="../resources/jquery/jquery-3.4.1.min.js"></script>
+   
+  <!-- ======== style ========= -->
 <style type="text/css">
 td {
 	padding-top: 20px;
@@ -199,9 +203,121 @@ th{
     </div>
   </nav>
   <!--/ Nav End /-->
+   <script type="text/javascript">
+   var regExp = /^[0-9a-zA-Z]([-_\.]?[0-9a-zA-Z])*@[0-9a-zA-Z]([-_\.]?[0-9a-zA-Z])*\.[a-zA-Z]{2,3}$/i; //이메일 정규식
+   var verificationCode ; //인증번호
+   var emailCheckBoolean = false; //이메일체크
+   var generalSetInterval; //통합 타이머
    
+   $(document).ready(function () {
+	   
+ 		$('#emailCheck').on('click',function(){
+			var email = $('input[name=email').val();
+			 
+			if(regExp.test(email)){
+				$('#emailCheck').css('display','none');
+				signUpEmailCheck(email);
+				
+			}else{
+				alert('이메일 제대로 적어라잉')
+			}
+ 		});
+ 		
+ 		$('#emailCheckNumButton').on('click',function(){
+ 			var emailCheckNum = $('#emailCheckNum').val();
+ 			if(verificationCode == emailCheckNum){
+ 				emailCheckBoolean = true;
+ 				$('#emailCheck').html('사용가능');
+ 		 		$('#emailCheck').off('click');
+ 		 		$('#emailCheck').removeAttr('href'); 
+				$('#emailCheck').css('color','#2eca6a');
+				$('#emailCheck').css('display','block');
+  			  	$('#emailCheckNum').closest('div').css('display','none');
+
+ 			}else{
+ 				alert('인증번호가 틀립니다.')
+ 			}
+ 		});
+ 		
+ 		$('#emailCheckNumAgainButton').on('click',function(){
+			var email = $('input[name=email').val();
+			if(regExp.test(email)){
+				
+				clearInterval(generalSetInterval); //setInterval() 실행을 취소
+				signUpEmailCheck(email);
+			}else{
+				alert('이메일 제대로 적어라잉')
+			}
+ 			
+ 		});
+
+ 		
+ 		
+   });
+   
+   //자릿수 채우기 함수
+   function pad(n, width) {
+	   n = n + '';
+	   return n.length >= width ? n : new Array(width - n.length + 1).join('0') + n;
+   }
+   
+   function emailCheckTimer(time) {
+	  var time = time; //기준시간 작성
+	  var min //분
+	  var sec //초
+	  
+	  
+	  generalSetInterval = setInterval(function() {
+		  //parseInt() : 정수를 반환
+		  min = parseInt(time/60); //몫을 계산
+	  	  sec = time%60; //나머지를 계산
+	  	  $('#emailCheckNum').closest('div').find('span').html(min + " : " + pad(sec,2));
+	  	  time--;
+	  	  
+	  	  //타임아웃 시 
+	  	  if(time < 0 ){
+	  		  clearInterval(generalSetInterval); //setInterval() 실행을 취소
+		  	  $('#emailCheckNum').closest('div').find('span').css('color','red');
+	  		  verificationCode = null;
+	  		  
+	  	  }
+	  }, 1000);
+   }
+   
+   function signUpEmailCheck(email){
+	   $.ajax({
+	   		  url: 'signUpEmailCheck',
+	   	  	  type: 'POST', 
+	   	  	  data: {email : email},
+	   	  	  dataType:'text',
+	   	  	  success: function(result) {
+	   	  		  if(result == '1'){
+	   	  			  alert("이미 등록된 이메일입니다.")
+	  				  $('#emailCheck').css('display','block');
+	   	  			  
+	   	  		  }else{
+	   	  			  verificationCode = result;
+	   	  			  
+	   	  			  alert("전송완료")
+	   	  			  $('#emailCheckNum').closest('div').css('display','block');
+	   	  			  
+	   		  		  clearInterval(generalSetInterval); //setInterval() 실행을 취소
+	   	  			  emailCheckTimer(30);
+	   	  		  } 
+	   	  			
+	
+	   	  	  },
+				  error: function(error) {
+				        alert('error.status의 값 : ' + error.status);
+				  }					    	 
+	  		}); 
+   }
+  
+   
+   
+   </script>
   <!-- sing Up -->
- <form action="singUp" method="post">
+ <form action="user" method="post">
   <table class="form-a" style="  position: relative;
   top: 50%; 
   left: 50%;
@@ -212,40 +328,48 @@ th{
   	<tr>
   		<th style ="text-align: center;">회원 가입</th>
   	</tr>
-  	<tr>
-  		<td>
-  			<label for="Type">Email</label>
+  	<tr> 
+  		<td>  
+  			<h6>Email</h6> 
             <input type="text" name="email" class="form-control form-control-lg form-control-a" placeholder="이메일을 입력하세요">
+            <a href="javascript:void(0);" id="emailCheck">인증번호 전송</a>
+            <div style="display: none; margin-top: 10px;">   
+	            <input type="text" id="emailCheckNum" placeholder="안중번호를 입력하세요" style=" width: 250px; height: 34px">   
+           		<span style="position:absolute; margin-left: -50px; margin-top: 4.5px;"></span> 
+				<input type="button" id="emailCheckNumButton"class="btn btn-b-n" value="확인">
+				<input type="button" id="emailCheckNumAgainButton"class="btn btn-b-n" value="재전송"> 
+            </div>
+			<p style="display: none;">이미 등록된 이메일 입니다.</p>	  		 
   		</td>
   	</tr>
   	<tr>
   		<td>
-  			<label for="Type">Name</label>
+  			<h6>Name</h6>
             <input type="text" name="name" class="form-control form-control-lg form-control-a" placeholder="이름을 입력하세요">
   		</td>
   	</tr>
   	<tr>
   		<td>
-  			<label for="Type">NicName</label>
+  			<h6>NicName</h6>
             <input type="text" name="nickname" class="form-control form-control-lg form-control-a" placeholder="사용할 닉네임을 입력하세요">
   		</td>
   	</tr>
   	
   	<tr>
   		<td>
-  			<label for="Type">Phone Number</label>
+  			<h6>Phone Number</h6>
             <input type="text" name="phonenum" class="form-control form-control-lg form-control-a" placeholder="전화번호를 입력하세요">
   		</td>
   	</tr>
   	<tr>
   		<td>
-  			<label for="Type">Password</label>
+  			<h6>Password</h6>
             <input type="password" name="password" class="form-control form-control-lg form-control-a" placeholder="비밀번호를 입력하세요">
   		</td>
   	</tr>
   	<tr>
   		<td>
-  			<label for="Type">Password Check</label>
+  			<h6>Password Check</h6>
             <input type="password" class="form-control form-control-lg form-control-a" placeholder="비밀번호를 다시 입력하세요">
   		</td>
   	</tr>
