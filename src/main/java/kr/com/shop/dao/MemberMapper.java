@@ -6,7 +6,8 @@ public interface MemberMapper {
 	public int insert(Member member);
 	
 	public Member emailAllInformation(String email);
-
+	
+	public Member nicknameAllInformation(String nickname);
 
 
 }

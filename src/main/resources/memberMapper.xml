@@ -12,5 +12,9 @@
 <select id="emailAllInformation" parameterType="string" resultType="Member">
 	select * from Member where email = #{e}
 </select>
+
+<select id="nicknameAllInformation" parameterType="string" resultType="Member">
+	select * from Member where nickname = #{n}
+</select>
 </mapper>
 

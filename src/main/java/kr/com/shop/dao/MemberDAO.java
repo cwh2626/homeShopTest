@@ -18,11 +18,19 @@ public class MemberDAO {
 		
 		return result;
 	}
-	
+
 	public Member emailAllInformation(String email) {
 		MemberMapper mapper = sqlSession.getMapper(MemberMapper.class);
 		
 		Member result = mapper.emailAllInformation(email);
+		
+		return result;
+	}
+	
+	public Member nicknameAllInformation(String nickname) {
+		MemberMapper mapper = sqlSession.getMapper(MemberMapper.class);
+		
+		Member result = mapper.nicknameAllInformation(nickname);
 		
 		return result;
 	}

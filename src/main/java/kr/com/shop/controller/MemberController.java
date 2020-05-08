@@ -7,10 +7,10 @@ import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Controller;
-import org.springframework.stereotype.Repository;
 import org.springframework.ui.Model;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestMethod;
+import org.springframework.web.bind.annotation.RequestParam;
 import org.springframework.web.bind.annotation.ResponseBody;
 
 import kr.com.shop.dao.MemberDAO;
@@ -45,21 +45,22 @@ public class MemberController {
 		return "member/signUp";
 	}
 	@RequestMapping(value ="signUp", method = RequestMethod.POST)
-	public String signUp(Member member) {
+	public String signUp(Member member, @RequestParam(value="detailAddress", defaultValue=" ") String detailAddress) {
 		//email부분을 정리 후 다시수정
 		logger.debug("Meber ==> {}", member);
-		int result = mdao.insert(member);
-		
-		if(result != 0) {
-			return "redirect:/member/loginMain";
-		}
+		logger.debug("detailAddress ==> {}", detailAddress);
+//		int result = mdao.insert(member);
+//		 
+//		if(result != 0) {
+//			return "redirect:/member/loginMain";
+//		}
 		
 		return "member/signUp";
 	}
 	
 	@ResponseBody
 	@RequestMapping(value ="signUpEmailCheck", method = RequestMethod.POST)
-	public String signUpEmailCheck(String email, Model model, HttpServletRequest request) {
+	public String signUpEmailCheck(String email) {
 		logger.debug("email ==> {}", email);
 		Member result = mdao.emailAllInformation(email);
 		if(result != null) {
@@ -74,6 +75,20 @@ public class MemberController {
 		}
 	}
 	
+	@ResponseBody
+	@RequestMapping(value ="signUpNicknameCheck", method = RequestMethod.POST)
+	public String signUpNicknameCheck(String nickname) {
+		logger.debug("nickname ==> {}", nickname);
+		Member result = mdao.nicknameAllInformation(nickname);
+		if(result != null) {
+			
+			return "1";
+			
+		}else {
+			
+			return "0";
+		}
+	}
  // 회원가입 컨트롤러
 	@ResponseBody
 	@RequestMapping(value = "user", method = RequestMethod.POST)
