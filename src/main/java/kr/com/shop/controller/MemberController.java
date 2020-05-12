@@ -1,6 +1,8 @@
 package kr.com.shop.controller;
 
+import javax.servlet.http.Cookie;
 import javax.servlet.http.HttpServletRequest;
+import javax.servlet.http.HttpServletResponse;
 import javax.servlet.http.HttpSession;
 
 import org.slf4j.Logger;
@@ -8,6 +10,7 @@ import org.slf4j.LoggerFactory;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
+import org.springframework.web.bind.annotation.CookieValue;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestMethod;
 import org.springframework.web.bind.annotation.RequestParam;
@@ -41,19 +44,29 @@ public class MemberController {
 	private static final Logger logger = LoggerFactory.getLogger(MemberController.class);
 	
 	@RequestMapping(value ="signUpMain", method = RequestMethod.GET)
-	public String signUpMain() {
+	public String signUpMain(HttpSession session) {
+		if(session.getAttribute("login") != null) {
+			return "redirect:/";
+
+		}
 		return "member/signUp";
 	}
 	@RequestMapping(value ="signUp", method = RequestMethod.POST)
-	public String signUp(Member member, @RequestParam(value="detailAddress", defaultValue=" ") String detailAddress) {
-		//email부분을 정리 후 다시수정
+	public String signUp(Member member, @RequestParam(value="detailAddress", defaultValue="") String detailAddress) {
+	
+		// 상세주소 붙이기
+		if(!detailAddress.equals("")) member.setAddress(member.getAddress()+" , "+detailAddress);
+		
 		logger.debug("Meber ==> {}", member);
 		logger.debug("detailAddress ==> {}", detailAddress);
-//		int result = mdao.insert(member);
-//		 
-//		if(result != 0) {
-//			return "redirect:/member/loginMain";
-//		}
+		logger.debug("newAddress==> {}", member.getAddress());
+		
+		int result = mdao.insert(member);
+		 
+		// 음 회원등록 화면을 만들어볼까? 
+		if(result != 0) {
+			return "redirect:/member/loginMain";
+		}
 		
 		return "member/signUp";
 	}
@@ -111,21 +124,32 @@ public class MemberController {
 
 	
 	@RequestMapping(value ="loginMain", method = RequestMethod.GET)
-	public String loginMain() {
-
+	public String loginMain(HttpSession session) {
+		
+		if(session.getAttribute("login") != null ) {
+			return "redirect:/";
+			
+		}
 		return "member/login";
 	}
 	
 	@RequestMapping(value ="login", method = RequestMethod.POST)
-	public String login(Member member,HttpSession session) {
+	public String login(Member member,HttpSession session,String autologinCheck, HttpServletResponse response) {
 		logger.debug("Meber ==> {}", member);
 		Member result = mdao.emailAllInformation(member.getEmail());
 		
 		if(result != null && result.getPassword().equals(member.getPassword())) {
+			
 			session.setAttribute("login", result);
 			session.setAttribute("loginNickname", result.getNickname());
 			session.setAttribute("loginName", result.getName());
 			session.setAttribute("loginEmail", result.getEmail());
+			if(autologinCheck != null) {
+				Cookie myCookie = new Cookie("cookieEmail", result.getEmail());
+			    myCookie.setMaxAge(60*60*24*30); // 수명설정(초단위)
+			    myCookie.setPath("/"); // 모든 경로에서 접근 가능 하도록 설정
+			    response.addCookie(myCookie);
+			}
 		}else {
 			return "member/login";
 		}
@@ -133,7 +157,11 @@ public class MemberController {
 	}
 	
 	@RequestMapping(value = "logout", method = RequestMethod.GET)
-	public String logout(HttpSession session) {
+	public String logout(HttpSession session, HttpServletResponse response) {
+		Cookie myCookie = new Cookie("cookieEmail", null);
+	    myCookie.setMaxAge(0); // 수명설정(초단위)
+	    myCookie.setPath("/"); // 모든 경로에서 접근 가능 하도록 설정
+	    response.addCookie(myCookie);
 		session.invalidate();
 		return "redirect:/";
 	}

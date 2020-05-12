@@ -227,7 +227,10 @@ th{
   	</tr>
   	<tr>
   		<td>
-  			<div class="col-md-12" style ="text-align: center;">
+  			<div> 
+  			<input type="checkbox" value="1" name="autologinCheck">&nbsp;&nbsp;<strong>자동로그인</strong>   
+	  		</div> 
+  			<div class="col-md-12" style ="text-align: center; ">
             <button type="submit" class="btn btn-b">login</button>
           	</div>
   		</td>

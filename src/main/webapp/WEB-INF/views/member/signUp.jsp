@@ -291,7 +291,7 @@ th{
       		// 닉네임 정규식
       		// [\w]는 [A-Za-z0-9_] 이다
       		// [\W]는 \w를 제외한 특수문자들이다.
-      		var nicknameRegExp = /^[\w\Wㄱ-ㅎㅏ-ㅣ가-힣]{2,10}$/; 
+      		var nicknameRegExp = /^[\wㄱ-ㅎㅏ-ㅣ가-힣]{2,10}$/;  
       		
 
       		if(nicknameRegExp.test(nickname)){
@@ -462,6 +462,7 @@ th{
 		//var mbrId = $("#mbrId").val();   // id 값 입력
 
 		var mbrPwd = pwd;  // pw 입력
+		
 
 		var check1 = /^(?=.*[a-zA-Z])(?=.*[0-9]).{8,12}$/.test(mbrPwd);   //영문,숫자
 
@@ -469,7 +470,9 @@ th{
 
 		var check3 = /^(?=.*[^a-zA-Z0-9])(?=.*[0-9]).{8,12}$/.test(mbrPwd);  //특수문자, 숫자
 
-		if(!(check1||check2||check3)){
+	    var check4 = /^.*(?=^.{8,12}$)(?=.*\d)(?=.*[a-zA-Z])(?=.*[!@#$%^&+=]).*$/.test(mbrPwd); //특수문자 / 문자 / 숫자 포함 형태의 8~12자		 
+		
+	    if(!(check4)){
 			//alert("사용할 수 없은 조합입니다.\n패스워드 설정안내를 확인해 주세요.")
 	
 			return "1";
@@ -591,7 +594,7 @@ th{
             <input type="password" name="password" id="password" class="form-control form-control-lg form-control-a" placeholder="비밀번호를 입력하세요">
       		<span style="position: absolute; width:80px; margin-top : -40px; right: 0px; "></span>         
   			<pre style="color: #A4A4A4;">
-* 8자~12자리의 영문(대소문자),숫자,특수문자 중 2종류 이상을 조합하여 사용할 수 있습니다.
+* 8자~12자리의 영문(대소문자),숫자,특수문자를 하나이상 넣어서 만들어주세요.
 * 동일한 숫자 또는 문자를 3번이상 연속으로 사용할 수 없습니다.</pre>    
   		</td> 
   	</tr>
