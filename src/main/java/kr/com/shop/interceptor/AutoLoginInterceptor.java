@@ -56,10 +56,7 @@ public class AutoLoginInterceptor extends HandlerInterceptorAdapter {
 		    	}
 		    }
 		    
-			return true;
 		}		
-	    
-		
 		
 		return super.preHandle(request, response, handler); //부모클래스의 메소드를 실행하여 반환해 오는것이다 // boolean 형 반환
 	}

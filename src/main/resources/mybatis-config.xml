@@ -5,8 +5,10 @@
 <configuration>
 	<typeAliases>
 		<typeAlias type="kr.com.shop.vo.Member" alias="Member" />
+		<typeAlias type="kr.com.shop.vo.Product" alias="Product" />
 	</typeAliases>
 	<mappers>
 		<mapper resource="memberMapper.xml" />
+		<mapper resource="productMapper.xml" />
 	</mappers>
 </configuration>    

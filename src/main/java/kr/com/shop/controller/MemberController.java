@@ -43,14 +43,28 @@ public class MemberController {
 
 	private static final Logger logger = LoggerFactory.getLogger(MemberController.class);
 	
+	/**
+	 * 회원가입 페이지로 이동
+	 * @param session 로그인 확인용
+	 * @return
+	 */
 	@RequestMapping(value ="signUpMain", method = RequestMethod.GET)
 	public String signUpMain(HttpSession session) {
+		
+		// 로그인되어있는 상태이면 홈으로 이동
 		if(session.getAttribute("login") != null) {
 			return "redirect:/";
 
 		}
 		return "member/signUp";
 	}
+	
+	/**
+	 * 회원등록 컨트롤러
+	 * @param member 넘어온 회원 데이터
+	 * @param detailAddress 상세주소 
+	 * @return
+	 */
 	@RequestMapping(value ="signUp", method = RequestMethod.POST)
 	public String signUp(Member member, @RequestParam(value="detailAddress", defaultValue="") String detailAddress) {
 	
@@ -61,6 +75,7 @@ public class MemberController {
 		logger.debug("detailAddress ==> {}", detailAddress);
 		logger.debug("newAddress==> {}", member.getAddress());
 		
+		// 회원등록 확인 
 		int result = mdao.insert(member);
 		 
 		// 음 회원등록 화면을 만들어볼까? 
@@ -71,16 +86,26 @@ public class MemberController {
 		return "member/signUp";
 	}
 	
+	/**
+	 * 이메일 인증체크 함수 
+	 * @param email 체크할 이메일
+	 * @return
+	 */
 	@ResponseBody
 	@RequestMapping(value ="signUpEmailCheck", method = RequestMethod.POST)
 	public String signUpEmailCheck(String email) {
 		logger.debug("email ==> {}", email);
+		
+		// 이메일 존재유무 확인
 		Member result = mdao.emailAllInformation(email);
-		if(result != null) {
+		
+		// 존재하면 등록된 메일이므로 등록불가를 뜻하는 1를 반환
+		if(result != null) { 
 			return "1";
 			
 		}else {
 			
+			// 존재하지 않으면 등록가능한 메일이므로 바로 해당메일로 인증번호를 보내고 인증번호값을 반환
 			String key = mailsender.mailSendWithUserKey(email);
 			
 			return key;
@@ -102,30 +127,17 @@ public class MemberController {
 			return "0";
 		}
 	}
- // 회원가입 컨트롤러
-	@ResponseBody
-	@RequestMapping(value = "user", method = RequestMethod.POST)
-	public String userRegPass(Member userVO, Model model, HttpServletRequest request) {
-		logger.debug("들어왔다");
-		// 암호 확인
-		//System.out.println("첫번째:" + userVO.getPassword());
-		
-		// 비밀번호 암호화
-		//String encryPassword = UserSha256.encrypt(userVO.getPassword());
-		//userVO.setPassword(encryPassword);
-		
-		//System.out.println("두번째:" + userVO.getPassword());
-		// 회원가입 메서드
-		//reg_service.userReg_service(userVO);
-		// 인증 메일 보내기 메서드
-		logger.debug("여기가 문제인가");
-		return "redirect:/";
-	}
-
 	
+
+	/**
+	 * 로그인 메인화면
+	 * @param session 로그인되었는지 확인 세션
+	 * @return
+	 */
 	@RequestMapping(value ="loginMain", method = RequestMethod.GET)
 	public String loginMain(HttpSession session) {
 		
+		// 로그인이 되었다면 홈으로 리다이렉트
 		if(session.getAttribute("login") != null ) {
 			return "redirect:/";
 			
@@ -133,35 +145,63 @@ public class MemberController {
 		return "member/login";
 	}
 	
+	
+	/**
+	 * 로그인 함수
+	 * @param member 회원으로부터 이메일과 비밀번호를 받음
+	 * @param session 로그인 성공시 저장용 세션
+	 * @param autologinCheck 자동로그인 
+	 * @param response 쿠키용 
+	 * @return
+	 */
 	@RequestMapping(value ="login", method = RequestMethod.POST)
-	public String login(Member member,HttpSession session,String autologinCheck, HttpServletResponse response) {
+	public String login(Member member,HttpSession session,String autologinCheck, HttpServletResponse response, Model model) {
 		logger.debug("Meber ==> {}", member);
+		
+		// 받아온 이메일로 회원데이터 가져옮
 		Member result = mdao.emailAllInformation(member.getEmail());
 		
+		// 가져온 데이터의 비밀번호와 회원이 입력한 비밀번호를 대조
 		if(result != null && result.getPassword().equals(member.getPassword())) {
 			
+			// true면 로그인 세션에 저장
 			session.setAttribute("login", result);
 			session.setAttribute("loginNickname", result.getNickname());
 			session.setAttribute("loginName", result.getName());
 			session.setAttribute("loginEmail", result.getEmail());
+			
+			// 자동로그인 true면 쿠키실행
 			if(autologinCheck != null) {
+				
+				// 쿠키값은 해당회원의 이메일을 저장
 				Cookie myCookie = new Cookie("cookieEmail", result.getEmail());
-			    myCookie.setMaxAge(60*60*24*30); // 수명설정(초단위)
+			    myCookie.setMaxAge(60*60*24*30); // 수명설정(초단위) 30일
 			    myCookie.setPath("/"); // 모든 경로에서 접근 가능 하도록 설정
 			    response.addCookie(myCookie);
 			}
 		}else {
+			model.addAttribute("loginMiss", "1");
 			return "member/login";
 		}
 		return "redirect:/";
 	}
 	
+	/**
+	 * 로그아웃 함수
+	 * @param session 제거용 세션
+	 * @param response 쿠키 제거용
+	 * @return
+	 */
 	@RequestMapping(value = "logout", method = RequestMethod.GET)
 	public String logout(HttpSession session, HttpServletResponse response) {
+		
+		// 쿠키는 따로 제거 메서드가 없기에 똑같은 이름으로 만들어서 생명주기를 0으로 해주고 그것을 회원에게 다시 덮여씌어서 저장하므로 없앰
 		Cookie myCookie = new Cookie("cookieEmail", null);
 	    myCookie.setMaxAge(0); // 수명설정(초단위)
 	    myCookie.setPath("/"); // 모든 경로에서 접근 가능 하도록 설정
 	    response.addCookie(myCookie);
+	    
+	    // 모든 세션 제거
 		session.invalidate();
 		return "redirect:/";
 	}

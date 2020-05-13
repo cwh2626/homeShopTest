@@ -595,7 +595,7 @@
 		  	<tr >
 		  		<td> 
 	  			<h5>Product Description</h5><br>   
-			                  <textarea class="form-control" id="p_content" name="prodcutDescription"></textarea>
+			                  <textarea class="form-control" id="p_content" name="productDescription"></textarea>
 		            <script type="text/javascript">
 		            //ckeditor 다이얼로그 관리 함수
 		            CKEDITOR.on('dialogDefinition', function (ev) {

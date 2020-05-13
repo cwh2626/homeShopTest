@@ -15,7 +15,10 @@ import kr.com.shop.vo.Member;
  */
 public class LoginInterceptor extends HandlerInterceptorAdapter {
 	private static final Logger logger = LoggerFactory.getLogger(LoginInterceptor.class);
+	
+	//request -> preHandle -> controller -> postHandle -> afterCompletion -> view 실행순서
 
+	
 	//콘트롤러의 메서드 실행 전에 처리
 	//상속은 범위 는 public은 그윗단계로 바꿔도됨 매게변수 도 똑같이 이름도 똑같이  예외는 슈퍼의 밑에 단계로 바꾸어되됨
 	@Override

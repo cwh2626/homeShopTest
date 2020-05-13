@@ -12,9 +12,11 @@ import javax.servlet.ServletException;
 import javax.servlet.ServletOutputStream;
 import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
+import javax.servlet.http.HttpSession;
 
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
+import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Controller;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestMethod;
@@ -23,7 +25,9 @@ import org.springframework.web.bind.annotation.ResponseBody;
 import org.springframework.web.multipart.MultipartFile;
 import org.springframework.web.multipart.MultipartHttpServletRequest;
 
+import kr.com.shop.dao.ProductDAO;
 import kr.com.shop.util.FileService;
+import kr.com.shop.vo.Member;
 import kr.com.shop.vo.Product;
 
 
@@ -31,10 +35,14 @@ import kr.com.shop.vo.Product;
 @RequestMapping("product")
 public class ProductController {
 	
+	@Autowired
+	ProductDAO pdao;
+	
 	//주의할점 윈도우의 경우 절대경로를 지정시에 C,D드라이브가 있어서 그냥 복붙하면 되지만 
 	//맥의 경우는 전체경로 중 /Users부터 시작으로 한다 주의!!!
 	final String fileDir = "/Users/jounghui/Desktop/springTestTest/homeShopTest/src/main/webapp/resources/ckeditor/images/"; //ckeditor의 이미지 저장위
 	final String exampleFileDir = "/Users/jounghui/Desktop/springTestTest/homeShopTest/src/main/webapp/resources/product/mainImages/"; //ckeditor의 이미지 저장위
+	final String memberFileDir = "/Users/jounghui/Desktop/springTestTest/homeShopTest/src/main/webapp/resources/member/";
 
 	
 	private static final Logger logger = LoggerFactory.getLogger(ProductController.class);
@@ -47,13 +55,61 @@ public class ProductController {
 	@RequestMapping(value ="insertSaleWrite", method = RequestMethod.POST)
 	public String insertSaleWrite(Product product, MultipartFile productFirstPhoto, MultipartFile productSubPhoto1
 												, MultipartFile productSubPhoto2 , MultipartFile productSubPhoto3
-												, MultipartFile productSubPhoto4) { 
+												, MultipartFile productSubPhoto4, HttpSession session) { 
 		logger.debug(product.toString());
 		logger.debug("첫번째 파일 : {}, 두번쨰 파일 : {}, 세번쨰 파일 : {}, 네번쨰 파일 : {}, 다섯번째 파일 : {}"
 				,productFirstPhoto.getOriginalFilename(), productSubPhoto1.getOriginalFilename()
 				,productSubPhoto2.getOriginalFilename(), productSubPhoto3.getOriginalFilename()
-				,productSubPhoto4.getOriginalFilename()); 
-		return "redirect:/";
+				,productSubPhoto4.getOriginalFilename());
+		
+		Member member = (Member)session.getAttribute("login");
+		String savedfile = null;
+		String savedTxtFile = null;
+		String memberPhotoFileDir = memberFileDir + member.getEmail() +"/photo";
+		String memberDescriptionFileDir = memberFileDir + member.getEmail() +"/description";
+		
+		product.setEmail(member.getEmail());
+		
+		savedTxtFile = FileService.saveTxtFile(product.getProductDescription(), memberDescriptionFileDir);
+		
+		if(savedTxtFile != null) {
+			product.setProductDescription(savedTxtFile);
+		}
+		
+		if(!productFirstPhoto.isEmpty()) {
+			savedfile =FileService.saveFile(productFirstPhoto,memberPhotoFileDir);
+			product.setProductFirstPhotoName(savedfile);
+		}
+		
+		if(!productSubPhoto1.isEmpty()) {
+			savedfile =FileService.saveFile(productSubPhoto1,memberPhotoFileDir);
+			product.setProductSubPhoto1Name(savedfile);
+		}
+		
+		if(!productSubPhoto2.isEmpty()) {
+			savedfile =FileService.saveFile(productSubPhoto2,memberPhotoFileDir);
+			product.setProductSubPhoto2Name(savedfile);
+		}
+		
+		if(!productSubPhoto3.isEmpty()) {
+			savedfile =FileService.saveFile(productSubPhoto3,memberPhotoFileDir);
+			product.setProductSubPhoto3Name(savedfile);
+		}
+		
+		if(!productSubPhoto4.isEmpty()) {
+			savedfile =FileService.saveFile(productSubPhoto4,memberPhotoFileDir);
+			product.setProductSubPhoto4Name(savedfile);
+		}
+
+		int result = pdao.insertSaleWrite(product);
+		
+		if(result ==1) {
+			return "redirect:/";
+			
+		}else {
+			return "redirect:/product/insertSaleMain";
+
+		}
 	}
 	
 	/**
@@ -173,7 +229,7 @@ public class ProductController {
     }
     
 	@ResponseBody
-	@RequestMapping(value = "/uploadExamplePhoto", method = RequestMethod.POST,
+	@RequestMapping(value = "uploadExamplePhoto", method = RequestMethod.POST,
 			produces = "application/json;charset=UTF-8") 
 	public String uploadExamplePhoto(MultipartFile imgSrc) {
 		
@@ -193,7 +249,7 @@ public class ProductController {
 	}
 	
 	@ResponseBody
-	@RequestMapping(value = "/uploadExamplePhotoCheck", method = RequestMethod.POST,
+	@RequestMapping(value = "uploadExamplePhotoCheck", method = RequestMethod.POST,
 			produces = "application/json;charset=UTF-8") 
 	public String uploadExamplePhotoCheck(String imgSrcCheck) {
 		String exampleUrl = "http://localhost:8888/shop/resources/product/mainImages/"; //ckeditor의 이미지 저장위
@@ -230,7 +286,7 @@ public class ProductController {
 	}
 	
 	@ResponseBody
-	@RequestMapping(value = "/examplePhotoDelete", method = RequestMethod.POST,
+	@RequestMapping(value = "examplePhotoDelete", method = RequestMethod.POST,
 	produces = "application/json;charset=UTF-8") 
 	public String examplePhotoDelete(String imgSrc) {
 		 int lastIndex = imgSrc.lastIndexOf("/");
