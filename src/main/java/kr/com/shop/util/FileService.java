@@ -158,4 +158,24 @@ public class FileService {
 		
 		return result;
 	}
+	
+	/**
+	 * 해당디렉터리의 경로를 받아서 해당 폴더의 하위파일들을 전부 삭제
+	 * @param fullpath 전부 삭제할 폴더위치
+	 * @return 삭제 여부
+	 */
+	public static void deleteFileList(String fullpath) {
+		//파일 삭제 여부를 리턴할 변수
+		
+		//전달된 전체 경로로 File객체 생성
+		File delFile = new File(fullpath);
+		
+		File[] fileList = delFile.listFiles();
+		
+		for(int i = 0 ; i < fileList.length; i++) {
+			fileList[i].delete();
+			
+		}
+		
+	}
 }

@@ -13,5 +13,14 @@
 									, jdbcType=VARCHAR},#{productDescription},#{deliveryMethod})
 </insert>
 
+<select id="getTotal" parameterType="String" resultType="Int">
+ select count(*) from Product_TB
+</select>
+
+<select id="getProductList" parameterType="String" resultType="Product">
+select * from Product_TB
+</select>
+
+
 </mapper>
 

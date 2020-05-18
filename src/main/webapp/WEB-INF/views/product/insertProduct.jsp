@@ -223,8 +223,8 @@
 			            <a class="dropdown-item" href="property-single.html">Property Single</a>
 			            <a class="dropdown-item" href="blog-single.html">Blog Single</a>
 			            <a class="dropdown-item" href="agents-grid.html">Agents Grid</a>
-			            <a class="dropdown-item" href="product/insertSaleMain">판매</a>
-			         </div>
+			            <a class="dropdown-item" href="insertSaleMain">판매</a>
+			         </div> 
 		    		</div>
 	       		</td>
 	       		<td style="padding-left: 10px; padding-right: 10px">
@@ -291,8 +291,8 @@
 			            <a class="dropdown-item" href="property-single.html">Property Single</a>
 			            <a class="dropdown-item" href="blog-single.html">Blog Single</a>
 			            <a class="dropdown-item" href="agents-grid.html">Agents Grid</a>
-			            <a class="dropdown-item" href="product/insertSaleMain">판매</a>
-			         </div>
+			            <a class="dropdown-item" href="insertSaleMain">판매</a>
+			         </div> 
 		    		</div>
 	       		</td>
 	       		<td style="padding-left: 10px; padding-right: 10px">
@@ -341,14 +341,46 @@
         </div>
       </div>
     </section><!-- End Intro Single-->
- 
-    
+
+  <script type="text/javascript">
+  function submitCheck() {
+  	var productName = document.getElementById('productName');
+  	var productPrice = document.getElementById('productPrice');
+  	var mainPhoto = document.getElementById('examplePhoto').getAttribute('src');
+  	var examplePhoto = 'http://localhost:8888/shop/resources/product/fixedPhoto/img_no_286x286.gif';
+  	var regex= /^[0-9]+$/; //숫자만 정규식
+
+	  
+  	if(productName.value == ''){ 
+  		alert('제품이름을 확인해주세요.');
+  		   
+  		return false 
+  	}
+  	  
+  	if(!regex.test(productPrice.value)){ 
+  		alert('가격을 확인해주세요.');
+  		 
+  		return false
+  	} 
+	if(examplePhoto == mainPhoto){
+		alert('대표사진을 등록해주세요.');
+		
+		return false
+	} 
+	 
+  	return true
+  	
+	  
+  }
+  
+  </script>
+
   <!--/ textarea start /-->
     <section class="section-about">
       <div class="container">
         <div class="row">
         	<div class="col-md-12">
-			<form action="insertSaleWrite"  method="post" enctype="multipart/form-data">
+			<form action="insertSaleWrite"  method="post" onsubmit="return submitCheck()" enctype="multipart/form-data">
         	<table class="productMainView form-a" style="
 		  			width : 100%;
 		  		">
@@ -381,7 +413,7 @@
 		  	<tr>
 		  		<td>
 					<h5>Product name</h5><br>  
-            		<input type="text" name="productName" style="width : 600px;" class="form-control form-control-lg form-control-a" placeholder="상품명을 입력하세요">
+            		<input type="text" name="productName" id="productName" style="width : 600px;" maxlength="50"  class="form-control form-control-lg form-control-a" placeholder="상품명을 입력하세요">
 					<pre style="color: #A4A4A4;">자기소비 목적으로 해외에서 직구한 상품을 온라인 등을 통해 되파는 경우,
 관세법 위반으로 형사처벌 대상이 되오니 유의해주시기 바랍니다.</pre>
 		  		</td>
@@ -389,7 +421,7 @@
 		  	<tr> 
 		  		<td>  
 		  			<h5>Price</h5><br>
-            		<input type="text" name="productPrice" style="width : 400px; float : left;" class="form-control form-control-lg form-control-a" placeholder="가격을 입력하세요">
+            		<input type="text" name="productPrice" id="productPrice"style="width : 400px; float : left;" class="form-control form-control-lg form-control-a" placeholder="가격을 입력하세요">
             		<div style="float:left; width: 50px; font-size: x-large; margin-top: 8px; padding-left: 10px; color: #A4A4A4; ">원</div>   
 		  		</td> 
 		  	</tr>
@@ -484,7 +516,7 @@
 			    	  		  
 			    	  		 if(result == '1'){ //서버에 전달된경우
 				    	  		 $('#' + $('div[num='+num+']').closest('td').find('img').attr('id')).attr('src',
-				    	  				 'http://localhost:8888/shop/resources/product/mainImages/'+data);
+				    	  				 'http://localhost:8888/shop/resources/member/'+data);
 				    	  		 
 								 $('div[num='+num+']').closest('td').find('button').css('visibility','visible'); //단기버튼 숨김해제
 			    	  		  
@@ -855,4 +887,5 @@
   
   <!-- 여러가지 -->
 </body>
+
 </html>
