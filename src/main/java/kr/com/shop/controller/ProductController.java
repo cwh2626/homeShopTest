@@ -47,8 +47,8 @@ public class ProductController {
 	final String memberFileDir = "/Users/jounghui/Desktop/springTestTest/homeShopTest/src/main/webapp/resources/member/";
 
 	//페이지 기준 갯수
-	static final int countPerPage = 3;
-	static final int pagePerGroup = 5;
+	static final int countPerPage = 6; 
+	static final int pagePerGroup = 3;
 	
 	private static final Logger logger = LoggerFactory.getLogger(ProductController.class);
 	
@@ -74,6 +74,11 @@ public class ProductController {
 		//bool= true;
 
 		return "product/allListProduct";
+	}
+	
+	@RequestMapping(value ="inpoProduct", method = RequestMethod.GET)
+	public String inpoProduct() {  
+		return "product/inpoProduct";
 	}
 	
 	@RequestMapping(value ="insertSaleMain", method = RequestMethod.GET)

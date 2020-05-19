@@ -257,15 +257,7 @@
     </div>
   </nav>
   <!--/ Nav End /-->
-  
-  <script type="text/javascript">
-  $(document).ready(function () {
-  	
-  });
-  
-  </script>
-  
-   <main id="main">
+  <main id="main">
 
     <!-- ======= Intro Single ======= -->
     <section class="intro-single">
@@ -273,18 +265,21 @@
         <div class="row">
           <div class="col-md-12 col-lg-8">
             <div class="title-single-box">
-              <h1 class="title-single">상품</h1>
-              <span class="color-text-a">상품</span>
+              <h1 class="title-single">304 Blaster Up</h1>
+              <span class="color-text-a">Chicago, IL 606543</span>
             </div>
           </div>
           <div class="col-md-12 col-lg-4">
             <nav aria-label="breadcrumb" class="breadcrumb-box d-flex justify-content-lg-end">
               <ol class="breadcrumb">
                 <li class="breadcrumb-item">
-                  <a href="#">Home</a>
+                  <a href="index.html">Home</a>
+                </li>
+                <li class="breadcrumb-item">
+                  <a href="property-grid.html">Properties</a>
                 </li>
                 <li class="breadcrumb-item active" aria-current="page">
-                  Properties Grid
+                  304 Blaster Up
                 </li>
               </ol>
             </nav>
@@ -292,126 +287,247 @@
         </div>
       </div>
     </section><!-- End Intro Single-->
+    <script>
+	   $(document).ready(function () {
+		   $('.selectPhoto').on('click',function(){ 
+			   
+			   var selectImg =  $(this).attr('src');  
+			   var activeImg = $('.owl-stage').find('.active').find('img').attr('src');  	
+			   
+			   while(true){
+					  $('.owl-next').trigger('click');	
+					  activeImg = $('.owl-stage').find('.active').find('img').attr('src'); 
+				   if(selectImg == activeImg){
+					   break; 
+				   }
+			   }  
+		   });
+	   });
+    </script>
 
-	<script type="text/javascript">
-		// 페이지 이동 스크립트  
-		function pagingFormSubmit(currentPage) {
-			var form = document.getElementById('pagingForm');
-			var page = document.getElementById('page');
-			page.value = currentPage;
-			form.submit();
-		}
-	</script>
-	
-    <!-- ======= Property Grid ======= -->
-    <section class="property-grid grid">
+    <!-- ======= Property Single ======= -->
+    <section class="property-single nav-arrow-b">
       <div class="container">
         <div class="row">
-          <div class="col-sm-12">
-            <div class="grid-option">
-			  <form id="pagingForm" method="get" action="allListProduct">
-	  			<input type="hidden" name="page" id="page" />  
-                <select name="sel" class="custom-select">
-                  <option value="0" <c:if test="${sel == '0'}">selected</c:if>>All</option>
-                  <option value="1" <c:if test="${sel == '1'}">selected</c:if>>몰</option>
-				  <option value="2" <c:if test="${sel == '2'}">selected</c:if>>라</option>
-			      <option value="3" <c:if test="${sel == '3'}">selected</c:if>>작성자</option>
-                </select>
-              </form>
+          <div class="col-sm-12"> 
+            <div class="row justify-content-between"> 
+      		 <div class="col-md-7 col-lg-7 section-md-t3" style="">    
+	            <div id="property-single-carousel" class="owl-carousel owl-arrow gallery-property" style="margin:0 auto; width: 500px; height: 700px;"> 
+	              <div class="carousel-item-b">  
+	                <img src="../resources/product/fixedPhoto/testMainP.jpg" alt="" style=" max-width:100%; height: 650px;">  
+	              </div> 
+	              <div class="carousel-item-b">  
+	                <img src="../resources/product/fixedPhoto/testMainP1.jpg" alt="" style=" max-width:100%; height: 650px;">     
+	              </div>
+	              <div class="carousel-item-b">
+	                <img src="../resources/product/fixedPhoto/testMainP2.jpg" alt="" style=" max-width:100%; height: 650px;"> 
+	              </div> 
+	              <div class="carousel-item-b"> 
+	                <img src="../resources/product/fixedPhoto/testMainP3.jpeg" alt="" style=" max-width:100%; height: 650px;">  
+	              </div>   
+           	 	</div>  
+           	 	<div style="position:relative;  width:500px; height: 120px; margin: 0 auto; z-index: 10;" >        
+           	 		<ul style="list-style:none;">  
+           	 			<li style="float: left; margin-right: 5px;">
+        	 				<img src="../resources/product/fixedPhoto/testMainP.jpg" class="selectPhoto" alt="" style=" widith: 60px; height: 78px;"> 
+           	 			</li>
+           	 			<li style="float: left; margin-right: 5px;">
+        	 				<img src="../resources/product/fixedPhoto/testMainP1.jpg" class="selectPhoto" alt="" style=" widith: 60px; height: 78px;"> 
+           	 			</li>
+           	 			<li style="float: left; margin-right: 5px;">
+        	 				<img src="../resources/product/fixedPhoto/testMainP2.jpg" class="selectPhoto" alt="" style=" widith: 60px; height: 78px;"> 
+           	 			</li>
+           	 			<li style="float: left; margin-right: 5px;">
+        	 				<img src="../resources/product/fixedPhoto/testMainP3.jpeg" class="selectPhoto" alt="" style=" widith: 60px; height: 78px;"> 
+           	 			</li>
+           	 		</ul>
+           	 	</div>
+           	</div> 
+              <div class="col-md-6 col-lg-5"> 
+                <div class="property-price d-flex justify-content-center foo">
+                  <div class="card-header-c d-flex">
+                    <div class="card-box-ico">
+                      <span class="ion-money">$</span>
+                    </div>
+                    <div class="card-title-c align-self-center">
+                      <h5 class="title-c">15000</h5>
+                    </div>
+                  </div>
+                </div>
+                <div class="property-summary">
+                  <div class="row">
+                    <div class="col-sm-12">
+                      <div class="title-box-d section-t4">
+                        <h3 class="title-d">Quick Summary</h3>
+                      </div>
+                    </div>
+                  </div>
+                  <div class="summary-list">
+                    <ul class="list">
+                      <li class="d-flex justify-content-between">
+                        <strong>Property ID:</strong>
+                        <span>1134</span>
+                      </li>
+                      <li class="d-flex justify-content-between">
+                        <strong>Location:</strong>
+                        <span>Chicago, IL 606543</span>
+                      </li>
+                      <li class="d-flex justify-content-between">
+                        <strong>Property Type:</strong>
+                        <span>House</span>
+                      </li>
+                      <li class="d-flex justify-content-between">
+                        <strong>Status:</strong>
+                        <span>Sale</span>
+                      </li>
+                      <li class="d-flex justify-content-between">
+                        <strong>Area:</strong>
+                        <span>340m
+                          <sup>2</sup>
+                        </span>
+                      </li>
+                      <li class="d-flex justify-content-between">
+                        <strong>Beds:</strong>
+                        <span>4</span>
+                      </li>
+                      <li class="d-flex justify-content-between">
+                        <strong>Baths:</strong>
+                        <span>2</span>
+                      </li>
+                      <li class="d-flex justify-content-between">
+                        <strong>Garage:</strong>
+                        <span>1</span>
+                      </li>
+                    </ul>
+                  </div>
+                </div>
+              </div>
             </div>
           </div>
-          <c:forEach var="list" items="${productList}">
-	          <div class="col-md-4">
-          		<a href="#">
-	            <div class="card-box-a card-shadow">      
-	              <div  class="img-box-a">  
-	                <img src="../resources/member/${list.email}/photo/${list.productFirstPhotoName}" alt=" " class="img-a img-fluid" style="max-width: 100%;   height: 380px;"> 
-	              </div> 
-	              <div class="card-overlay">
-	                <div class="card-overlay-a-content">
-	                  <div class="card-header-a">
-	                    <h4 class="card-title-a"style="word-break:break-all; width: 150px;">     	
-	                      <c:out value="${list.productName}"></c:out> 
-	                    </h4>  
-	                  </div>
-	                  <div class="card-body-a">
-	                    <div class="price-box d-flex">
-	                      <span class="price-a"><c:out value="${list.productPrice}"></c:out>원</span>
-	                    </div> 
-	                  </div>
-	                  <div class="card-footer-a">
-	                    <ul class="card-info d-flex justify-content-around">
-	                      <li>
-	                        <h4 class="card-info-title">Area</h4>
-	                        <span>340m
-	                          <sup>2</sup>
-	                        </span>
-	                      </li>
-	                      <li>
-	                        <h4 class="card-info-title">Beds</h4>
-	                        <span>2</span>
-	                      </li>
-	                      <li>
-	                        <h4 class="card-info-title">Baths</h4>
-	                        <span>4</span>
-	                      </li>
-	                      <li>
-	                        <h4 class="card-info-title">Garages</h4>
-	                        <span>1</span>
-	                      </li>
-	                    </ul>
-	                  </div>
-	                </div>
-	              </div>
-	            </div>
-	          </a> 
-	          </div>
-          </c:forEach>
-        </div>
-        <div class="row">
-          <div class="col-sm-12">
-            <nav class="pagination-a">
-              <ul class="pagination justify-content-end">
-                <li class="page-item">
-                  <a class="page-link" href="javascript:pagingFormSubmit(${navi.currentPage - navi.pagePerGroup})" tabindex="-1">
-                    <span class="ion-ios-arrow-back"></span><span class="ion-ios-arrow-back"></span>
-                  </a>
-                </li>
-                <li class="page-item">
-                  <a class="page-link" href="javascript:pagingFormSubmit(${navi.currentPage - 1})" tabindex="-1">
-                    <span class="ion-ios-arrow-back"></span>
-                  </a>
-                </li> 
-                <c:forEach var="counter" begin="${navi.startPageGroup}" end="${navi.endPageGroup}">
-					<c:choose>
-					<c:when test="${counter == navi.currentPage}">
-					 <li class="page-item active">
-	                  <a class="page-link" href="javascript:pagingFormSubmit(${counter})">${counter}</a>
-	               	 </li>
-					</c:when>
-					<c:otherwise>
-					<li class="page-item">
-	                  <a class="page-link" href="javascript:pagingFormSubmit(${counter})">${counter}</a>
-                	</li>
-					</c:otherwise>
-					</c:choose>
-				</c:forEach>
-                <li class="page-item next">
-                  <a class="page-link" href="javascript:pagingFormSubmit(${navi.currentPage + 1})">
-                    <span class="ion-ios-arrow-forward"></span>
-                  </a>
-                </li>  
-                <li class="page-item next">
-                  <a class="page-link" href="javascript:pagingFormSubmit(${navi.currentPage + navi.pagePerGroup})">
-                    <span class="ion-ios-arrow-forward"></span><span class="ion-ios-arrow-forward"></span>
-                  </a>
-                </li>
-              </ul>
-            </nav>
+          <div class="col-md-10 offset-md-1">
+            <ul class="nav nav-pills-a nav-pills mb-3 section-t3" id="pills-tab" role="tablist">
+              <li class="nav-item">
+                <a class="nav-link active" id="pills-video-tab" data-toggle="pill" href="#pills-video" role="tab" aria-controls="pills-video" aria-selected="true">Video</a>
+              </li>
+              <li class="nav-item">
+                <a class="nav-link" id="pills-plans-tab" data-toggle="pill" href="#pills-plans" role="tab" aria-controls="pills-plans" aria-selected="false">Floor Plans</a>
+              </li>
+              <li class="nav-item">
+                <a class="nav-link" id="pills-map-tab" data-toggle="pill" href="#pills-map" role="tab" aria-controls="pills-map" aria-selected="false">Ubication</a>
+              </li>
+            </ul>
+            <div class="tab-content" id="pills-tabContent">
+              <div class="tab-pane fade show active" id="pills-video" role="tabpanel" aria-labelledby="pills-video-tab">
+                <iframe src="https://player.vimeo.com/video/73221098" width="100%" height="460" frameborder="0" webkitallowfullscreen mozallowfullscreen allowfullscreen></iframe>
+              </div>
+              <div class="tab-pane fade" id="pills-plans" role="tabpanel" aria-labelledby="pills-plans-tab">
+                <img src="assets/img/plan2.jpg" alt="" class="img-fluid">
+              </div>
+              <div class="tab-pane fade" id="pills-map" role="tabpanel" aria-labelledby="pills-map-tab">
+                <iframe src="https://www.google.com/maps/embed?pb=!1m18!1m12!1m3!1d3022.1422937950147!2d-73.98731968482413!3d40.75889497932681!2m3!1f0!2f0!3f0!3m2!1i1024!2i768!4f13.1!3m3!1m2!1s0x89c25855c6480299%3A0x55194ec5a1ae072e!2sTimes+Square!5e0!3m2!1ses-419!2sve!4v1510329142834" width="100%" height="460" frameborder="0" style="border:0" allowfullscreen></iframe>
+              </div>
+            </div>
+          </div>
+          <div class="col-md-12">
+            <div class="row section-t3">
+              <div class="col-sm-12">
+                <div class="title-box-d">
+                  <h3 class="title-d">Contact Agent</h3>
+                </div>
+              </div>
+            </div>
+            <div class="row">
+              <div class="col-md-6 col-lg-4">
+                <img src="assets/img/agent-4.jpg" alt="" class="img-fluid">
+              </div>
+              <div class="col-md-6 col-lg-4">
+                <div class="property-agent">
+                  <h4 class="title-agent">Anabella Geller</h4>
+                  <p class="color-text-a">
+                    Nulla porttitor accumsan tincidunt. Vestibulum ac diam sit amet quam vehicula elementum sed sit amet
+                    dui. Quisque velit nisi,
+                    pretium ut lacinia in, elementum id enim.
+                  </p>
+                  <ul class="list-unstyled">
+                    <li class="d-flex justify-content-between">
+                      <strong>Phone:</strong>
+                      <span class="color-text-a">(222) 4568932</span>
+                    </li>
+                    <li class="d-flex justify-content-between">
+                      <strong>Mobile:</strong>
+                      <span class="color-text-a">777 287 378 737</span>
+                    </li>
+                    <li class="d-flex justify-content-between">
+                      <strong>Email:</strong>
+                      <span class="color-text-a"><a href="/cdn-cgi/l/email-protection" class="__cf_email__" data-cfemail="38595656595a5d545459785d40595548545d165b5755">[email&#160;protected]</a></span>
+                    </li>
+                    <li class="d-flex justify-content-between">
+                      <strong>Skype:</strong>
+                      <span class="color-text-a">Annabela.ge</span>
+                    </li>
+                  </ul>
+                  <div class="socials-a">
+                    <ul class="list-inline">
+                      <li class="list-inline-item">
+                        <a href="#">
+                          <i class="fa fa-facebook" aria-hidden="true"></i>
+                        </a>
+                      </li>
+                      <li class="list-inline-item">
+                        <a href="#">
+                          <i class="fa fa-twitter" aria-hidden="true"></i>
+                        </a>
+                      </li>
+                      <li class="list-inline-item">
+                        <a href="#">
+                          <i class="fa fa-instagram" aria-hidden="true"></i>
+                        </a>
+                      </li>
+                      <li class="list-inline-item">
+                        <a href="#">
+                          <i class="fa fa-pinterest-p" aria-hidden="true"></i>
+                        </a>
+                      </li>
+                      <li class="list-inline-item">
+                        <a href="#">
+                          <i class="fa fa-dribbble" aria-hidden="true"></i>
+                        </a>
+                      </li>
+                    </ul>
+                  </div>
+                </div>
+              </div>
+              <div class="col-md-12 col-lg-4">
+                <div class="property-contact">
+                  <form class="form-a">
+                    <div class="row">
+                      <div class="col-md-12 mb-1">
+                        <div class="form-group">
+                          <input type="text" class="form-control form-control-lg form-control-a" id="inputName" placeholder="Name *" required>
+                        </div>
+                      </div>
+                      <div class="col-md-12 mb-1">
+                        <div class="form-group">
+                          <input type="email" class="form-control form-control-lg form-control-a" id="inputEmail1" placeholder="Email *" required>
+                        </div>
+                      </div>
+                      <div class="col-md-12 mb-1">
+                        <div class="form-group">
+                          <textarea id="textMessage" class="form-control" placeholder="Comment *" name="message" cols="45" rows="8" required></textarea>
+                        </div>
+                      </div>
+                      <div class="col-md-12">
+                        <button type="submit" class="btn btn-a">Send Message</button>
+                      </div>
+                    </div>
+                  </form>
+                </div>
+              </div>
+            </div>
           </div>
         </div>
       </div>
-    </section><!-- End Property Grid Single-->
+    </section><!-- End Property Single-->
 
   </main><!-- End #main -->
 
