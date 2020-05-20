@@ -265,7 +265,7 @@
         <div class="row">
           <div class="col-md-12 col-lg-8">
             <div class="title-single-box">
-              <h1 class="title-single">304 Blaster Up</h1>
+              <h1 class="title-single">제품이름</h1>
               <span class="color-text-a">Chicago, IL 606543</span>
             </div>
           </div>
@@ -293,7 +293,10 @@
 			   
 			   var selectImg =  $(this).attr('src');  
 			   var activeImg = $('.owl-stage').find('.active').find('img').attr('src');  	
-			   
+			    
+			   if(selectImg == activeImg){
+ 					return;
+			   }
 			   while(true){
 					  $('.owl-next').trigger('click');	
 					  activeImg = $('.owl-stage').find('.active').find('img').attr('src'); 
@@ -302,6 +305,24 @@
 				   }
 			   }  
 		   });
+		   
+		   $('#amountProductMinus').on('click',function(){ 
+			   var amountVal = $('#amountProduct').val();
+	 		   
+ 			   if(amountVal <= 1){
+				   return;
+			   }
+			   $('#amountProduct').val(--amountVal); 
+			   
+		   });
+		   
+		   $('#amountProductPlus').on('click',function(){ 
+			   var amountVal = $('#amountProduct').val();
+			   $('#amountProduct').val(++amountVal);    
+ 
+		   });
+
+		   
 	   });
     </script>
 
@@ -313,32 +334,32 @@
             <div class="row justify-content-between"> 
       		 <div class="col-md-7 col-lg-7 section-md-t3" style="">    
 	            <div id="property-single-carousel" class="owl-carousel owl-arrow gallery-property" style="margin:0 auto; width: 500px; height: 700px;"> 
-	              <div class="carousel-item-b">  
-	                <img src="../resources/product/fixedPhoto/testMainP.jpg" alt="" style=" max-width:100%; height: 650px;">  
+	              <div class="carousel-item-b" style="height: 700px; ">   
+	                <img src="../resources/product/fixedPhoto/testMainP.jpg" alt="" style=" margin:0 auto;  width:auto; max-width:100%; height: auto; max-height: 100%;">  
 	              </div> 
-	              <div class="carousel-item-b">  
-	                <img src="../resources/product/fixedPhoto/testMainP1.jpg" alt="" style=" max-width:100%; height: 650px;">     
-	              </div>
-	              <div class="carousel-item-b">
-	                <img src="../resources/product/fixedPhoto/testMainP2.jpg" alt="" style=" max-width:100%; height: 650px;"> 
+	              <div class="carousel-item-b" style="height: 700px;" >   
+	                <img src="../resources/product/fixedPhoto/testMainP1.jpg" alt="" style=" margin:0 auto;  width:auto; max-width:100%; height: auto; max-height: 100%; ">     
 	              </div> 
-	              <div class="carousel-item-b"> 
-	                <img src="../resources/product/fixedPhoto/testMainP3.jpeg" alt="" style=" max-width:100%; height: 650px;">  
+	              <div class="carousel-item-b" style="height: 700px;">
+	                <img src="../resources/product/fixedPhoto/testMainP2.jpg" alt="" style=" margin:0 auto;  width:auto; max-width:100%; height: auto; max-height: 100%;"> 
+	              </div> 
+	              <div class="carousel-item-b" style="height: 700px;">    
+	                <img src="../resources/product/fixedPhoto/testMainP3.jpeg" alt="" style=" margin:0 auto;  width:auto; max-width:100%; height: auto; max-height: 100%;">  
 	              </div>   
            	 	</div>  
            	 	<div style="position:relative;  width:500px; height: 120px; margin: 0 auto; z-index: 10;" >        
-           	 		<ul style="list-style:none;">  
-           	 			<li style="float: left; margin-right: 5px;">
-        	 				<img src="../resources/product/fixedPhoto/testMainP.jpg" class="selectPhoto" alt="" style=" widith: 60px; height: 78px;"> 
+           	 		<ul style="list-style:none;">    
+           	 			<li style="float: left; margin-right: 5px;">     
+        	 				<img src="../resources/product/fixedPhoto/testMainP.jpg" class="selectPhoto" alt="" style="  cursor:pointer;  widith: 60px; height: 78px;"> 
            	 			</li>
            	 			<li style="float: left; margin-right: 5px;">
-        	 				<img src="../resources/product/fixedPhoto/testMainP1.jpg" class="selectPhoto" alt="" style=" widith: 60px; height: 78px;"> 
+        	 				<img src="../resources/product/fixedPhoto/testMainP1.jpg" class="selectPhoto" alt="" style=" cursor:pointer; widith: 60px; height: 78px;"> 
            	 			</li>
            	 			<li style="float: left; margin-right: 5px;">
-        	 				<img src="../resources/product/fixedPhoto/testMainP2.jpg" class="selectPhoto" alt="" style=" widith: 60px; height: 78px;"> 
+        	 				<img src="../resources/product/fixedPhoto/testMainP2.jpg" class="selectPhoto" alt="" style=" cursor:pointer; widith: 60px; height: 78px;"> 
            	 			</li>
-           	 			<li style="float: left; margin-right: 5px;">
-        	 				<img src="../resources/product/fixedPhoto/testMainP3.jpeg" class="selectPhoto" alt="" style=" widith: 60px; height: 78px;"> 
+           	 			<li style="float: left; margin-right: 5px;"> 
+        	 				<img src="../resources/product/fixedPhoto/testMainP3.jpeg" class="selectPhoto" alt="" style=" cursor:pointer; widith: 60px; height: 78px;"> 
            	 			</li>
            	 		</ul>
            	 	</div>
@@ -347,11 +368,11 @@
                 <div class="property-price d-flex justify-content-center foo">
                   <div class="card-header-c d-flex">
                     <div class="card-box-ico">
-                      <span class="ion-money">$</span>
+                      <span class="ion-money">₩</span> 
                     </div>
                     <div class="card-title-c align-self-center">
-                      <h5 class="title-c">15000</h5>
-                    </div>
+                      <h5 class="title-c">1.500.000</h5>  
+                    </div> 
                   </div>
                 </div>
                 <div class="property-summary">
@@ -365,19 +386,19 @@
                   <div class="summary-list">
                     <ul class="list">
                       <li class="d-flex justify-content-between">
-                        <strong>Property ID:</strong>
+                        <strong>좋아요 :</strong>
                         <span>1134</span>
                       </li>
                       <li class="d-flex justify-content-between">
-                        <strong>Location:</strong>
+                        <strong>리뷰 :</strong>
                         <span>Chicago, IL 606543</span>
                       </li>
                       <li class="d-flex justify-content-between">
-                        <strong>Property Type:</strong>
-                        <span>House</span>
+                        <strong>구매 :</strong>
+                        <span>House</span>  
                       </li>
                       <li class="d-flex justify-content-between">
-                        <strong>Status:</strong>
+                        <strong>택배 :</strong>
                         <span>Sale</span>
                       </li>
                       <li class="d-flex justify-content-between">
@@ -400,6 +421,29 @@
                       </li>
                     </ul>
                   </div>
+                  <div class="row">
+                    <div class="col-sm-12" style="background-color: #f3f3f3;" >
+                    	<table border="1" style="max-width: 100%;" >   
+                    		<tr> 
+                    			<th>수량</th>
+                    		</tr>
+                    		<tr> 
+                    			<td style="width:120px;">     	
+									<button type="button" class="btn btn-b-n" id="amountProductMinus"style="float: left; width: 30px; height: 30px;"> 
+									        <span style="margin: 0 auto;">-</span>  
+						      		</button>	                     			 
+	      							<input type="text" maxlength="3" disabled="disabled" id="amountProduct" value="1" style="text-align:center;  float: left; width: 35px; height: 31px;">   
+									<button type="button" class="btn btn-b-n" id="amountProductPlus" style="width: 30px; height: 30px;">     
+									        <span style="margin-left: -3px;">+</span>        
+							      	</button>	    
+                       			</td>  
+                    			<td style="width: 235px;">             
+                    				<span style="float: right;">15,000원</span> 
+                    			</td>
+                    		</tr>
+                    	</table>
+                    </div>
+                  </div> 
                 </div>
               </div>
             </div>
