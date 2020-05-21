@@ -1,18 +1,21 @@
 package kr.com.shop.vo;
 
 public class Member {
-String email, password , name, phonenum , nickname;
+String email, password , name, phonenum ,address, postalCode, nickname;
 	
 	public Member() {
 		
 	}
-	
-	public Member(String email, String password, String name, String phonenum, String nickname) {
+
+	public Member(String email, String password, String name, String phonenum, String address, String postalCode,
+			String nickname) {
 		super();
 		this.email = email;
 		this.password = password;
 		this.name = name;
 		this.phonenum = phonenum;
+		this.address = address;
+		this.postalCode = postalCode;
 		this.nickname = nickname;
 	}
 
@@ -48,6 +51,22 @@ String email, password , name, phonenum , nickname;
 		this.phonenum = phonenum;
 	}
 
+	public String getAddress() {
+		return address;
+	}
+
+	public void setAddress(String address) {
+		this.address = address;
+	}
+
+	public String getPostalCode() {
+		return postalCode;
+	}
+
+	public void setPostalCode(String postalCode) {
+		this.postalCode = postalCode;
+	}
+
 	public String getNickname() {
 		return nickname;
 	}
@@ -56,12 +75,13 @@ String email, password , name, phonenum , nickname;
 		this.nickname = nickname;
 	}
 
+
 	@Override
 	public String toString() {
 		return "Member [email=" + email + ", password=" + password + ", name=" + name + ", phonenum=" + phonenum
-				+ ", nickname=" + nickname + "]";
+				+ ", address=" + address + ", postalCode=" + postalCode + ", nickname=" + nickname +  "]";
 	}
-
+	
 	
 
 }

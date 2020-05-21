@@ -1,0 +1,26 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<!DOCTYPE mapper
+  PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN"
+  "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<mapper namespace="kr.com.shop.dao.ProductMapper">
+<!-- 디비로 넘길때 null값을 넘기려면 에러가 뜬다 그래서 원래는 동적sql이라고 하여 if절로 null일 경우는 아에안넣는 식으로 하지만 최근에는 jdbcType을 변경해줌으로서 null도 넘길 수 있다
+	여러가지 타입이 있으니 인터넷으로 봐두-->  
+<insert id="insertSaleWrite" parameterType="Product">
+	insert into Product_TB values (Product_seq.nextval , #{email} , #{category} , #{productName} 
+									, #{productPrice}, #{productFirstPhotoName}, #{productSubPhoto1Name
+									, jdbcType=VARCHAR},#{productSubPhoto2Name, jdbcType=VARCHAR}
+									, #{productSubPhoto3Name, jdbcType=VARCHAR}, #{productSubPhoto4Name
+									, jdbcType=VARCHAR},#{productDescription},#{deliveryMethod})
+</insert>
+
+<select id="getTotal" parameterType="String" resultType="Int">
+ select count(*) from Product_TB
+</select>
+
+<select id="getProductList" parameterType="String" resultType="Product">
+select * from Product_TB
+</select>
+
+
+</mapper>
+

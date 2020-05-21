@@ -1,6 +1,8 @@
 package kr.com.shop.util;
 
+import java.io.BufferedWriter;
 import java.io.File;
+import java.io.FileWriter;
 import java.text.SimpleDateFormat;
 import java.util.Date;
 
@@ -78,6 +80,65 @@ public class FileService {
 	}
 	
 	/**
+	 * 업로드 된 파일을 지정된 경로에 저장하고, 저장된 파일명을 리턴
+	 * @param mfile 업로드된 파일
+	 * @param path 저장할 경로
+	 * @return 저장된 파일명
+	 */
+	public static String saveTxtFile(String content, String uploadPath) {
+		//업로드된 파일이 없거나 크기가 0이면 저장하지 않고 null을 리턴
+		if (content == null ) {
+			return null;
+		}
+		
+		//저장 폴더가 없으면 생성 "/boardfilr" //File 클래스는 파일의 유무 등 파일에대한 여리 기능을 가지고 있다 
+		File path = new File(uploadPath); // /boardfilr라는 이름으로 파일 객체럴 만든다 그래서 있는지 없는지 확인한다
+		if (!path.isDirectory()) {  //이게 확인하는방법이다 path.isDirectory()는 존재유무를 묻는다 그 파일이 있으면 ture 없으면 false이다
+			path.mkdirs(); //그 폴더가없으면 폴더를 그 그이름으로 생성한다
+		}
+		
+		
+		//저장할 파일명을 오늘 날짜의 년월일로 생성
+		SimpleDateFormat sdf = new SimpleDateFormat("yyyyMMdd");
+		String savedFilename = sdf.format(new Date());
+		
+		//원본 파일의 확장자
+		String ext = ".txt";
+
+		//저장할 전체 경로를 포함한 File 객체
+		File serverFile = null;
+		
+		//같은 이름의 파일이 있는 경우의 처리
+		while (true) {
+			serverFile = new File(uploadPath + "/" + savedFilename + ext);
+			//같은 이름의 파일이 없으면 나감.
+			if ( !serverFile.isFile()) break;	//isFile()파일의 존재 유무
+			
+			//같은 이름의 파일이 있으면 이름 뒤에 long 타입의 시간정보를 덧붙임.
+			savedFilename = savedFilename + new Date().getTime();	
+		}		
+		
+		//파일 저장
+		try {
+			// BufferedWriter 와 FileWriter를 조합하여 사용 (속도 향상)
+            BufferedWriter fw = new BufferedWriter(new FileWriter(serverFile, false));
+             
+            // 파일안에 문자열 쓰기
+            fw.write(content);
+            fw.flush();
+ 
+            // 객체 닫기
+            fw.close();
+
+
+		} catch (Exception e) {
+			e.printStackTrace();
+		}
+		
+		return savedFilename + ext;
+	}
+	
+	/**
 	 * 서버에 저장된 파일의 전체 경로를 전달받아, 해당 파일을 삭제
 	 * @param fullpath 삭제할 파일의 경로
 	 * @return 삭제 여부
@@ -96,5 +157,25 @@ public class FileService {
 		}
 		
 		return result;
+	}
+	
+	/**
+	 * 해당디렉터리의 경로를 받아서 해당 폴더의 하위파일들을 전부 삭제
+	 * @param fullpath 전부 삭제할 폴더위치
+	 * @return 삭제 여부
+	 */
+	public static void deleteFileList(String fullpath) {
+		//파일 삭제 여부를 리턴할 변수
+		
+		//전달된 전체 경로로 File객체 생성
+		File delFile = new File(fullpath);
+		
+		File[] fileList = delFile.listFiles();
+		
+		for(int i = 0 ; i < fileList.length; i++) {
+			fileList[i].delete();
+			
+		}
+		
 	}
 }
