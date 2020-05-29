@@ -479,6 +479,10 @@
 					  
 					  
 					  });  
+						  
+
+
+
 					  
 					   // 삭제버튼을 클릭할시에 발동
 					   $('.close').on('click', function(){
@@ -499,6 +503,58 @@
 						  $(this).closest('td').find('div').css('visibility','visible'); // 등록버튼 숨김해제
  
 					  }); 
+					   
+					  $('input[name=salesMethod]').change(function() {
+						 var optionBoolean =$('input[value=1]').is(':checked'); 
+						 
+						 if(optionBoolean == true){
+							 $('#optionTable').css('display','block');
+							 $('#optionListPlus').css('display','inline'); 
+						 }else{ 
+							 $('#optionTable').css('display','none');
+							 $('#optionListPlus').css('display','none');
+
+						 }
+					  }); 
+					  
+					  $('#optionListPlus').on('click', function(){  
+						 var strLength = $('input[type=hidden]').length; 
+						 var str = '<tr > '
+						 			+ '<th style=" padding:15px; border-bottom: none;">선택 '+(strLength+1)+' <input type="hidden" name="list['+strLength+'].selectNum" value="'+(strLength+1)+'"></th>'  
+		  							+ '<td style="padding:15px;  border-bottom: none;">이름 :</td>' 
+		  							+ '<td style="padding:15px; border-bottom: none;"><input type="text" maxlength="25" name="list['+strLength+'].optionName" class="form-control form-control-sm form-control-a" style="width: 200px; height: 30px;"></td>'
+		  							+ '<td style="padding:15px; border-bottom: none; ">추가가격 :</td>'   
+		  							+ '<td style="padding:15px; border-bottom: none;"><input type="text" maxlength="35" name="list['+strLength+'].additionalAmount" class="form-control form-control-sm form-control-a"  value="0" onkeydown='+ 'return onlyNumber(event)' +' onkeyup=' +'removeChar(event)' +' style="width: 150px; height: 30px;"></td>' 
+		  							+ '<td style="padding:15px; border-bottom: none;">'
+		  							+ '<button type="button" class="btn btn-b-n optionListMinus" style=" background-color:#FE642E;border-radius: 50%; width: 35px; height: 35px;">' 
+		  							+ '<span style="margin-left: 2px;">-</span>'                
+				      				+ '</button>'
+		  							+ '</td>'   
+		  							+ '</tr>';
+		  							
+		  				 if(strLength < 20){ 
+						 	$('#optionTable').append(str);
+						 	 
+						 	  $('.optionListMinus').on('click',function() {  
+									 $(this).closest('tr').remove();
+									 
+									 $('input[type=hidden]').each(function(index, item){ 
+										 var eachStr = '선택 '+(index+1)+' <input type="hidden" name="list['+index+'].selectNum" value="'+(index+1)+'">';
+										 $(item).closest('tr').find('input[type=text]').eq(0).attr('name','list['+index+'].optionName');      
+										 $(item).closest('tr').find('input[type=text]').eq(1).attr('name','list['+index+'].additionalAmount');      
+										 $(item).closest('th').html(eachStr); 
+									 });
+									 
+							  });
+		  					 
+		  				 }  			
+						  
+						 
+					  }); 
+					   
+					
+
+
 					  
 				  
 				  });
@@ -556,6 +612,26 @@
 						  }
 				  	  });
 		  		  }
+				  	
+				  	// 무조건 숫자만 입력하게하는것
+			  		function onlyNumber(event){
+			  		    event = event || window.event;
+			  		    var keyID = (event.which) ? event.which : event.keyCode;
+			  		    if ( (keyID >= 48 && keyID <= 57) || (keyID >= 96 && keyID <= 105) || keyID == 8 || keyID == 46 || keyID == 37 || keyID == 39 ) 
+			  		        return;
+			  		    else
+			  		        return false;
+			  		}
+			  		
+				  	// 무조건 숫자만 입력하게하는것 숫자이외는 삭제
+			  		function removeChar(event) {
+			  		    event = event || window.event;
+			  		    var keyID = (event.which) ? event.which : event.keyCode;
+			  		    if ( keyID == 8 || keyID == 46 || keyID == 37 || keyID == 39 ) 
+			  		        return;
+			  		    else
+			  		        event.target.value = event.target.value.replace(/[^0-9]/g, "");
+			  		}
 	
 				  </script>  
 				    
@@ -684,6 +760,27 @@
 		            </script>
 		  		</td>
 		  	</tr>
+		  	<tr>
+		  		<td>  
+	  				<h5>Sales Method</h5><br>
+	  				<input type="radio"  name="salesMethod" checked="checked" value="0" > <strong>단품</strong><br><br>  
+	  				<input type="radio" name="salesMethod" value="1"> <strong>옵션</strong> &nbsp;&nbsp;&nbsp;  
+					<button type="button" class="btn btn-b-n" id="optionListPlus" style="display:none; border-radius: 50%; width: 35px; height: 35px;">      
+			        <span >+</span>         
+			      	</button>	    	  				
+			      	<table id="optionTable" style="display: none;">   
+	  					<tr > 
+	  						<th style=" padding:15px; border-bottom: none;">선택 1 <input type="hidden" name="list[0].selectNum" value="1"></th>  
+	  						<td style="padding:15px;  border-bottom: none;">이름 :</td>  
+	  						<td style="padding:15px; border-bottom: none;"><input type="text" maxlength="25" name="list[0].optionName" class="form-control form-control-sm form-control-a" style="width: 200px; height: 30px;"></td>
+	  						<td style="padding:15px; border-bottom: none; ">추가가격 :</td>    
+	  						<td style="padding:15px; border-bottom: none;"><input type="text" maxlength="35" name="list[0].additionalAmount" class="form-control form-control-sm form-control-a"  value="0" onkeydown='return onlyNumber(event)' onkeyup='removeChar(event)' style="width: 150px; height: 30px;"></td> 
+	  						<td style="padding:15px; border-bottom: none;"> 
+	  						</td> 
+	  					</tr>
+	  				</table>
+		  		</td>
+		  	</tr> 
 		  	<tr>
 		  		<td>
 	  				<h5>Delivery Method</h5><br>

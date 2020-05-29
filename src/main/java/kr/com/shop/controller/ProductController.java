@@ -32,6 +32,7 @@ import kr.com.shop.util.FileService;
 import kr.com.shop.util.PageNavigator;
 import kr.com.shop.vo.Member;
 import kr.com.shop.vo.Product;
+import kr.com.shop.vo.ProductOption;
 
 
 @Controller
@@ -84,10 +85,17 @@ public class ProductController {
 	@RequestMapping(value ="insertSaleMain", method = RequestMethod.GET)
 	public String insertSaleMain() { 
 		return "product/insertProduct";
-	}
+	} 
 	
+	@RequestMapping(value ="testData", method = RequestMethod.GET)
+	public String testData( ProductOption po) throws Exception { 
+		// 졸리다 이거 내일하자 아아아아 짜증나
+		
+				
+		return null; 
+	}
 	@RequestMapping(value ="insertSaleWrite", method = RequestMethod.POST)
-	public String insertSaleWrite(Product product, MultipartFile productFirstPhoto, MultipartFile productSubPhoto1
+	public String insertSaleWrite(Product product,ProductOption po, MultipartFile productFirstPhoto, MultipartFile productSubPhoto1
 												, MultipartFile productSubPhoto2 , MultipartFile productSubPhoto3
 												, MultipartFile productSubPhoto4, HttpSession session) { 
 		logger.debug(product.toString());
@@ -135,10 +143,25 @@ public class ProductController {
 			savedfile =FileService.saveFile(productSubPhoto4,memberPhotoFileDir);
 			product.setProductSubPhoto4Name(savedfile);
 		}
-
+		
+		
+		
 		int result = pdao.insertSaleWrite(product);
 		
+		
 		if(result ==1) {
+			
+			if(product.getSalesMethod() !=0) {
+				Product resultPd =pdao.selectSaleinpo(product);
+				for(ProductOption pol : po.getList()) {
+				
+					pdao.insertSaleProductOption(pol,resultPd.getproductSeq());
+					  
+					//logger.debug("list {}  {}", pol.getOptionName(),pol.getAdditionalAmount()); 
+					
+				}
+				
+			}
 			// 등록성공하면 미리보기사진을 전부 삭제
 			FileService.deleteFileList(memberExamplePhotoFileDir);
 			return "redirect:/";

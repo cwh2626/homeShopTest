@@ -10,15 +10,38 @@
 									, #{productPrice}, #{productFirstPhotoName}, #{productSubPhoto1Name
 									, jdbcType=VARCHAR},#{productSubPhoto2Name, jdbcType=VARCHAR}
 									, #{productSubPhoto3Name, jdbcType=VARCHAR}, #{productSubPhoto4Name
-									, jdbcType=VARCHAR},#{productDescription},#{deliveryMethod})
+									, jdbcType=VARCHAR},#{productDescription},#{deliveryMethod},#{salesMethod})
+</insert>
+
+<insert id="insertSaleProductOption" parameterType="map">
+	insert into ProductOption(productOptionSeq, productSeq
+				<if test="optionName != null">
+							,optionName
+				</if>
+				<if test="additionalAmount != null">
+							,additionalAmount
+				</if>
+							,selectNum)
+					 values (productOption_seq.nextval, #{productSeq}
+				 <if test="optionName != null">
+							,#{optionName}
+				</if>
+				<if test="additionalAmount != null">
+							,#{additionalAmount}
+				</if>
+							 ,#{selectNum})
 </insert>
 
 <select id="getTotal" parameterType="String" resultType="Int">
- select count(*) from Product_TB
+	 select count(*) from Product_TB
 </select>
 
 <select id="getProductList" parameterType="String" resultType="Product">
-select * from Product_TB
+	select * from Product_TB
+</select>
+
+<select id="selectSaleinpo" parameterType="Product" resultType="Product">
+	select * from Product_TB where email like #{email} and productFirstPhotoName like #{productFirstPhotoName}
 </select>
 
 

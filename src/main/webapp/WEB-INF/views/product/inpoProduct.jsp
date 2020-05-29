@@ -289,6 +289,28 @@
     </section><!-- End Intro Single-->
     <script>
 	   $(document).ready(function () {
+		   var amountProductPrice = 15000;
+		   var amountProduct
+		   var totalPriceStr
+		   
+		   function combinedPrice() {
+			  
+			   amountProduct = $('#amountProduct').val();
+			   totalPriceStr = numberWithCommas(amountProductPrice * amountProduct) + '원';
+			   $('#combinedPrice').html(totalPriceStr); 
+		   
+		   } 
+		   
+		   function amountPriceChange() {
+			   
+			   amountProduct = $('#amountProduct').val();
+			   totalPriceStr = numberWithCommas(amountProductPrice * amountProduct) + '원';
+			   $('#totalPrice').html(totalPriceStr); 
+			   combinedPrice();
+		   
+		   }
+		   amountPriceChange();
+		   
 		   $('.selectPhoto').on('click',function(){ 
 			   
 			   var selectImg =  $(this).attr('src');  
@@ -313,17 +335,31 @@
 				   return;
 			   }
 			   $('#amountProduct').val(--amountVal); 
+			   amountPriceChange();
 			   
 		   });
 		   
 		   $('#amountProductPlus').on('click',function(){ 
 			   var amountVal = $('#amountProduct').val();
 			   $('#amountProduct').val(++amountVal);    
+			   amountPriceChange();
  
-		   });
-
+		   }); 
+		    
 		   
+	
 	   });
+	   
+	   // 가격 세번째 마다 ',' 붙이는 정규식
+	   function numberWithCommas(x) {
+		    return x.toString().replace(/\B(?=(\d{3})+(?!\d))/g, ",");
+		}
+	   
+	 
+
+
+
+
     </script>
 
     <!-- ======= Property Single ======= -->
@@ -423,25 +459,33 @@
                   </div>
                   <div class="row">
                     <div class="col-sm-12" style="background-color: #f3f3f3;" >
-                    	<table border="1" style="max-width: 100%;" >   
-                    		<tr> 
-                    			<th>수량</th>
-                    		</tr>
-                    		<tr> 
-                    			<td style="width:120px;">     	
-									<button type="button" class="btn btn-b-n" id="amountProductMinus"style="float: left; width: 30px; height: 30px;"> 
+                    	<ul style=" list-style:none;    padding-left:0px; padding-top: 10px;">  	
+                    		<li style=" border-bottom: 1px solid #BDBDBD;">수량</li>  
+                    		<li style="padding-top: 10px;"> 
+								<button type="button" class="btn btn-b-n" id="amountProductMinus"style="float: left; width: 30px; height: 30px;"> 
 									        <span style="margin: 0 auto;">-</span>  
 						      		</button>	                     			 
 	      							<input type="text" maxlength="3" disabled="disabled" id="amountProduct" value="1" style="text-align:center;  float: left; width: 35px; height: 31px;">   
 									<button type="button" class="btn btn-b-n" id="amountProductPlus" style="width: 30px; height: 30px;">     
 									        <span style="margin-left: -3px;">+</span>        
-							      	</button>	    
-                       			</td>  
-                    			<td style="width: 235px;">             
-                    				<span style="float: right;">15,000원</span> 
-                    			</td>
-                    		</tr>
-                    	</table>
+							     </button>
+							     <span id="totalPrice" style="float: right;"></span> 
+							</li>  
+                    		<li style="font-weight: bold; padding-top: 15px;"><span>총 상품금액  :</span><span style="float: right;" id="combinedPrice"></span></li>    
+                    	</ul>
+                    </div>
+                    <div class="col-sm-12" style="padding-left: 0px; padding-right: 0px;"> 
+                    	<ul style="list-style: none; padding-top: 20px; padding-left: 0px;">    
+                    		<li>
+		   						<input type="submit" style="width:261px; margin-right: 15px;" class="btn btn-b" value="구매하기">           
+		   						<button style="width: 58px; height: 58px; background-color: #f3f3f3;" class="btn">    
+		   						<span class="fa fa-shopping-bag fa-2x" aria-hidden="true"></span>       
+		   						</button> 	                
+		   						<button style="width: 58px; height: 58px; background-color: #f3f3f3;" class="btn">    
+		   						<span class="fa fa-heart-o fa-2x" aria-hidden="true"></span>     
+		   						</button> 	              
+                     		</li>
+                    	</ul>
                     </div>
                   </div> 
                 </div>

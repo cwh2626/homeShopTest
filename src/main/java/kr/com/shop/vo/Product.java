@@ -3,13 +3,17 @@ package kr.com.shop.vo;
 public class Product {
 	String  email, productName, productDescription
  		,productFirstPhotoName, productSubPhoto1Name, productSubPhoto2Name, productSubPhoto3Name, productSubPhoto4Name;
-	int productNum,category, productPrice, deliveryMethod;
+	int productSeq,category, productPrice, deliveryMethod, salesMethod;
+	
 	public Product(){
 		
 	}
+	
+	
 	public Product(String email, String productName, String productDescription, String productFirstPhotoName,
 			String productSubPhoto1Name, String productSubPhoto2Name, String productSubPhoto3Name,
-			String productSubPhoto4Name, int productNum, int category, int productPrice, int deliveryMethod) {
+			String productSubPhoto4Name, int productSeq, int category, int productPrice, int deliveryMethod,
+			int salesMethod) {
 		super();
 		this.email = email;
 		this.productName = productName;
@@ -19,11 +23,14 @@ public class Product {
 		this.productSubPhoto2Name = productSubPhoto2Name;
 		this.productSubPhoto3Name = productSubPhoto3Name;
 		this.productSubPhoto4Name = productSubPhoto4Name;
-		this.productNum = productNum;
+		this.productSeq = productSeq;
 		this.category = category;
 		this.productPrice = productPrice;
 		this.deliveryMethod = deliveryMethod;
+		this.salesMethod = salesMethod;
 	}
+
+
 	public String getEmail() {
 		return email;
 	}
@@ -35,6 +42,12 @@ public class Product {
 	}
 	public void setProductName(String productName) {
 		this.productName = productName;
+	}
+	public String getProductDescription() {
+		return productDescription;
+	}
+	public void setProductDescription(String productDescription) {
+		this.productDescription = productDescription;
 	}
 	public String getProductFirstPhotoName() {
 		return productFirstPhotoName;
@@ -66,11 +79,11 @@ public class Product {
 	public void setProductSubPhoto4Name(String productSubPhoto4Name) {
 		this.productSubPhoto4Name = productSubPhoto4Name;
 	}
-	public int getProductNum() {
-		return productNum;
+	public int getproductSeq() {
+		return productSeq;
 	}
-	public void setProductNum(int productNum) {
-		this.productNum = productNum;
+	public void setproductSeq(int productSeq) {
+		this.productSeq = productSeq;
 	}
 	public int getCategory() {
 		return category;
@@ -90,21 +103,21 @@ public class Product {
 	public void setDeliveryMethod(int deliveryMethod) {
 		this.deliveryMethod = deliveryMethod;
 	}
-	public String getProductDescription() {
-		return productDescription;
+	public int getSalesMethod() {
+		return salesMethod;
 	}
-	public void setProductDescription(String productDescription) {
-		this.productDescription = productDescription;
+	public void setSalesMethod(int salesMethod) {
+		this.salesMethod = salesMethod;
 	}
 	@Override
 	public String toString() {
 		return "Product [email=" + email + ", productName=" + productName + ", productDescription=" + productDescription
 				+ ", productFirstPhotoName=" + productFirstPhotoName + ", productSubPhoto1Name=" + productSubPhoto1Name
 				+ ", productSubPhoto2Name=" + productSubPhoto2Name + ", productSubPhoto3Name=" + productSubPhoto3Name
-				+ ", productSubPhoto4Name=" + productSubPhoto4Name + ", productNum=" + productNum + ", category="
-				+ category + ", productPrice=" + productPrice + ", deliveryMethod=" + deliveryMethod + "]";
+				+ ", productSubPhoto4Name=" + productSubPhoto4Name + ", productSeq=" + productSeq + ", category="
+				+ category + ", productPrice=" + productPrice + ", deliveryMethod=" + deliveryMethod + ", salesMethod="
+				+ salesMethod + "]";
 	}
-	
 	
 	 
 	
