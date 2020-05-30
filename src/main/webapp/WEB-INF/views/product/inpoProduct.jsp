@@ -290,26 +290,61 @@
     <script>
 	   $(document).ready(function () {
 		   var amountProductPrice = 15000;
-		   var amountProduct
+		   var amountProduct 
 		   var totalPriceStr
 		   
+		    
 		   function combinedPrice() {
-			  
-			   amountProduct = $('#amountProduct').val();
-			   totalPriceStr = numberWithCommas(amountProductPrice * amountProduct) + '원';
+			   var allCombinedPrice = 0; 
+			   //amountProduct = $('#amountProduct').val();
+			   $('.amountProduct').each(function(index, item){
+				   var entityPrice = Number($(item).closest('ul').attr('price'));
+				   var entityAmountVal = Number($(item).val()); 
+				   var resultVal = (amountProductPrice + entityPrice) * entityAmountVal;
+				   allCombinedPrice += resultVal;
+			   });
+
+			   totalPriceStr = numberWithCommas(allCombinedPrice) + '원';
 			   $('#combinedPrice').html(totalPriceStr); 
 		   
 		   } 
+		   combinedPrice();  
 		   
-		   function amountPriceChange() {
+		   function amountProductChange(sel,data) {
+			   var amountVal = Number(data.closest('ul').find('.amountProduct').val());
+			   var amountPrice = Number(data.closest('ul').attr('price')); 
+
+			   //var amountVal = $('#amountProduct').val();
+	 		   if(sel == 0){
+	 			   
+	 			   if(amountVal <= 1){ 
+					   return;
+				   }
+	 			  data.closest('ul').find('.amountProduct').val(--amountVal);
+	 		   }else{
+	 			  data.closest('ul').find('.amountProduct').val(++amountVal); 
+
+	 		   }
+ 			   amountVal = data.closest('ul').find('.amountProduct').val();
+   			   totalPriceStr = numberWithCommas((amountProductPrice + amountPrice) * amountVal) + '원'; 
+   			   data.closest('ul').find('.totalPrice').html(totalPriceStr);      
+			   combinedPrice(); 
+		   } 
+		   
+ 		   function amountProductButton(){
 			   
-			   amountProduct = $('#amountProduct').val();
-			   totalPriceStr = numberWithCommas(amountProductPrice * amountProduct) + '원';
-			   $('#totalPrice').html(totalPriceStr); 
-			   combinedPrice();
-		   
+			   $('.amountProductMinus').on('click',function(){ 
+				   amountProductChange(0,$(this)); 
+	
+				    
+			   });
+			   
+			   $('.amountProductPlus').on('click',function(){
+				   amountProductChange(1,$(this)); 
+	
+			   }); 
 		   }
-		   amountPriceChange();
+		   
 		   
 		   $('.selectPhoto').on('click',function(){ 
 			   
@@ -328,23 +363,50 @@
 			   }  
 		   });
 		   
-		   $('#amountProductMinus').on('click',function(){ 
-			   var amountVal = $('#amountProduct').val();
-	 		   
- 			   if(amountVal <= 1){
-				   return;
-			   }
-			   $('#amountProduct').val(--amountVal); 
-			   amountPriceChange();
+		   amountProductButton();
+		   
+		   $('.amountProductPlus').trigger('click');
+		   
+		   $('#optionSelect').change(function(){
+			   var optionSelVal = $('#optionSelect').val();
+			   var optionSelPrice = $('#optionSelect').find('option[value='+optionSelVal+']').attr('selPrice') 
+			   var optionSelName = $('#optionSelect').find('option[value='+optionSelVal+']').html();
+			   var optionStr =  '<ul style=" list-style:none; padding-left:0px; padding-top: 10px; display: block;" price="'+ optionSelPrice +'" num="'+ optionSelVal +'">' 
+	         					+ '<li style=" border-bottom: 1px solid #BDBDBD;">'+ optionSelName +'<a class="optionSelRemove" style="font-weight:bold; float: right; cursor:pointer;">x</a></li>'  
+	         					+ '<li style="padding-top: 10px;">'   
+								+ '<button type="button" class="btn btn-b-n amountProductMinus" style="float: left; width: 30px; height: 30px;">' 
+						        + '<span style="margin: 0 auto;">-</span>'  
+			      				+ '</button>'	                     			 
+							 	+ '<input type="text" maxlength="3" disabled="disabled" class="amountProduct" value="0" style="text-align:center;  float: left; width: 35px; height: 31px;">'   
+								+ '<button type="button" class="btn btn-b-n amountProductPlus" style="width: 30px; height: 30px;">'    
+						        + '<span style="margin-left: -3px;">+</span>'        
+				     			+ '</button>'
+				     			+ '<span class="totalPrice" style="float: right;"></span>' 
+				 				+ '</li>'  
+	   							+ '</ul>';  
+				     
+			   if(optionSelVal == 0 || $('ul[num='+optionSelVal+']').length >0){ 
+				   return;			   
+			   } 
+ 			     
+			   $('#optionSelList').append(optionStr)
+			   amountProductButton(); 
+			   combinedPrice(); 
+			   $('ul[num='+optionSelVal+']').find('.amountProductPlus').trigger('click');
+			   
+			   $('.optionSelRemove').on('click',function(){
+				 $(this).closest('ul').slideUp(function() { 
+					 $(this).closest('ul').remove(); 
+					 combinedPrice();  
+				 });    
+ 
+			   });
+			   
 			   
 		   });
-		   
-		   $('#amountProductPlus').on('click',function(){ 
-			   var amountVal = $('#amountProduct').val();
-			   $('#amountProduct').val(++amountVal);    
-			   amountPriceChange();
- 
-		   }); 
+			
+		  
+		    
 		    
 		   
 	
@@ -370,7 +432,7 @@
             <div class="row justify-content-between"> 
       		 <div class="col-md-7 col-lg-7 section-md-t3" style="">    
 	            <div id="property-single-carousel" class="owl-carousel owl-arrow gallery-property" style="margin:0 auto; width: 500px; height: 700px;"> 
-	              <div class="carousel-item-b" style="height: 700px; ">   
+	              <div class="carousel-item-b" style=" height: 700px; ">   
 	                <img src="../resources/product/fixedPhoto/testMainP.jpg" alt="" style=" margin:0 auto;  width:auto; max-width:100%; height: auto; max-height: 100%;">  
 	              </div> 
 	              <div class="carousel-item-b" style="height: 700px;" >   
@@ -455,22 +517,41 @@
                         <strong>Garage:</strong>
                         <span>1</span>
                       </li>
-                    </ul>
+                    </ul> 
                   </div>
                   <div class="row">
                     <div class="col-sm-12" style="background-color: #f3f3f3;" >
-                    	<ul style=" list-style:none;    padding-left:0px; padding-top: 10px;">  	
-                    		<li style=" border-bottom: 1px solid #BDBDBD;">수량</li>  
+                    	<c:if test="${sessionScope.loginNickname == null}"> 
+                    	<ul style=" list-style:none; padding-left:0px; padding-top: 10px;" price="0">       	
+                    		<li style=" border-bottom: 3px solid #BDBDBD;">수량</li>  
                     		<li style="padding-top: 10px;"> 
-								<button type="button" class="btn btn-b-n" id="amountProductMinus"style="float: left; width: 30px; height: 30px;"> 
+								<button type="button" class="btn btn-b-n amountProductMinus" style="float: left; width: 30px; height: 30px;"> 
 									        <span style="margin: 0 auto;">-</span>  
 						      		</button>	                     			 
-	      							<input type="text" maxlength="3" disabled="disabled" id="amountProduct" value="1" style="text-align:center;  float: left; width: 35px; height: 31px;">   
-									<button type="button" class="btn btn-b-n" id="amountProductPlus" style="width: 30px; height: 30px;">     
+	      							<input type="text" maxlength="3" disabled="disabled" class="amountProduct" value="0" style="text-align:center;  float: left; width: 35px; height: 31px;">   
+									<button type="button" class="btn btn-b-n amountProductPlus"  style="width: 30px; height: 30px;">     
 									        <span style="margin-left: -3px;">+</span>        
 							     </button>
-							     <span id="totalPrice" style="float: right;"></span> 
+							     <span class="totalPrice" style="float: right;"></span> 
 							</li>  
+                    	</ul>  
+                    	</c:if>
+                    	<c:if test="${sessionScope.loginNickname != null}">      
+	                    	<ul style=" list-style:none; padding-left:0px; padding-top: 10px; display: block;">
+	                    		<li style=" border-bottom: 3px solid #BDBDBD; padding-bottom: 10px; ">     
+	                    			<select id="optionSelect" style="width: 370px;"> 
+	                    				<option selected="selected" value="0">옵션 선택</option>  
+	                    				<option value="1" selPrice="300">s</option>
+	                    				<option value="2" selPrice="400">m</option> 
+	                    				<option value="3" selPrice="500">l</option> 
+	                    			</select>
+	                    		</li>
+	                    	</ul>
+	                    	<div id="optionSelList">
+	                    	</div>
+                    	</c:if>
+                    	
+                    	<ul style=" list-style:none; padding-left:0px; padding-top: 10px; ">   	
                     		<li style="font-weight: bold; padding-top: 15px;"><span>총 상품금액  :</span><span style="float: right;" id="combinedPrice"></span></li>    
                     	</ul>
                     </div>
