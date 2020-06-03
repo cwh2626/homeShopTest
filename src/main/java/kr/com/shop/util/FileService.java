@@ -85,7 +85,10 @@ public class FileService {
 	 * @param path 저장할 경로
 	 * @return 저장된 파일명
 	 */
-	public static String saveTxtFile(String content, String uploadPath) {
+	public static String saveJspFile(String content, String uploadPath) {
+		// 한글꺠짐 방지
+		String utf = "<%@ page language=\"java\" contentType=\"text/html; charset=UTF-8\" pageEncoding=\"UTF-8\"%>";
+		
 		//업로드된 파일이 없거나 크기가 0이면 저장하지 않고 null을 리턴
 		if (content == null ) {
 			return null;
@@ -103,7 +106,7 @@ public class FileService {
 		String savedFilename = sdf.format(new Date());
 		
 		//원본 파일의 확장자
-		String ext = ".txt";
+		String ext = ".jsp";
 
 		//저장할 전체 경로를 포함한 File 객체
 		File serverFile = null;
@@ -124,9 +127,9 @@ public class FileService {
             BufferedWriter fw = new BufferedWriter(new FileWriter(serverFile, false));
              
             // 파일안에 문자열 쓰기
-            fw.write(content);
+            fw.write(utf+content);
             fw.flush();
- 
+  
             // 객체 닫기
             fw.close();
 

@@ -289,11 +289,12 @@
     </section><!-- End Intro Single-->
     <script>
 	   $(document).ready(function () {
-		   var amountProductPrice = 15000;
+		   const amountProductPrice = 15000;
 		   var amountProduct 
 		   var totalPriceStr
 		   
-		    
+		  
+		   
 		   function combinedPrice() {
 			   var allCombinedPrice = 0; 
 			   //amountProduct = $('#amountProduct').val();
@@ -345,6 +346,23 @@
 			   }); 
 		   }
 		   
+ 		   $(window).scroll(function() {
+			   var tabScrollVal = $('#pills-tab').offset().top;
+			   var windowScrollVal = $(window).scrollTop();
+			   
+			   if( tabScrollVal <= windowScrollVal){
+ 				   
+				  $('#navSupport').slideDown(function(){
+				  	$('#navSupport').css('display','block');
+				  }); 
+ 
+			   }else{ 
+				  $('#navSupport').slideUp(function() {
+					  $('#navSupport').css('display','none'); 
+				  });
+				    
+			   }
+		   });  
 		   
 		   $('.selectPhoto').on('click',function(){ 
 			   
@@ -388,8 +406,9 @@
 			   if(optionSelVal == 0 || $('ul[num='+optionSelVal+']').length >0){ 
 				   return;			   
 			   } 
- 			     
-			   $('#optionSelList').append(optionStr)
+ 			       
+			  $('#optionSelList').append(optionStr);  
+  
 			   amountProductButton(); 
 			   combinedPrice(); 
 			   $('ul[num='+optionSelVal+']').find('.amountProductPlus').trigger('click');
@@ -415,13 +434,33 @@
 	   // 가격 세번째 마다 ',' 붙이는 정규식
 	   function numberWithCommas(x) {
 		    return x.toString().replace(/\B(?=(\d{3})+(?!\d))/g, ",");
-		}
+	   }
 	   
-	 
+	   // Iframe 높이 자동조절
+	   function autoResize(i) { 
 
+           var iframeHeight= (i).contentWindow.document.body.scrollHeight;
 
+           (i).height=iframeHeight+20;
 
+       }
+	   
+	   // 오른쪽 고정 네비 href 이동함수
+	   function navLink(event){
+		   var tabScrollValue = $('#pills-tab').offset().top;
+		    
+		   if(event == 1){
+			   $('#pills-video-tab').trigger('click');
+		   }else if(event == 2){
+			   $('#pills-plans-tab').trigger('click');
+			   
+		   }else if(event == 3){
+			   $('#pills-map-tab').trigger('click');
+		   }
+		   $(window).scrollTop(tabScrollValue - 100);       
 
+ 	   }
+	   
     </script>
 
     <!-- ======= Property Single ======= -->
@@ -521,7 +560,7 @@
                   </div>
                   <div class="row">
                     <div class="col-sm-12" style="background-color: #f3f3f3;" >
-                    	<c:if test="${sessionScope.loginNickname == null}"> 
+                    	<c:if test="${sessionScope.loginNickname == null}">  
                     	<ul style=" list-style:none; padding-left:0px; padding-top: 10px;" price="0">       	
                     		<li style=" border-bottom: 3px solid #BDBDBD;">수량</li>  
                     		<li style="padding-top: 10px;"> 
@@ -539,7 +578,7 @@
                     	<c:if test="${sessionScope.loginNickname != null}">      
 	                    	<ul style=" list-style:none; padding-left:0px; padding-top: 10px; display: block;">
 	                    		<li style=" border-bottom: 3px solid #BDBDBD; padding-bottom: 10px; ">     
-	                    			<select id="optionSelect" style="width: 370px;"> 
+	                    			<select id="optionSelect" style="width: 370px;">  
 	                    				<option selected="selected" value="0">옵션 선택</option>  
 	                    				<option value="1" selPrice="300">s</option>
 	                    				<option value="2" selPrice="400">m</option> 
@@ -561,10 +600,10 @@
 		   						<input type="submit" style="width:261px; margin-right: 15px;" class="btn btn-b" value="구매하기">           
 		   						<button style="width: 58px; height: 58px; background-color: #f3f3f3;" class="btn">    
 		   						<span class="fa fa-shopping-bag fa-2x" aria-hidden="true"></span>       
-		   						</button> 	                
+		   						</button> 	                 
 		   						<button style="width: 58px; height: 58px; background-color: #f3f3f3;" class="btn">    
 		   						<span class="fa fa-heart-o fa-2x" aria-hidden="true"></span>     
-		   						</button> 	              
+		   						</button>   
                      		</li>
                     	</ul>
                     </div>
@@ -574,9 +613,9 @@
             </div>
           </div>
           <div class="col-md-10 offset-md-1">
-            <ul class="nav nav-pills-a nav-pills mb-3 section-t3" id="pills-tab" role="tablist">
+            <ul class="nav nav-pills-a nav-pills mb-3 section-t3" id="pills-tab" role="tablist">  
               <li class="nav-item">
-                <a class="nav-link active" id="pills-video-tab" data-toggle="pill" href="#pills-video" role="tab" aria-controls="pills-video" aria-selected="true">Video</a>
+                <a class="nav-link active" id="pills-video-tab" data-toggle="pill" href="#pills-video" role="tab" aria-controls="pills-video" aria-selected="true">View</a> 
               </li>
               <li class="nav-item">
                 <a class="nav-link" id="pills-plans-tab" data-toggle="pill" href="#pills-plans" role="tab" aria-controls="pills-plans" aria-selected="false">Floor Plans</a>
@@ -584,11 +623,11 @@
               <li class="nav-item">
                 <a class="nav-link" id="pills-map-tab" data-toggle="pill" href="#pills-map" role="tab" aria-controls="pills-map" aria-selected="false">Ubication</a>
               </li>
-            </ul>
-            <div class="tab-content" id="pills-tabContent">
-              <div class="tab-pane fade show active" id="pills-video" role="tabpanel" aria-labelledby="pills-video-tab">
-                <iframe src="https://player.vimeo.com/video/73221098" width="100%" height="460" frameborder="0" webkitallowfullscreen mozallowfullscreen allowfullscreen></iframe>
-              </div>
+            </ul>  
+            <div class="tab-content" id="pills-tabContent">  
+              <div class="tab-pane fade show active" id="pills-video" role="tabpanel" aria-labelledby="pills-video-tab" >     
+                <iframe src="http://localhost:8888/shop/resources/member/cwh2626@naver.com/description/202006021591076131059.jsp" onload="autoResize(this)" width="100%"   frameborder="0" ></iframe>   
+              </div>   
               <div class="tab-pane fade" id="pills-plans" role="tabpanel" aria-labelledby="pills-plans-tab">
                 <img src="assets/img/plan2.jpg" alt="" class="img-fluid">
               </div>
@@ -859,9 +898,43 @@
         </div>
       </div>
     </div>
-  </footer>
-  <!--/ Footer End /-->
-
+  </footer> 
+  <!--/ Footer End /-->           
+  <ul style="list-style:none; position: fixed; right: 15px; bottom: 50px;" id="navSupport">  
+    <li style="margin-bottom: 3px;">   
+      <a class="nav-link" href="javascript:navLink(1)"  style=" 
+  background: #2eca6a;  
+  color: #fff;
+  width: 44px; 
+  height: 44px;
+  text-align: center;
+  line-height: -6;      
+  font-size: 16px;
+  border-radius: 50%; " >V</a>  
+    </li>
+    <li style="margin-bottom: 3px;">  
+      <a class="nav-link" href="javascript:navLink(2)" style="
+  background: #2eca6a;  
+  color: #fff;
+  width: 44px;
+  height: 44px;
+  text-align: center;
+  line-height: -6;       
+  font-size: 16px;
+  border-radius: 50%; ">F</a>
+    </li>
+    <li > 
+      <a class="nav-link" href="javascript:navLink(3)" style=" 
+  background: #2eca6a;  
+  color: #fff;
+  width: 44px;
+  height: 44px;
+  text-align: center;
+  line-height: -6;      
+  font-size: 16px; 
+  border-radius: 50%; " >U</a>
+    </li>
+  </ul>
   <a href="#" class="back-to-top"><i class="fa fa-chevron-up"></i></a>
   <div id="preloader"></div>
 

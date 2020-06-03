@@ -113,7 +113,7 @@ public class ProductController {
 		
 		product.setEmail(member.getEmail());
 		
-		savedTxtFile = FileService.saveTxtFile(product.getProductDescription(), memberDescriptionFileDir);
+		savedTxtFile = FileService.saveJspFile(product.getProductDescription(), memberDescriptionFileDir);
 		
 		if(savedTxtFile != null) {
 			product.setProductDescription(savedTxtFile);
@@ -213,8 +213,12 @@ public class ProductController {
             //업로드는 성고하였으나 미리보기에서 서버에올라가는 시간차로 인한 엑박이 뜨기 시작한다.
             //그래서 새로운 시도는 url형식으로 컨트롤에 값을 보내어 컨트롤러 내에서 서버가 아닌 로컬컴퓨터의 하드디스크를 직접파일을 접근하여 
             //보여주었더니 성공하였다.
-            String fileUrl = "ckImgSubmit.do?fileName=" + savedfile+"&email=" + member.getEmail();  // 작성화면
             
+            // getRequestURL() : 현재 전체 주소!! http://localhost:8888/shop/product/insertSaleMain
+            // getRequestURI() : http://localhost:8888 이 부분을 제외한 현재주소
+            String fileUrl = request.getRequestURL().toString().replace(request.getRequestURI(),"/shop/product/") + "ckImgSubmit.do?fileName=" + savedfile+"&email=" + member.getEmail();  // 작성화면
+            
+
 	  		printWriter.println(
 				"<script>window.parent.CKEDITOR.tools.callFunction("
 				+callback+",'"+fileUrl+"','이미지가 업로드되었습니다.')"
