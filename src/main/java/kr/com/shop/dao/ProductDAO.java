@@ -59,9 +59,28 @@ public class ProductDAO {
 		return result;
 	}
 	
+	public Product getProductinpo(Product pd){
+		
+		Product result =null;
+		ProductMapper mapper = sqlSession.getMapper(ProductMapper.class);
+		
+		result = mapper.getProductinpo(pd);
+		
+		return result;
+	}
+	
+	public ArrayList<ProductOption> getPrductOptioninpo(int productSeq){
+		
+		ArrayList<ProductOption> result = null;
+		ProductMapper mapper = sqlSession.getMapper(ProductMapper.class);
+		
+		result = mapper.getPrductOptioninpo(productSeq);
+		
+		return result;
+	}
+	
 	public int insertSaleProductOption(ProductOption po, int ProductSeq) {
 		HashMap<String, Object> map = new HashMap<>();
-		logger.debug("들어왔다");
 
 		if(po.getOptionName().length() == 0 || po.getOptionName() == null) {
 			po.setOptionName("unknown");
@@ -71,7 +90,6 @@ public class ProductDAO {
 		map.put("optionName", po.getOptionName());
 		map.put("selectNum", po.getSelectNum());
 		map.put("productSeq", ProductSeq); 
-		logger.debug("들어왔다1 oit {}",po.getOptionName());
 
 		ProductMapper mapper = sqlSession.getMapper(ProductMapper.class);
 		

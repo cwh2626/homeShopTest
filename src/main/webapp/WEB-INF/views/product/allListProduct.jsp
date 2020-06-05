@@ -322,7 +322,7 @@
           </div>
           <c:forEach var="list" items="${productList}">
 	          <div class="col-md-4">
-          		<a href="#">
+          		<a href="inpoProduct?email=${list.email}&productSeq=${list.productSeq}">
 	            <div class="card-box-a card-shadow">      
 	              <div  class="img-box-a">  
 	                <img src="../resources/member/${list.email}/photo/${list.productFirstPhotoName}" alt=" " class="img-a img-fluid" style="max-width: 100%;   height: 380px;"> 

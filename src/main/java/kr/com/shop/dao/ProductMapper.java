@@ -6,6 +6,7 @@ import java.util.HashMap;
 import org.apache.ibatis.session.RowBounds;
 
 import kr.com.shop.vo.Product;
+import kr.com.shop.vo.ProductOption;
 
 public interface ProductMapper {
 	
@@ -19,6 +20,10 @@ public interface ProductMapper {
 	public Product selectSaleinpo(Product product);
 
 	public int insertSaleProductOption(HashMap<String, Object> map);
+	
+	public Product getProductinpo(Product pd);
+	
+	public ArrayList<ProductOption> getPrductOptioninpo(int productSeq);
 
 
 

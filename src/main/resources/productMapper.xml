@@ -44,6 +44,14 @@
 	select * from Product_TB where email like #{email} and productFirstPhotoName like #{productFirstPhotoName}
 </select>
 
+<select id="getProductinpo" parameterType="Product" resultType="Product">
+	select * from Product_TB where email like #{email} and productSeq = #{productSeq}
+</select>
+
+<select id="getPrductOptioninpo" parameterType="Int" resultType="ProductOption">
+	select * from ProductOption where productSeq = #{productSeq} ORDER BY selectNum ASC
+</select>
+
 
 </mapper>
 

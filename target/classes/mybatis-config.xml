@@ -6,6 +6,7 @@
 	<typeAliases>
 		<typeAlias type="kr.com.shop.vo.Member" alias="Member" />
 		<typeAlias type="kr.com.shop.vo.Product" alias="Product" />
+		<typeAlias type="kr.com.shop.vo.ProductOption" alias="ProductOption" />
 	</typeAliases>
 	<mappers>
 		<mapper resource="memberMapper.xml" />

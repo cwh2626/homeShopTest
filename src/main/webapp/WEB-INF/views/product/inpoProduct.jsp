@@ -265,7 +265,7 @@
         <div class="row">
           <div class="col-md-12 col-lg-8">
             <div class="title-single-box">
-              <h1 class="title-single">제품이름</h1>
+              <h1 class="title-single">${productInpo.productName}</h1>
               <span class="color-text-a">Chicago, IL 606543</span>
             </div>
           </div>
@@ -289,11 +289,11 @@
     </section><!-- End Intro Single-->
     <script>
 	   $(document).ready(function () {
-		   const amountProductPrice = 15000;
+		   const amountProductPrice = ${productInpo.productPrice};
 		   var amountProduct 
 		   var totalPriceStr
 		   
-		  
+		   $('.title-c').html(numberWithCommas(amountProductPrice));
 		   
 		   function combinedPrice() {
 			   var allCombinedPrice = 0; 
@@ -333,7 +333,9 @@
 		   } 
 		   
  		   function amountProductButton(){
-			   
+ 			   $('.amountProductMinus').off(); 
+			   $('.amountProductPlus').off(); 
+	 
 			   $('.amountProductMinus').on('click',function(){ 
 				   amountProductChange(0,$(this)); 
 	
@@ -469,35 +471,21 @@
         <div class="row">
           <div class="col-sm-12"> 
             <div class="row justify-content-between"> 
-      		 <div class="col-md-7 col-lg-7 section-md-t3" style="">    
-	            <div id="property-single-carousel" class="owl-carousel owl-arrow gallery-property" style="margin:0 auto; width: 500px; height: 700px;"> 
-	              <div class="carousel-item-b" style=" height: 700px; ">   
-	                <img src="../resources/product/fixedPhoto/testMainP.jpg" alt="" style=" margin:0 auto;  width:auto; max-width:100%; height: auto; max-height: 100%;">  
-	              </div> 
-	              <div class="carousel-item-b" style="height: 700px;" >   
-	                <img src="../resources/product/fixedPhoto/testMainP1.jpg" alt="" style=" margin:0 auto;  width:auto; max-width:100%; height: auto; max-height: 100%; ">     
-	              </div> 
-	              <div class="carousel-item-b" style="height: 700px;">
-	                <img src="../resources/product/fixedPhoto/testMainP2.jpg" alt="" style=" margin:0 auto;  width:auto; max-width:100%; height: auto; max-height: 100%;"> 
-	              </div> 
-	              <div class="carousel-item-b" style="height: 700px;">    
-	                <img src="../resources/product/fixedPhoto/testMainP3.jpeg" alt="" style=" margin:0 auto;  width:auto; max-width:100%; height: auto; max-height: 100%;">  
-	              </div>   
+      		 <div class="col-md-7 col-lg-7 section-md-t3" style="">     
+	            <div id="property-single-carousel" class="owl-carousel owl-arrow gallery-property" style="margin:0 auto; width: 500px; height: 570px;"> 
+	              <c:forEach var="list" items="${photoList}" > 
+		              <div class="carousel-item-b" style=" height: 570px; ">    
+		                <img src="../resources/member/${productInpo.email}/photo/${list}" alt="" style=" margin:0 auto;  width:auto; max-width:100%; height: auto; max-height: 100%;">  
+		              </div> 
+	              </c:forEach> 
            	 	</div>  
            	 	<div style="position:relative;  width:500px; height: 120px; margin: 0 auto; z-index: 10;" >        
            	 		<ul style="list-style:none;">    
-           	 			<li style="float: left; margin-right: 5px;">     
-        	 				<img src="../resources/product/fixedPhoto/testMainP.jpg" class="selectPhoto" alt="" style="  cursor:pointer;  widith: 60px; height: 78px;"> 
-           	 			</li>
-           	 			<li style="float: left; margin-right: 5px;">
-        	 				<img src="../resources/product/fixedPhoto/testMainP1.jpg" class="selectPhoto" alt="" style=" cursor:pointer; widith: 60px; height: 78px;"> 
-           	 			</li>
-           	 			<li style="float: left; margin-right: 5px;">
-        	 				<img src="../resources/product/fixedPhoto/testMainP2.jpg" class="selectPhoto" alt="" style=" cursor:pointer; widith: 60px; height: 78px;"> 
-           	 			</li>
-           	 			<li style="float: left; margin-right: 5px;"> 
-        	 				<img src="../resources/product/fixedPhoto/testMainP3.jpeg" class="selectPhoto" alt="" style=" cursor:pointer; widith: 60px; height: 78px;"> 
-           	 			</li>
+						<c:forEach var="list" items="${photoList}" >  
+	           	 			<li style="float: left; margin-right: 5px;">     
+	        	 				<img src="../resources/member/${productInpo.email}/photo/${list}" class="selectPhoto" alt="" style="  cursor:pointer;  widith: 60px; height: 78px;"> 
+	           	 			</li>
+						</c:forEach>
            	 		</ul>
            	 	</div>
            	</div> 
@@ -508,7 +496,7 @@
                       <span class="ion-money">₩</span> 
                     </div>
                     <div class="card-title-c align-self-center">
-                      <h5 class="title-c">1.500.000</h5>  
+                      <h5 class="title-c"></h5>  
                     </div> 
                   </div>
                 </div>
@@ -560,7 +548,7 @@
                   </div>
                   <div class="row">
                     <div class="col-sm-12" style="background-color: #f3f3f3;" >
-                    	<c:if test="${sessionScope.loginNickname == null}">  
+                    	<c:if test="${productInpo.salesMethod == 0}">  
                     	<ul style=" list-style:none; padding-left:0px; padding-top: 10px;" price="0">       	
                     		<li style=" border-bottom: 3px solid #BDBDBD;">수량</li>  
                     		<li style="padding-top: 10px;"> 
@@ -570,19 +558,23 @@
 	      							<input type="text" maxlength="3" disabled="disabled" class="amountProduct" value="0" style="text-align:center;  float: left; width: 35px; height: 31px;">   
 									<button type="button" class="btn btn-b-n amountProductPlus"  style="width: 30px; height: 30px;">     
 									        <span style="margin-left: -3px;">+</span>        
-							     </button>
+							     </button> 
 							     <span class="totalPrice" style="float: right;"></span> 
 							</li>  
                     	</ul>  
                     	</c:if>
-                    	<c:if test="${sessionScope.loginNickname != null}">      
+                    	<c:if test="${productInpo.salesMethod != 0}">      
 	                    	<ul style=" list-style:none; padding-left:0px; padding-top: 10px; display: block;">
 	                    		<li style=" border-bottom: 3px solid #BDBDBD; padding-bottom: 10px; ">     
 	                    			<select id="optionSelect" style="width: 370px;">  
-	                    				<option selected="selected" value="0">옵션 선택</option>  
-	                    				<option value="1" selPrice="300">s</option>
-	                    				<option value="2" selPrice="400">m</option> 
-	                    				<option value="3" selPrice="500">l</option> 
+	                    				<option selected="selected" value="0">옵션 선택</option> 
+	                    				<c:forEach var="list" items="${productOptionInpo}">          
+		                    				<option value="${list.selectNum}" selPrice="${list.additionalAmount}">${list.optionName}   
+		                    				<c:if test="${list.additionalAmount != 0 }">
+		                    				 (+${list.additionalAmount})
+		                    				</c:if> 
+		                    				 </option>
+	                    				</c:forEach> 
 	                    			</select>
 	                    		</li>
 	                    	</ul>
@@ -625,9 +617,9 @@
               </li>
             </ul>  
             <div class="tab-content" id="pills-tabContent">  
-              <div class="tab-pane fade show active" id="pills-video" role="tabpanel" aria-labelledby="pills-video-tab" >     
-                <iframe src="http://localhost:8888/shop/resources/member/cwh2626@naver.com/description/202006021591076131059.jsp" onload="autoResize(this)" width="100%"   frameborder="0" ></iframe>   
-              </div>   
+              <div class="tab-pane fade show active" id="pills-video" role="tabpanel" aria-labelledby="pills-video-tab" >      
+                <iframe src="../resources/member/${productInpo.email}/description/${productInpo.productDescription}" onload="autoResize(this)" width="100%"   frameborder="0" ></iframe>   
+              </div>    
               <div class="tab-pane fade" id="pills-plans" role="tabpanel" aria-labelledby="pills-plans-tab">
                 <img src="assets/img/plan2.jpg" alt="" class="img-fluid">
               </div>

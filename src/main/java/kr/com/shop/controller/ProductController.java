@@ -78,22 +78,51 @@ public class ProductController {
 	}
 	
 	@RequestMapping(value ="inpoProduct", method = RequestMethod.GET)
-	public String inpoProduct() {  
+	public String inpoProduct(Product pd, Model model) {
+		
+		logger.debug("inpo : {}",pd.toString());
+		ArrayList<ProductOption> pdo = null;
+		ArrayList<String> photoList = new ArrayList<String>();
+		pd =pdao.getProductinpo(pd);
+		logger.debug("inpo2 : {}",pd.toString());
+		 
+		photoList.add(pd.getProductFirstPhotoName());
+		if(pd.getProductSubPhoto1Name() != null) {
+			photoList.add(pd.getProductSubPhoto1Name());
+		}
+		if(pd.getProductSubPhoto2Name() != null) {
+			photoList.add(pd.getProductSubPhoto2Name());
+		}
+		if(pd.getProductSubPhoto3Name() != null) {
+			photoList.add(pd.getProductSubPhoto3Name());
+		}
+		if(pd.getProductSubPhoto4Name() != null) {
+			photoList.add(pd.getProductSubPhoto4Name());
+		}
+		
+		if(pd.getSalesMethod() != 0) {
+			logger.debug("pdo 들어옮");
+			pdo = pdao.getPrductOptioninpo(pd.getproductSeq());
+			model.addAttribute("productOptionInpo", pdo);
+			logger.debug("pdo {}", pdo.toString());
+			
+		}
+		model.addAttribute("productInpo", pd);
+		model.addAttribute("photoList", photoList);
+		
 		return "product/inpoProduct";
 	}
 	
 	@RequestMapping(value ="insertSaleMain", method = RequestMethod.GET)
 	public String insertSaleMain() { 
 		return "product/insertProduct";
-	} 
-	
-	@RequestMapping(value ="testData", method = RequestMethod.GET)
-	public String testData( ProductOption po) throws Exception { 
-		// 졸리다 이거 내일하자 아아아아 짜증나
-		
-				
-		return null; 
 	}
+	
+	@RequestMapping(value ="paymentProduct", method = RequestMethod.GET)
+	public String paymentProduct() { 
+		return "product/paymentProduct";
+	}
+	
 	@RequestMapping(value ="insertSaleWrite", method = RequestMethod.POST)
 	public String insertSaleWrite(Product product,ProductOption po, MultipartFile productFirstPhoto, MultipartFile productSubPhoto1
 												, MultipartFile productSubPhoto2 , MultipartFile productSubPhoto3
