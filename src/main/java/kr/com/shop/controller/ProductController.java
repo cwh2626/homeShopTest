@@ -77,8 +77,8 @@ public class ProductController {
 		return "product/allListProduct";
 	}
 	
-	@RequestMapping(value ="inpoProduct", method = RequestMethod.GET)
-	public String inpoProduct(Product pd, Model model) {
+	@RequestMapping(value ="infoProduct", method = RequestMethod.GET)
+	public String infoProduct(Product pd, Model model) {
 		
 		logger.debug("inpo : {}",pd.toString());
 		ArrayList<ProductOption> pdo = null;
@@ -101,7 +101,6 @@ public class ProductController {
 		}
 		
 		if(pd.getSalesMethod() != 0) {
-			logger.debug("pdo 들어옮");
 			pdo = pdao.getPrductOptioninpo(pd.getproductSeq());
 			model.addAttribute("productOptionInpo", pdo);
 			logger.debug("pdo {}", pdo.toString());
@@ -110,7 +109,7 @@ public class ProductController {
 		model.addAttribute("productInpo", pd);
 		model.addAttribute("photoList", photoList);
 		
-		return "product/inpoProduct";
+		return "product/infoProduct";
 	}
 	
 	@RequestMapping(value ="insertSaleMain", method = RequestMethod.GET)
@@ -118,8 +117,20 @@ public class ProductController {
 		return "product/insertProduct";
 	}
 	
-	@RequestMapping(value ="paymentProduct", method = RequestMethod.GET)
-	public String paymentProduct() { 
+	@RequestMapping(value ="paymentProduct", method = RequestMethod.POST)
+	public String paymentProduct(ProductOption po, int productSeq
+			,@RequestParam(value="singleSupply" ,defaultValue="0")int singleSupply) {
+		// 이부분은 내일합시다
+		logger.debug("prodcutSeq : {}", productSeq);
+		if(singleSupply != 0) {
+			logger.debug("singleSupply: {}", singleSupply);
+			
+		}else {
+			for(ProductOption res : po.getList()) {
+				logger.debug("seleNum : {} , Volume : {}", res.getSelectNum(), res.getVolume());
+				
+			}
+		}
 		return "product/paymentProduct";
 	}
 	

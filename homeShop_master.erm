@@ -135,7 +135,7 @@
 			</connections>
 			<display>false</display>
 			<creation_date>2020-04-30 13:17:03</creation_date>
-			<updated_date>2020-05-27 18:54:13</updated_date>
+			<updated_date>2020-06-10 15:55:37</updated_date>
 			<model_property>
 				<name>프로젝트명</name>
 				<value></value>
@@ -542,11 +542,11 @@
 	<contents>
 		<table>
 			<id>0</id>
-			<height>75</height>
-			<width>120</width>
+			<height>185</height>
+			<width>204</width>
 				<font_name>.AppleSystemUIFont</font_name>
 				<font_size>9</font_size>
-			<x>600</x>
+			<x>744</x>
 			<y>96</y>
 			<color>
 				<r>128</r>
@@ -804,11 +804,11 @@
 		</table>
 		<table>
 			<id>1</id>
-			<height>75</height>
-			<width>194</width>
+			<height>276</height>
+			<width>270</width>
 				<font_name>.AppleSystemUIFont</font_name>
 				<font_size>9</font_size>
-			<x>240</x>
+			<x>288</x>
 			<y>96</y>
 			<color>
 				<r>128</r>
@@ -1288,11 +1288,11 @@
 		<table>
 			<id>2</id>
 			<height>140</height>
-			<width>205</width>
+			<width>214</width>
 				<font_name>.AppleSystemUIFont</font_name>
 				<font_size>9</font_size>
-			<x>0</x>
-			<y>108</y>
+			<x>636</x>
+			<y>396</y>
 			<color>
 				<r>128</r>
 				<g>128</g>

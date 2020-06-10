@@ -388,6 +388,7 @@
 		   $('.amountProductPlus').trigger('click');
 		   
 		   $('#optionSelect').change(function(){
+			   var strLength = $('a[class=optionSelRemove]').length; 
 			   var optionSelVal = $('#optionSelect').val();
 			   var optionSelPrice = $('#optionSelect').find('option[value='+optionSelVal+']').attr('selPrice') 
 			   var optionSelName = $('#optionSelect').find('option[value='+optionSelVal+']').html();
@@ -397,7 +398,8 @@
 								+ '<button type="button" class="btn btn-b-n amountProductMinus" style="float: left; width: 30px; height: 30px;">' 
 						        + '<span style="margin: 0 auto;">-</span>'  
 			      				+ '</button>'	                     			 
-							 	+ '<input type="text" maxlength="3" disabled="disabled" class="amountProduct" value="0" style="text-align:center;  float: left; width: 35px; height: 31px;">'   
+							 	+ '<input type="text" maxlength="3" disabled="disabled" class="amountProduct" name="list['+strLength+'].volume" value="0" style="text-align:center;  float: left; width: 35px; height: 31px;">'
+							 	+ '<input type="hidden" name="list['+strLength+'].selectNum" value="'+optionSelVal+'"  >'
 								+ '<button type="button" class="btn btn-b-n amountProductPlus" style="width: 30px; height: 30px;">'    
 						        + '<span style="margin-left: -3px;">+</span>'        
 				     			+ '</button>'
@@ -432,6 +434,10 @@
 		   
 	
 	   });
+	   
+	   function paySubmit(){
+		   $('.amountProduct').removeAttr('disabled');
+	   }
 	   
 	   // 가격 세번째 마다 ',' 붙이는 정규식
 	   function numberWithCommas(x) {
@@ -478,13 +484,14 @@
 		                <img src="../resources/member/${productInpo.email}/photo/${list}" alt="" style=" margin:0 auto;  width:auto; max-width:100%; height: auto; max-height: 100%;">  
 		              </div> 
 	              </c:forEach> 
-           	 	</div>  
+           	 	</div>   
            	 	<div style="position:relative;  width:500px; height: 120px; margin: 0 auto; z-index: 10;" >        
            	 		<ul style="list-style:none;">    
 						<c:forEach var="list" items="${photoList}" >  
 	           	 			<li style="float: left; margin-right: 5px;">     
 	        	 				<img src="../resources/member/${productInpo.email}/photo/${list}" class="selectPhoto" alt="" style="  cursor:pointer;  widith: 60px; height: 78px;"> 
 	           	 			</li>
+	           	 			
 						</c:forEach>
            	 		</ul>
            	 	</div>
@@ -547,6 +554,8 @@
                     </ul> 
                   </div>
                   <div class="row">
+                   	<form action="paymentProduct" method="post" onsubmit="return paySubmit()" > 
+                   	<input type="hidden" name="productSeq" value="${productInpo.productSeq}">   
                     <div class="col-sm-12" style="background-color: #f3f3f3;" >
                     	<c:if test="${productInpo.salesMethod == 0}">  
                     	<ul style=" list-style:none; padding-left:0px; padding-top: 10px;" price="0">       	
@@ -555,7 +564,7 @@
 								<button type="button" class="btn btn-b-n amountProductMinus" style="float: left; width: 30px; height: 30px;"> 
 									        <span style="margin: 0 auto;">-</span>  
 						      		</button>	                     			 
-	      							<input type="text" maxlength="3" disabled="disabled" class="amountProduct" value="0" style="text-align:center;  float: left; width: 35px; height: 31px;">   
+	      							<input type="text" maxlength="3" disabled="disabled" class="amountProduct" name="singleSupply" value="0" style="text-align:center;  float: left; width: 35px; height: 31px;">   
 									<button type="button" class="btn btn-b-n amountProductPlus"  style="width: 30px; height: 30px;">     
 									        <span style="margin-left: -3px;">+</span>        
 							     </button> 
@@ -599,6 +608,7 @@
                      		</li>
                     	</ul>
                     </div>
+                    </form>
                   </div> 
                 </div>
               </div>

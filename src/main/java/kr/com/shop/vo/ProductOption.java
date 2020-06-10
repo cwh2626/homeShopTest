@@ -3,12 +3,19 @@ package kr.com.shop.vo;
 import java.util.List;
 
 public class ProductOption {
-
+ 
 	String optionName;
 	Integer additionalAmount;
 	int selectNum;
+	int volume;
 	List<ProductOption> list;
 	
+	public int getVolume() {
+		return volume;
+	}
+	public void setVolume(int volume) {
+		this.volume = volume;
+	}
 	public String getOptionName() {
 		return optionName;
 	}
@@ -33,12 +40,12 @@ public class ProductOption {
 	public void setList(List<ProductOption> list) {
 		this.list = list;
 	}
-	
 	@Override
 	public String toString() {
 		return "ProductOption [optionName=" + optionName + ", additionalAmount=" + additionalAmount + ", selectNum="
-				+ selectNum + ", list=" + list + "]";
+				+ selectNum + ", volume=" + volume + ", list=" + list + "]";
 	}
+	
 	
 	
 	
