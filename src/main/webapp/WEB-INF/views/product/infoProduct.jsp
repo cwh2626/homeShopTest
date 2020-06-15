@@ -406,7 +406,7 @@
 				     			+ '<span class="totalPrice" style="float: right;"></span>' 
 				 				+ '</li>'  
 	   							+ '</ul>';  
-	   							strLength++; 
+	   							strLength++; 	
 				     
 			   if(optionSelVal == 0 || $('ul[num='+optionSelVal+']').length >0){ 
 				   return;			   
