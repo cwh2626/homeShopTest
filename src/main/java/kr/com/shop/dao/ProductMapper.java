@@ -23,7 +23,12 @@ public interface ProductMapper {
 	
 	public Product getProductinpo(Product pd);
 	
+	public Product getSeqProductInfo(int productSeq);
+	
 	public ArrayList<ProductOption> getPrductOptioninpo(int productSeq);
+	
+	public ProductOption getSelProductOption(int productSeq, int selectNum);
+
 
 
 

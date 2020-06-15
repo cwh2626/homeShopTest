@@ -387,8 +387,8 @@
 		   
 		   $('.amountProductPlus').trigger('click');
 		   
+		   var strLength = 0;
 		   $('#optionSelect').change(function(){
-			   var strLength = $('a[class=optionSelRemove]').length; 
 			   var optionSelVal = $('#optionSelect').val();
 			   var optionSelPrice = $('#optionSelect').find('option[value='+optionSelVal+']').attr('selPrice') 
 			   var optionSelName = $('#optionSelect').find('option[value='+optionSelVal+']').html();
@@ -406,6 +406,7 @@
 				     			+ '<span class="totalPrice" style="float: right;"></span>' 
 				 				+ '</li>'  
 	   							+ '</ul>';  
+	   							strLength++; 
 				     
 			   if(optionSelVal == 0 || $('ul[num='+optionSelVal+']').length >0){ 
 				   return;			   
@@ -487,11 +488,10 @@
            	 	</div>   
            	 	<div style="position:relative;  width:500px; height: 120px; margin: 0 auto; z-index: 10;" >        
            	 		<ul style="list-style:none;">    
-						<c:forEach var="list" items="${photoList}" >  
+						<c:forEach var="list"  items="${photoList}" >  
 	           	 			<li style="float: left; margin-right: 5px;">     
 	        	 				<img src="../resources/member/${productInpo.email}/photo/${list}" class="selectPhoto" alt="" style="  cursor:pointer;  widith: 60px; height: 78px;"> 
 	           	 			</li>
-	           	 			
 						</c:forEach>
            	 		</ul>
            	 	</div>
@@ -549,14 +549,14 @@
                       </li>
                       <li class="d-flex justify-content-between">
                         <strong>Garage:</strong>
-                        <span>1</span>
+                        <span>1</span> 
                       </li>
                     </ul> 
                   </div>
-                  <div class="row">
                    	<form action="paymentProduct" method="post" onsubmit="return paySubmit()" > 
-                   	<input type="hidden" name="productSeq" value="${productInpo.productSeq}">   
+                  <div class="row">  
                     <div class="col-sm-12" style="background-color: #f3f3f3;" >
+	                   	<input type="hidden" name="productSeq" value="${productInpo.productSeq}">   
                     	<c:if test="${productInpo.salesMethod == 0}">  
                     	<ul style=" list-style:none; padding-left:0px; padding-top: 10px;" price="0">       	
                     		<li style=" border-bottom: 3px solid #BDBDBD;">수량</li>  
@@ -575,7 +575,7 @@
                     	<c:if test="${productInpo.salesMethod != 0}">      
 	                    	<ul style=" list-style:none; padding-left:0px; padding-top: 10px; display: block;">
 	                    		<li style=" border-bottom: 3px solid #BDBDBD; padding-bottom: 10px; ">     
-	                    			<select id="optionSelect" style="width: 370px;">  
+	                    			<select id="optionSelect" style="width: 370px;">   
 	                    				<option selected="selected" value="0">옵션 선택</option> 
 	                    				<c:forEach var="list" items="${productOptionInpo}">          
 		                    				<option value="${list.selectNum}" selPrice="${list.additionalAmount}">${list.optionName}   
@@ -591,7 +591,7 @@
 	                    	</div>
                     	</c:if>
                     	
-                    	<ul style=" list-style:none; padding-left:0px; padding-top: 10px; ">   	
+                    	<ul style=" list-style:none; padding-left:0px; padding-top: 10px; ">     	
                     		<li style="font-weight: bold; padding-top: 15px;"><span>총 상품금액  :</span><span style="float: right;" id="combinedPrice"></span></li>    
                     	</ul>
                     </div>
@@ -608,8 +608,8 @@
                      		</li>
                     	</ul>
                     </div>
-                    </form>
                   </div> 
+                    </form>
                 </div>
               </div>
             </div>

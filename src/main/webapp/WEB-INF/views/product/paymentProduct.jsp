@@ -39,7 +39,6 @@
   
   <!-- ======== script ======== -->	 
   
-  <script type="text/javascript" src="../resources/ckeditor/ckeditor.js"></script>
   <script type="text/javascript" src="../resources/jquery/jquery-3.4.1.min.js"></script>
   <script src="https://t1.daumcdn.net/mapjsapi/bundle/postcode/prod/postcode.v2.js"></script><!--카카오 우편API -->
    
@@ -349,6 +348,78 @@
     <!-- End Intro Single-->
 
 	<script>
+	$(document).ready(function(){  
+		var moneySum = 0;
+		var shippingSum = 0;
+		$(".moneySum").each(function(index, item){
+			var n = parseInt($(item).html().replace(/,/g,"")); 
+			moneySum += n;  
+		})
+		
+		$('.productMoneySum').html(numberWithCommas(moneySum)); 
+		$('#finalAmount').html(numberWithCommas(moneySum)); 
+		$('#finalPaymentAmount').html(numberWithCommas(moneySum));  
+		
+		$(".shippingCharge").each(function(index, item){
+			var n = parseInt($(item).html().replace(/,/g,"")); 
+			shippingSum += n;  
+		})
+		$('#finalShippingCharge').html(numberWithCommas(shippingSum));
+		$('#finalTotal').html(numberWithCommas(moneySum+shippingSum)); 
+		var adr = '${sessionScope.login.address}'; 
+		var adrList = adr.split(',');
+		$('#recipient_address').val(adrList[0]); 
+		$('#recipient_detailAddress').val(adrList[1]);  
+		$('#Buyer_address').val(adrList[0]); 
+		$('#Buyer_detailAddress').val(adrList[1]);   
+		//split
+		/* 
+		arr.forEach(function(element){
+		    console.log(element); // 0 1 2 3 4 5 6 7 8 9 10
+		});
+		 */
+		
+		 $('.deliveryMethodSel').change(function(){
+			var dmsv = $(this).val();
+			
+			if(dmsv == 1){
+				$('#recipient_postcode').val('${sessionScope.login.postalCode}'); 
+				$('#recipient_address').val(adrList[0]); 
+				$('#recipient_detailAddress').val(adrList[1]);  
+					
+			}else{
+				$('#recipient_postcode').val('준비중'); 
+				$('#recipient_address').val('준비중');  
+				$('#recipient_detailAddress').val('준비중');  
+			}
+			
+		 });
+		 
+		 $('#allCheckbox').change(function(){
+								  
+			 if($("#allCheckbox").is(":checked") == true){
+				 $('input[type=checkbox]').each(function(index, item){ 
+					 // prop 와 attr의 차이
+					 // -attr 속성을 직접적으로 바꾸는것이지만 prop도 비슷하다 하지마너 prop는 좀더 제어에 중점을 두고 있기에 특정 제어 속성을 값이 아닌 blooean 형태로 나온다
+					 // 여기에서도 attr로 할 경우에는 따로 체크한것은 작동을 안하지만 제어를 중점으로 둔 prop로하면 확실히 체크했어도 제어가 가능하다
+					 $(this).prop('checked',true); 
+				 })
+
+			 }else{   
+				 $('input[type=checkbox]').each(function(index, item){  
+					 $(this).prop('checked',false);
+				 })
+			 }
+			  
+		 });
+ 
+ 	  });
+		 
+		// 가격 세번째 마다 ',' 붙이는 정규식
+	   function numberWithCommas(x) {
+		    return x.toString().replace(/\B(?=(\d{3})+(?!\d))/g, ",");
+	   }
+	
 	 //우편찾기 버튼 클릭시 실행
 	   function sample6_execDaumPostcode() {
 	       new daum.Postcode({
@@ -424,58 +495,33 @@
   						</tr>
   						<tr>
   						   <td style="padding: 10px;">    
-  						   	<img alt="" style="width: 70px; height: 88px;" src="../resources/member/cwh2626@naver.com/photo/20200602.jpeg">
+  						   	<img alt="" style="width: 70px; height: 88px;" src="../resources/member/${productInfo.email}/photo/${productInfo.productFirstPhotoName}">
   						   </td>
   						   <td style="text-align: left;">  
-  						   	<span style="font-size: large; font-weight: bolder;">상품 이름</span>   
-  						   	<ul style="list-style: none; background-color: #f3f3f3; border:1px solid #BDBDBD; padding-left: 0; ">   
-  						   		<li style="padding:8px; margin: 7px;">      
-  						   			<span>옵션 선택 2fdskjfafdskewai;jjai;efsdadfsdfdsfsj</span><span style="float: right;"><span style="width: 200px; text-align: right;">23개</span>&nbsp;&nbsp;&nbsp;&nbsp;<span>100,000</span></span>  
-  						   		</li>   
-  						   		<li style=" padding:8px; margin: 7px; border-top: 1px solid #BDBDBD;">     
-  						   			<span>옵션 선택 2fdskjfafdskewai;jjai;efsdadfsdfdsfsj</span><span style="float: right;"><span style="width: 200px; text-align: right;">23개</span>&nbsp;&nbsp;&nbsp;&nbsp;<span>100,02000</span></span>  
-  						   		</li> 
-  						   		<li style=" padding:8px; margin: 7px; border-top: 1px solid #BDBDBD;">    
-  						   			<span>옵션 선택 2fdskjfafdskewai;jjai;efsdadfsdfdsfsj</span><span style="float: right;"><span style="width: 200px; text-align: right;">2개</span>&nbsp;&nbsp;&nbsp;&nbsp;<span>10033,000</span></span>  
-  						   		</li>
+  						   	<span style="font-size: large; font-weight: bolder;">${productInfo.productName}</span>   
+  						   	<ul style="list-style: none; background-color: #f3f3f3; border:1px solid #BDBDBD; padding-left: 0; ">  
+  						   		<c:forEach var="list" items="${productOptionInfo}" varStatus="status" >
+	  						   		<c:if test="${status.first == true}">
+	  						   		<li style="padding:8px; margin: 7px;">
+	  						   			<span>${list.optionName}</span><span style="float: right;"><span style="width: 200px; text-align: right;">${list.volume}개</span>&nbsp;&nbsp;&nbsp;&nbsp;<span class="moneySum">${list.moneySum}</span></span>  
+	  						   		</li>   
+	  						   		</c:if>
+	  						   		<c:if test="${status.first != true}">
+	  						   		<li style="padding:8px; margin: 7px; border-top: 1px solid #BDBDBD; "> 
+	  						   			<span>${list.optionName}</span><span style="float: right;"><span style="width: 200px; text-align: right;">${list.volume}개</span>&nbsp;&nbsp;&nbsp;&nbsp;<span class="moneySum">${list.moneySum}</span></span>  
+	  						   		</li>   
+	  						   		</c:if>
+  						   		</c:forEach>  
   						   	</ul>
   						   </td>
   						   <td>
-  						   	<span>300,000</span>
+  						   	<span class="productMoneySum"></span>
   						   </td>
   						   <td>
-  						   	<span>3,000</span> 
+  						   	<span class="shippingCharge">3,000</span> 
   						   </td>
   						   <td> 
-  						   	<span>조웅희</span>  
-  						   </td>
-  						</tr>
-  						<tr>
-  						   <td style="padding: 10px;">    
-  						   	<img alt="" style="width: 70px; height: 88px;" src="../resources/member/cwh2626@naver.com/photo/20200602.jpeg">
-  						   </td>
-  						   <td style="text-align: left;">  
-  						   	<span style="font-size: large; font-weight: bolder;">상품 이름</span>   
-  						   	<ul style="list-style: none; background-color: #f3f3f3; border:1px solid #BDBDBD; padding-left: 0; ">   
-  						   		<li style="padding:8px; margin: 7px;">      
-  						   			<span>옵션 선택 2fdskjfafdskewai;jjai;efsdadfsdfdsfsj</span><span style="float: right;"><span style="width: 200px; text-align: right;">23개</span>&nbsp;&nbsp;&nbsp;&nbsp;<span>100,000</span></span>  
-  						   		</li>   
-  						   		<li style=" padding:8px; margin: 7px; border-top: 1px solid #BDBDBD;">     
-  						   			<span>옵션 선택 2fdskjfafdskewai;jjai;efsdadfsdfdsfsj</span><span style="float: right;"><span style="width: 200px; text-align: right;">23개</span>&nbsp;&nbsp;&nbsp;&nbsp;<span>100,02000</span></span>  
-  						   		</li> 
-  						   		<li style=" padding:8px; margin: 7px; border-top: 1px solid #BDBDBD;">    
-  						   			<span>옵션 선택 2fdskjfafdskewai;jjai;efsdadfsdfdsfsj</span><span style="float: right;"><span style="width: 200px; text-align: right;">2개</span>&nbsp;&nbsp;&nbsp;&nbsp;<span>10033,000</span></span>  
-  						   		</li>
-  						   	</ul>
-  						   </td>
-  						   <td>
-  						   	<span>300,000</span>
-  						   </td>
-  						   <td>
-  						   	<span>3,000</span> 
-  						   </td>
-  						   <td>
-  						   	<span>조웅희</span>  
+  						   	<span>${memberNickname}</span>  
   						   </td>
   						</tr>
   					</table>
@@ -490,13 +536,13 @@
   							<th style="border-bottom: none; padding-bottom: 0px;">최종결제금액</th> 
   						</tr>
   						<tr> 	     
-  							<td style="border-bottom: none; font-size:large; padding-top: 0px;">300,000</td>  
+  							<td style="border-bottom: none; font-size:large; padding-top: 0px;" id="finalAmount"></td>  
   							<td style="border-bottom: none; font-weight: bolder;padding-top: 0px; font-size:xx-large;">+</td>  
-  							<td style="border-bottom: none; font-size:large; padding-top: 0px;">3,000</td>
+  							<td style="border-bottom: none; font-size:large; padding-top: 0px;" id ="finalShippingCharge"></td>
   							<td style="border-bottom: none; font-weight: bolder; padding-top: 0px; font-size:xx-large;" >-</td>
-  							<td style="border-bottom: none; font-size:large;color: red; padding-top: 0px;">50,000</td>
+  							<td style="border-bottom: none; font-size:large;color: red; padding-top: 0px;" id="finalDiscount">0</td>
   							<td style="border-bottom: none; font-weight: bolder; font-size:xx-large; padding-top: 0px;">=</td>
-  							<td style="border-bottom: none; font-weight: bolder; font-size:x-large; padding-top: 0px;">253,000</td>     
+  							<td style="border-bottom: none; font-weight: bolder; font-size:x-large; padding-top: 0px;" id="finalTotal"></td>     
   						</tr>
   					</table>
 		  		</td>
@@ -509,8 +555,8 @@
 							<h5 style="float: left;">Recipient Info</h5>
 							<div style="margin-left: 100px; padding-left: 100px; ">      
 								<span style="padding-right: 50px;font-weight: bold;">배송지 선택</span>   
-								<input type="radio" name="test1">&nbsp;&nbsp;기본값&nbsp;&nbsp;      
-								<input type="radio" name="test1">&nbsp;&nbsp;기본값         
+								<input type="radio" name="test1" class="deliveryMethodSel" value="1" checked="checked" >&nbsp;&nbsp;기본값&nbsp;&nbsp;      
+								<input type="radio" name="test1" class="deliveryMethodSel" value="2">&nbsp;&nbsp;최근배송지        
 							</div>
 							</td>
 							<td colspan="2"> 
@@ -520,33 +566,33 @@
 						<tr style="border-left: 1px solid #BDBDBD; border-right: 1px solid #BDBDBD; "> 
 							<th style="padding:15px; text-align: center;">수령인</th>
 							<td style="border-right: 1px solid #BDBDBD;  padding:15px;"> 
-								<input type="text">
+								<input type="text" value="${sessionScope.login.name}">
 							</td>
 							<th style="padding:15px; text-align: center;">배송자</th>
 							<td style="padding:15px;"> 
-								<input type="text">
+								<input type="text" value="${sessionScope.login.name}">  
 							</td>
 						</tr>
 						<tr style="border-left: 1px solid #BDBDBD; border-right: 1px solid #BDBDBD; ">
 							<th style="text-align: center; padding:15px;">연락처</th>
-							<td style="padding:15px; border-right: 1px solid #BDBDBD; "><input type="text"></td>
+							<td style="padding:15px; border-right: 1px solid #BDBDBD; "><input type="text" value="${sessionScope.login.phonenum }"></td>
 							<th style="text-align: center; padding:15px;">연락처</th>
-							<td style="padding:15px;"><input type="text"></td>
+							<td style="padding:15px;"><input type="text" value="${sessionScope.login.phonenum }"></td>
 						</tr>
 						<tr style="border-left: 1px solid #BDBDBD; border-right: 1px solid #BDBDBD; "> 
 							<th style="padding:15px; text-align: center;">주소</th> 
 							<td style="padding:15px; border-right: 1px solid #BDBDBD; "> 
-				  		    <input type="text" class="form-control" name="postalCode" id="sample6_postcode" placeholder="우편번호" disabled="disabled" style="width: 150px;float:left;">  
+				  		    <input type="text" class="form-control" name="postalCode" id="recipient_postcode" placeholder="우편번호" disabled="disabled"  value="${sessionScope.login.postalCode}" style="width: 150px;float:left;">  
 							<input type="button" class="btn btn-b-n" onclick="sample6_execDaumPostcode()" value="우편번호 찾기" style="margin-left: 10px;"><br>
-							<input type="text" class="form-control" name="address" id="sample6_address" placeholder="주소" disabled="disabled" style="margin-top: 10px;">  
-							<input type="text" class="form-control" name="detailAddress"id="sample6_detailAddress" placeholder="상세주소" style="margin-top: 10px;">
+							<input type="text" class="form-control" name="address" id="recipient_address" placeholder="주소" disabled="disabled" style="margin-top: 10px;">  
+							<input type="text" class="form-control" name="detailAddress"id="recipient_detailAddress" placeholder="상세주소" style="margin-top: 10px;">
 							</td>
 							<th style="padding:15px; text-align: center;">주소</th> 
 							<td style="padding:15px;"> 
-				  		    <input type="text" class="form-control" name="postalCode" id="sample6_postcode" placeholder="우편번호" disabled="disabled" style="width: 150px;float:left;">  
+				  		    <input type="text" class="form-control" name="postalCode" id="Buyer_postcode" placeholder="우편번호" disabled="disabled" value="${sessionScope.login.postalCode}" style="width: 150px;float:left;">  
 							<input type="button" class="btn btn-b-n" onclick="sample6_execDaumPostcode()" value="우편번호 찾기" style="margin-left: 10px;"><br>
-							<input type="text" class="form-control" name="address" id="sample6_address" placeholder="주소" disabled="disabled" style="margin-top: 10px;">  
-							<input type="text" class="form-control" name="detailAddress"id="sample6_detailAddress" placeholder="상세주소" style="margin-top: 10px;">
+							<input type="text" class="form-control" name="address" id="Buyer_address" placeholder="주소" disabled="disabled" style="margin-top: 10px;">  
+							<input type="text" class="form-control" name="detailAddress"id="Buyer_detailAddress" placeholder="상세주소" style="margin-top: 10px;">
 							</td>
 						</tr>
 						<tr style="border-left: 1px solid #BDBDBD; border-right: 1px solid #BDBDBD; "> 
@@ -566,7 +612,7 @@
 		  				<tr>
 		  					<th>결제 수단</th>
 		  					<td>
-		  						<select name="paymentMethod" style="width: 250px;">   
+		  						<select name="paymentMethod" style="width: 250px; padding: 0;">       
 										<option value="0">카카오페이</option>
 										<option value="1">unknown</option>
 										<option value="3">unknown</option>
@@ -582,7 +628,7 @@
 		  						<span>-지원 카드 : 모든 카드 등록/결제 가능</span>  
 		  					</td>
 		  					<td rowspan="2" style="border: 2px groove #BDBDBD;">    
-		  						<p style="font-size: xx-large; font-weight: bold; color:#2eca6a; float: left; ">333,333</p>     
+		  						<p style="font-size: xx-large; font-weight: bold; color:#2eca6a; float: left; " id="finalPaymentAmount"></p>     
 								<div style="float:left; width: 30px; font-size: x-large; margin-top: 8px; padding-left: 5px; color: #A4A4A4; ">원</div>   
 		  					</td> 
 		  				</tr>
@@ -590,8 +636,8 @@
 		  					<th>주문자 동의</th>
 		  					<td>
 		  						<ul style="list-style: none; padding-left: 0px;">   
-		  							<li style=" border-bottom: 2px solid #BDBDBD;"><input type="checkbox"> 전체동의</li>      
-		  							<li style="padding-left: 10px;"><input type="checkbox"> 개인정보 제3자 제공 동의(필수)</li> 
+		  							<li style=" border-bottom: 2px solid #BDBDBD;"><input type="checkbox" id="allCheckbox"> 전체동의</li>      
+		  							<li style="padding-left: 10px;"><input type="checkbox"  > 개인정보 제3자 제공 동의(필수)</li> 
 		  							<li style="padding-left: 10px;"><input type="checkbox"> 위 상품 정보 및 거래 조건을 확인하였으며, 구매 진행에 동의합니다.(필수)</li> 
 		  						</ul>
 		  					</td>
@@ -793,4 +839,4 @@
   <!-- 여러가지 -->
 </body>
 
-</html>
+</html> 

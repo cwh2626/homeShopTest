@@ -69,6 +69,25 @@ public class ProductDAO {
 		return result;
 	}
 	
+	public Product getSeqProductInfo(int productSeq){
+		
+		Product result =null;
+		ProductMapper mapper = sqlSession.getMapper(ProductMapper.class);
+		
+		result = mapper.getSeqProductInfo(productSeq);
+		
+		return result;
+	}
+	
+	public ProductOption getSelProductOption(int productSeq, int selectNum){
+		
+		ProductMapper mapper = sqlSession.getMapper(ProductMapper.class);
+		
+		ProductOption result = mapper.getSelProductOption(productSeq, selectNum);
+		
+		return result;
+	}
+	
 	public ArrayList<ProductOption> getPrductOptioninpo(int productSeq){
 		
 		ArrayList<ProductOption> result = null;

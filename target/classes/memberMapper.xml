@@ -9,11 +9,11 @@
 	insert into Member values (#{email} , #{password} , #{name} , #{phonenum} , #{nickname}, #{address}, #{postalCode})
 </insert>
 
-<select id="emailAllInformation" parameterType="string" resultType="Member">
+<select id="emailAllInformation" parameterType="String" resultType="Member">
 	select * from Member where email = #{e}
 </select>
 
-<select id="nicknameAllInformation" parameterType="string" resultType="Member">
+<select id="nicknameAllInformation" parameterType="String" resultType="Member">
 	select * from Member where nickname = #{n}
 </select>
 </mapper>

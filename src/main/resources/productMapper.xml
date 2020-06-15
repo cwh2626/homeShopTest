@@ -48,8 +48,16 @@
 	select * from Product_TB where email like #{email} and productSeq = #{productSeq}
 </select>
 
+<select id="getSeqProductInfo" parameterType="Int" resultType="Product">
+	select * from Product_TB where productSeq = #{productSeq}
+</select>
+
 <select id="getPrductOptioninpo" parameterType="Int" resultType="ProductOption">
 	select * from ProductOption where productSeq = #{productSeq} ORDER BY selectNum ASC
+</select>
+
+<select id="getSelProductOption" parameterType="Int" resultType="ProductOption">
+	select * from ProductOption where productSeq = #{param1} AND selectNum = #{param2}
 </select>
 
 

@@ -8,6 +8,7 @@ public class ProductOption {
 	Integer additionalAmount;
 	int selectNum;
 	int volume;
+	String moneySum;
 	List<ProductOption> list;
 	
 	public int getVolume() {
@@ -40,10 +41,18 @@ public class ProductOption {
 	public void setList(List<ProductOption> list) {
 		this.list = list;
 	}
+	
+	
+	public String getMoneySum() {
+		return moneySum;
+	}
+	public void setMoneySum(String moneySum) {
+		this.moneySum = moneySum;
+	}
 	@Override
 	public String toString() {
 		return "ProductOption [optionName=" + optionName + ", additionalAmount=" + additionalAmount + ", selectNum="
-				+ selectNum + ", volume=" + volume + ", list=" + list + "]";
+				+ selectNum + ", volume=" + volume + ", moneySum=" + moneySum + ", list=" + list + "]";
 	}
 	
 	

@@ -7,6 +7,7 @@ import java.io.IOException;
 import java.io.PrintWriter;
 import java.net.HttpURLConnection;
 import java.net.URL;
+import java.text.DecimalFormat;
 import java.util.ArrayList;
 
 import javax.servlet.ServletException;
@@ -27,6 +28,7 @@ import org.springframework.web.bind.annotation.ResponseBody;
 import org.springframework.web.multipart.MultipartFile;
 import org.springframework.web.multipart.MultipartHttpServletRequest;
 
+import kr.com.shop.dao.MemberDAO;
 import kr.com.shop.dao.ProductDAO;
 import kr.com.shop.util.FileService;
 import kr.com.shop.util.PageNavigator;
@@ -41,6 +43,9 @@ public class ProductController {
 	
 	@Autowired
 	ProductDAO pdao;
+	
+	@Autowired
+	MemberDAO mdao;
 	
 	//주의할점 윈도우의 경우 절대경로를 지정시에 C,D드라이브가 있어서 그냥 복붙하면 되지만 
 	//맥의 경우는 전체경로 중 /Users부터 시작으로 한다 주의!!!
@@ -118,18 +123,34 @@ public class ProductController {
 	}
 	
 	@RequestMapping(value ="paymentProduct", method = RequestMethod.POST)
-	public String paymentProduct(ProductOption po, int productSeq
+	public String paymentProduct(ProductOption po, int productSeq, Model model
 			,@RequestParam(value="singleSupply" ,defaultValue="0")int singleSupply) {
-		// 이부분은 내일합시다
+		DecimalFormat fomatter = new DecimalFormat("###,###");
+		ArrayList<ProductOption> result = new ArrayList<ProductOption>();
 		logger.debug("prodcutSeq : {}", productSeq);
+		Product pd = pdao.getSeqProductInfo(productSeq);
+		Member mb = mdao.emailAllInformation(pd.getEmail()); 
+		
 		if(singleSupply != 0) {
 			logger.debug("singleSupply: {}", singleSupply);
 			
 		}else {
 			for(ProductOption res : po.getList()) {
 				logger.debug("seleNum : {} , Volume : {}", res.getSelectNum(), res.getVolume());
-				
+				if(res.getSelectNum() == 0) {
+					continue;
+				}
+				ProductOption fr = null;
+				fr = pdao.getSelProductOption(productSeq,res.getSelectNum());
+				int sum = res.getVolume() * (fr.getAdditionalAmount()+pd.getProductPrice()); 
+				fr.setVolume(res.getVolume());
+				fr.setMoneySum(fomatter.format(sum));
+				result.add(fr);  
+				logger.debug("resultRes : {} ",fr.toString()); 
 			}
+			model.addAttribute("productInfo", pd);
+			model.addAttribute("productOptionInfo", result);
+			model.addAttribute("memberNickname", mb.getNickname());
 		}
 		return "product/paymentProduct";
 	}
