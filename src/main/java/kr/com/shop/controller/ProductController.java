@@ -58,6 +58,7 @@ public class ProductController {
 	
 	private static final Logger logger = LoggerFactory.getLogger(ProductController.class);
 	
+	
 	@RequestMapping(value ="allListProduct", method = RequestMethod.GET)
 	public String allListProduct(Model model
 			, @RequestParam(value="page", defaultValue="1") int page

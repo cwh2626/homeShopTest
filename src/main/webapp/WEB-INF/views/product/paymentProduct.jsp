@@ -40,7 +40,10 @@
   <!-- ======== script ======== -->	 
   
   <script type="text/javascript" src="../resources/jquery/jquery-3.4.1.min.js"></script>
-  <script src="https://t1.daumcdn.net/mapjsapi/bundle/postcode/prod/postcode.v2.js"></script><!--카카오 우편API -->
+  <script src="https://t1.daumcdn.net/mapjsapi/bundle/postcode/prod/postcode.v2.js"></script><!--카카오 우편API -->   	
+  <script type="text/javascript" src="https://cdn.iamport.kr/js/iamport.payment-1.1.5.js"></script>
+  
+  
    
   <!-- ======== style ========= -->
   <style>
@@ -370,8 +373,11 @@
 		var adrList = adr.split(',');
 		$('#recipient_address').val(adrList[0]); 
 		$('#recipient_detailAddress').val(adrList[1]);  
-		$('#Buyer_address').val(adrList[0]); 
-		$('#Buyer_detailAddress').val(adrList[1]);   
+		$('#buyer_address').val(adrList[0]); 
+		$('#buyer_detailAddress').val(adrList[1]);   
+		
+		$('#paySubmit').on('click',function(){ 
+		}); 
 		//split
 		/* 
 		arr.forEach(function(element){
@@ -382,12 +388,16 @@
 		 $('.deliveryMethodSel').change(function(){
 			var dmsv = $(this).val();
 			
-			if(dmsv == 1){
+			if(dmsv == 1){ 
 				$('#recipient_postcode').val('${sessionScope.login.postalCode}'); 
 				$('#recipient_address').val(adrList[0]); 
 				$('#recipient_detailAddress').val(adrList[1]);  
+				$('#recipient_phonenum').val('${sessionScope.login.phonenum}'); 
+				$('#recipient_name').val('${sessionScope.login.name}'); 
 					
 			}else{
+				$('#recipient_phonenum').val('준비중'); 
+				$('#recipient_name').val('준비중'); 
 				$('#recipient_postcode').val('준비중'); 
 				$('#recipient_address').val('준비중');  
 				$('#recipient_detailAddress').val('준비중');  
@@ -472,13 +482,63 @@
 	           }
 	       }).open(); 
 	   }
+	   function phoneFormat(num){
+
+		    var str = num;    
+
+		    var phone = str.replace(/(^02.{0}|^01.{1}|[0-9]{3})([0-9]+)([0-9]{4})/,"$1-$2-$3");
+
+		    return phone;
+
+		}
+	 
+	   function iamportTest(){ 
+			var IMP = window.IMP; // 생략가능
+			var buyerName = document.getElementById('buyer_name').value;   
+			var buyerPhonenum = document.getElementById('buyer_phonenum').value; 
+			var buyerAddress = document.getElementById('buyer_address').value;
+			var buyerPostcode = document.getElementById('buyer_postcode').value;
+	        var finalPaymentPrice = parseInt(document.getElementById('finalPaymentAmount').innerText.replace(/,/g,""));
+
+			IMP.init('imp11903216'); // 'iamport' 대신 부여받은 "가맹점 식별코드"를 사용
+				
+			IMP.request_pay({
+			    pg : 'kakao', // version 1.1.0부터 지원.
+			    pay_method : 'card',
+			    merchant_uid : 'merchant_' + new Date().getTime(),
+			    name : '주문명:결제테스트',
+			    amount : finalPaymentPrice,
+			    buyer_name : buyerName,
+			    buyer_tel : phoneFormat(buyerPhonenum),
+			    buyer_addr : buyerAddress,
+			    buyer_postcode : buyerPostcode, 
+			    m_redirect_url : 'http://localhost:8888/shop/'
+			}, function(rsp) {
+			    if ( rsp.success ) {
+			        var msg = '결제가 완료되었습니다.';
+			        msg += '고유ID : ' + rsp.imp_uid;
+			        msg += '상점 거래ID : ' + rsp.merchant_uid;
+			        msg += '결제 금액 : ' + rsp.paid_amount;
+			        msg += '카드 승인번호 : ' + rsp.apply_num;
+			    } else {
+			        var msg = '결제에 실패하였습니다.';
+			        msg += '에러내용 : ' + rsp.error_msg;
+			    }
+			    alert(msg);
+			});
+			
+			return false; 
+			
+		}
+			
+
 	</script>
   <!--/ textarea start /-->
     <section class="section-about">
       <div class="container">
         <div class="row">
         	<div class="col-md-12">
-			<form action="insertSaleWrite"  method="post">
+			<form action="paymentOrders"  onsubmit="return iamportTest()" method="post">
         	<table class="productMainView form-a" style="
 		  			width : 100%;
 		  		">
@@ -566,18 +626,18 @@
 						<tr style="border-left: 1px solid #BDBDBD; border-right: 1px solid #BDBDBD; "> 
 							<th style="padding:15px; text-align: center;">수령인</th>
 							<td style="border-right: 1px solid #BDBDBD;  padding:15px;"> 
-								<input type="text" value="${sessionScope.login.name}">
+								<input type="text" id="recipient_name" value="${sessionScope.login.name}">
 							</td>
 							<th style="padding:15px; text-align: center;">배송자</th>
 							<td style="padding:15px;"> 
-								<input type="text" value="${sessionScope.login.name}">  
+								<input type="text" id="buyer_name"  value="${sessionScope.login.name}">  
 							</td>
 						</tr>
 						<tr style="border-left: 1px solid #BDBDBD; border-right: 1px solid #BDBDBD; ">
 							<th style="text-align: center; padding:15px;">연락처</th>
-							<td style="padding:15px; border-right: 1px solid #BDBDBD; "><input type="text" value="${sessionScope.login.phonenum }"></td>
+							<td style="padding:15px; border-right: 1px solid #BDBDBD; "><input type="text" id="recipient_phonenum" value="${sessionScope.login.phonenum }"></td>
 							<th style="text-align: center; padding:15px;">연락처</th>
-							<td style="padding:15px;"><input type="text" value="${sessionScope.login.phonenum }"></td>
+							<td style="padding:15px;"><input type="text" id="buyer_phonenum"value="${sessionScope.login.phonenum }"></td>
 						</tr>
 						<tr style="border-left: 1px solid #BDBDBD; border-right: 1px solid #BDBDBD; "> 
 							<th style="padding:15px; text-align: center;">주소</th> 
@@ -589,10 +649,10 @@
 							</td>
 							<th style="padding:15px; text-align: center;">주소</th> 
 							<td style="padding:15px;"> 
-				  		    <input type="text" class="form-control" name="postalCode" id="Buyer_postcode" placeholder="우편번호" disabled="disabled" value="${sessionScope.login.postalCode}" style="width: 150px;float:left;">  
+				  		    <input type="text" class="form-control" name="postalCode" id="buyer_postcode" placeholder="우편번호" disabled="disabled" value="${sessionScope.login.postalCode}" style="width: 150px;float:left;">  
 							<input type="button" class="btn btn-b-n" onclick="sample6_execDaumPostcode()" value="우편번호 찾기" style="margin-left: 10px;"><br>
-							<input type="text" class="form-control" name="address" id="Buyer_address" placeholder="주소" disabled="disabled" style="margin-top: 10px;">  
-							<input type="text" class="form-control" name="detailAddress"id="Buyer_detailAddress" placeholder="상세주소" style="margin-top: 10px;">
+							<input type="text" class="form-control" name="address" id="buyer_address" placeholder="주소" disabled="disabled" style="margin-top: 10px;">  
+							<input type="text" class="form-control" name="detailAddress"id="buyer_detailAddress" placeholder="상세주소" style="margin-top: 10px;">
 							</td>
 						</tr>
 						<tr style="border-left: 1px solid #BDBDBD; border-right: 1px solid #BDBDBD; "> 
@@ -646,8 +706,8 @@
 		  		</td> 
 		  	</tr>
 		  	<tr>
-		  		<td style=" border-bottom: none; text-align: center; padding-top: 100px;" >
-		  			<input class="btn btn-a" type="submit" value="PAYMENT"> 
+		  		<td style=" border-bottom: none; text-align: center; padding-top: 100px;" > 
+		  			<input class="btn btn-a" type="submit" value="PAYMENT">     
 		  		</td>
 		  	</tr>
 		  </table>
