@@ -13,6 +13,20 @@
 									, jdbcType=VARCHAR},#{productDescription},#{deliveryMethod},#{salesMethod})
 </insert>
 
+<insert id="orderWrite" parameterType="Orders" >
+	insert into Orders(orderSeq, buyerEmail,  productSeq, recipientName, recipientPhonenum
+						,recipientAddress, recipientPostalCode, buyerName, buyerPhonenum, buyerAddress
+						,buyerPostalCode, recipientMemo, totalPrice) 
+								values( Orders_seq.nextval, #{buyerEmail}, #{productSeq}, #{recipientName}
+								,#{recipientPhonenum}, #{recipientAddress}, #{recipientPostalCode}, #{buyerName}
+								,#{buyerPhonenum}, #{buyerAddress}, #{buyerPostalCode}, #{recipientMemo}, #{totalPrice})
+
+</insert>
+
+<insert id="insertItmeWrite" parameterType="Lineitem">
+	insert into Lineitem values(lineitem_seq.nextval, #{orderSeq}, #{quantity}, #{unitprice}, #{itemNum})
+</insert>
+
 <insert id="insertSaleProductOption" parameterType="map">
 	insert into ProductOption(productOptionSeq, productSeq
 				<if test="optionName != null">
@@ -58,6 +72,10 @@
 
 <select id="getSelProductOption" parameterType="Int" resultType="ProductOption">
 	select * from ProductOption where productSeq = #{param1} AND selectNum = #{param2}
+</select>
+
+<select id="getRecentOrder" parameterType="Orders" resultType="Orders">
+	select * from Orders where orderSeq = (select MAX(orderSeq) from Orders where productSeq = #{productSeq} AND buyerEmail = #{buyerEmail})
 </select>
 
 

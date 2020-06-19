@@ -10,6 +10,8 @@ import org.slf4j.LoggerFactory;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Repository;
 
+import kr.com.shop.vo.Lineitem;
+import kr.com.shop.vo.Orders;
 import kr.com.shop.vo.Product;
 import kr.com.shop.vo.ProductOption;
 
@@ -24,6 +26,21 @@ public class ProductDAO {
 		ProductMapper mapper = sqlSession.getMapper(ProductMapper.class);
 		
 		int result = mapper.insertSaleWrite(product);
+		return result;
+	}
+	
+	public int orderWrite(Orders od) {
+		ProductMapper mapper = sqlSession.getMapper(ProductMapper.class);
+		
+		int result = mapper.orderWrite(od);
+		
+		return result;
+	}
+	
+	public int insertItmeWrite(Lineitem li) {
+		ProductMapper mapper = sqlSession.getMapper(ProductMapper.class);
+		
+		int result = mapper.insertItmeWrite(li);
 		
 		return result;
 	}
@@ -113,6 +130,14 @@ public class ProductDAO {
 		ProductMapper mapper = sqlSession.getMapper(ProductMapper.class);
 		
 		int result = mapper.insertSaleProductOption(map);
+		
+		return result;
+	}
+	
+	public Orders getRecentOrder(Orders od) {
+		ProductMapper mapper = sqlSession.getMapper(ProductMapper.class);
+
+		Orders result = mapper.getRecentOrder(od); 
 		
 		return result;
 	}

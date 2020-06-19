@@ -5,12 +5,18 @@ import java.util.HashMap;
 
 import org.apache.ibatis.session.RowBounds;
 
+import kr.com.shop.vo.Lineitem;
+import kr.com.shop.vo.Orders;
 import kr.com.shop.vo.Product;
 import kr.com.shop.vo.ProductOption;
 
 public interface ProductMapper {
 	
 	public int insertSaleWrite(Product product);
+	
+	public int orderWrite(Orders od);
+	
+	public int insertItmeWrite(Lineitem li);
 	
 	public int getTotal(String sel);
 	
@@ -28,6 +34,8 @@ public interface ProductMapper {
 	public ArrayList<ProductOption> getPrductOptioninpo(int productSeq);
 	
 	public ProductOption getSelProductOption(int productSeq, int selectNum);
+	
+	public Orders getRecentOrder(Orders od);
 
 
 

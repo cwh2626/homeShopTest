@@ -32,7 +32,9 @@ import kr.com.shop.dao.MemberDAO;
 import kr.com.shop.dao.ProductDAO;
 import kr.com.shop.util.FileService;
 import kr.com.shop.util.PageNavigator;
+import kr.com.shop.vo.Lineitem;
 import kr.com.shop.vo.Member;
+import kr.com.shop.vo.Orders;
 import kr.com.shop.vo.Product;
 import kr.com.shop.vo.ProductOption;
 
@@ -132,15 +134,20 @@ public class ProductController {
 		Product pd = pdao.getSeqProductInfo(productSeq);
 		Member mb = mdao.emailAllInformation(pd.getEmail()); 
 		
+		logger.debug("singleSupply: {}, pd : ===> {}", singleSupply, pd.toString());
 		if(singleSupply != 0) {
-			logger.debug("singleSupply: {}", singleSupply);
-			
+			int total = pd.getProductPrice() * singleSupply;
+			String mony = fomatter.format(total);
+			model.addAttribute("productInfo", pd);
+			model.addAttribute("memberNickname", mb.getNickname());
+			model.addAttribute("singleSupply", singleSupply);
+			model.addAttribute("monySum", mony);
+
 		}else {
 			for(ProductOption res : po.getList()) {
 				logger.debug("seleNum : {} , Volume : {}", res.getSelectNum(), res.getVolume());
-				if(res.getSelectNum() == 0) {
-					continue;
-				}
+				if(res.getSelectNum() == 0) continue;
+				
 				ProductOption fr = null;
 				fr = pdao.getSelProductOption(productSeq,res.getSelectNum());
 				int sum = res.getVolume() * (fr.getAdditionalAmount()+pd.getProductPrice()); 
@@ -155,6 +162,36 @@ public class ProductController {
 		}
 		return "product/paymentProduct";
 	}
+	
+	@RequestMapping(value ="paymentOrders", method = RequestMethod.POST)
+	public String paymentOrders(Orders od, Lineitem li, @RequestParam(value="recipientDetailAddress", defaultValue="") String rpDetailAddress
+								,@RequestParam(value="buyerDetailAddress", defaultValue="") String byDetailAddress, HttpSession session ) {
+		Member mb = (Member)session.getAttribute("login");
+		
+		if(!rpDetailAddress.equals("")) od.setRecipientAddress(od.getRecipientAddress()+" , "+rpDetailAddress);
+		if(!byDetailAddress.equals("")) od.setBuyerAddress(od.getBuyerAddress()+" , "+byDetailAddress);
+
+		od.setBuyerEmail(mb.getEmail());   
+		int orderResult = pdao.orderWrite(od);
+		
+		if(orderResult == 1) {
+		 od = pdao.getRecentOrder(od);
+		 logger.debug("odrecent ::: {}", od.toString());
+		 for(Lineitem res : li.getList()) { 
+			 res.setOrderSeq(od.getOrderSeq());
+			 logger.debug("listTostring : ===> {}", res.toString());
+			 int itemResult = pdao.insertItmeWrite(res);
+			 
+		 }
+		}
+		logger.debug("orders  :  ======> {}", od.toString());
+		
+		
+		
+		return "redirect:/";
+	}
+	
+
 	
 	@RequestMapping(value ="insertSaleWrite", method = RequestMethod.POST)
 	public String insertSaleWrite(Product product,ProductOption po, MultipartFile productFirstPhoto, MultipartFile productSubPhoto1

@@ -362,6 +362,7 @@
 		$('.productMoneySum').html(numberWithCommas(moneySum)); 
 		$('#finalAmount').html(numberWithCommas(moneySum)); 
 		$('#finalPaymentAmount').html(numberWithCommas(moneySum));  
+		$('input[name=totalPrice]').val(moneySum);  
 		
 		$(".shippingCharge").each(function(index, item){
 			var n = parseInt($(item).html().replace(/,/g,"")); 
@@ -376,7 +377,8 @@
 		$('#buyer_address').val(adrList[0]); 
 		$('#buyer_detailAddress').val(adrList[1]);   
 		
-		$('#paySubmit').on('click',function(){ 
+		$('#fakeSubmit').on('click',function(){ 
+			onsubmitCheck();
 		}); 
 		//split
 		/* 
@@ -491,7 +493,8 @@
 		    return phone;
 
 		}
-	 
+	   
+	   
 	   function iamportTest(){ 
 			var IMP = window.IMP; // 생략가능
 			var buyerName = document.getElementById('buyer_name').value;   
@@ -499,7 +502,6 @@
 			var buyerAddress = document.getElementById('buyer_address').value;
 			var buyerPostcode = document.getElementById('buyer_postcode').value;
 	        var finalPaymentPrice = parseInt(document.getElementById('finalPaymentAmount').innerText.replace(/,/g,""));
-
 			IMP.init('imp11903216'); // 'iamport' 대신 부여받은 "가맹점 식별코드"를 사용
 				
 			IMP.request_pay({
@@ -511,34 +513,88 @@
 			    buyer_name : buyerName,
 			    buyer_tel : phoneFormat(buyerPhonenum),
 			    buyer_addr : buyerAddress,
-			    buyer_postcode : buyerPostcode, 
-			    m_redirect_url : 'http://localhost:8888/shop/'
+			    buyer_postcode : buyerPostcode
+			    //m_redirect_url : 'http://localhost:8888/shop/'
 			}, function(rsp) {
 			    if ( rsp.success ) {
 			        var msg = '결제가 완료되었습니다.';
 			        msg += '고유ID : ' + rsp.imp_uid;
 			        msg += '상점 거래ID : ' + rsp.merchant_uid;
 			        msg += '결제 금액 : ' + rsp.paid_amount;
-			        msg += '카드 승인번호 : ' + rsp.apply_num;
+			        msg += '카드 승인번호 : ' + rsp.apply_num; 
+			        
+				    $('#realSubmit').trigger('click'); 
 			    } else {
 			        var msg = '결제에 실패하였습니다.';
 			        msg += '에러내용 : ' + rsp.error_msg;
-			    }
-			    alert(msg);
-			});
+				    return false; 
+			    } 
+			});  
+		} 
 			
-			return false; 
+		function onsubmitCheck(){
+			$('#recipient_postcode').prop('disabled', false);
+			$('#recipient_address').prop('disabled', false);
+			$('#buyer_postcode').prop('disabled', false);
+			$('#buyer_address').prop('disabled', false);
+ 
+			var recipientName = document.getElementById('recipient_name').value;
+			var recipientPhone = document.getElementById('recipient_phonenum').value; 
+			var recipientPost = document.getElementById('recipient_postcode').value;
+			var buyerName = document.getElementById('buyer_name').value;
+			var buyerPhone = document.getElementById('buyer_phonenum').value;
+			var buyerPost = document.getElementById('buyer_postcode').value;
+		 	var phonnumRegExp = /^[0-9]{10,11}$/; // 핸드폰 정규식
+		 	
+		 	if(recipientName == ''){
+		 		alert("수령인을 확인해주세요.");
+		 		return false;
+		 	}
+		 	
+		 	if(!phonnumRegExp.test(recipientPhone)){
+		 		alert("수령인 연락처를 확인해주세요.");
+		 		return false;
+		 	}
+		 	
+		 	if(recipientPost == ''){
+		 		alert("주소를 확인해주세요.");
+		 		return false;
+		 	}
+		 	
+		 	if(buyerName == ''){
+		 		alert("수령인을 확인해주세요.");
+		 		return false;
+		 	}
+		 	
+		 	if(!phonnumRegExp.test(buyerPhone)){
+		 		alert("수령인 연락처를 확인해주세요.");
+		 		return false;
+		 	}
+		 	
+		 	if(buyerPost == ''){
+		 		alert("주소를 확인해주세요.");
+		 		return false;
+		 	}
+		 	 
+			if($('#agreement1').is(":checked") != true){
+				alert('동의1를 확인해주세요.')
+				return false;
+			}
+			if($('#agreement2').is(":checked") != true){
+				alert('동의2를 확인해주세요.')
+				return false;
+			}   
 			
-		}
-			
-
+			iamportTest();
+	    }
 	</script>
   <!--/ textarea start /-->
     <section class="section-about">
       <div class="container">
-        <div class="row">
-        	<div class="col-md-12">
-			<form action="paymentOrders"  onsubmit="return iamportTest()" method="post">
+        <div class="row"> 
+        	<div class="col-md-12"> 
+			<form action="paymentOrders"  method="post">
+			<input type="hidden" name="productSeq" value="${productInfo.productSeq}">
         	<table class="productMainView form-a" style="
 		  			width : 100%;
 		  		">
@@ -558,21 +614,32 @@
   						   	<img alt="" style="width: 70px; height: 88px;" src="../resources/member/${productInfo.email}/photo/${productInfo.productFirstPhotoName}">
   						   </td>
   						   <td style="text-align: left;">  
-  						   	<span style="font-size: large; font-weight: bolder;">${productInfo.productName}</span>   
-  						   	<ul style="list-style: none; background-color: #f3f3f3; border:1px solid #BDBDBD; padding-left: 0; ">  
-  						   		<c:forEach var="list" items="${productOptionInfo}" varStatus="status" >
-	  						   		<c:if test="${status.first == true}">
-	  						   		<li style="padding:8px; margin: 7px;">
-	  						   			<span>${list.optionName}</span><span style="float: right;"><span style="width: 200px; text-align: right;">${list.volume}개</span>&nbsp;&nbsp;&nbsp;&nbsp;<span class="moneySum">${list.moneySum}</span></span>  
-	  						   		</li>   
-	  						   		</c:if>
-	  						   		<c:if test="${status.first != true}">
-	  						   		<li style="padding:8px; margin: 7px; border-top: 1px solid #BDBDBD; "> 
-	  						   			<span>${list.optionName}</span><span style="float: right;"><span style="width: 200px; text-align: right;">${list.volume}개</span>&nbsp;&nbsp;&nbsp;&nbsp;<span class="moneySum">${list.moneySum}</span></span>  
-	  						   		</li>   
-	  						   		</c:if>
-  						   		</c:forEach>  
-  						   	</ul>
+  						   	<span style="font-size: large; font-weight: bolder;">${productInfo.productName}</span>
+  						   	<c:if test="${productInfo.salesMethod == 1 }">
+	  						   	<ul style="list-style: none; background-color: #f3f3f3; border:1px solid #BDBDBD; padding-left: 0; ">  
+	  						   		<c:forEach var="list" items="${productOptionInfo}" varStatus="status" >
+	  						   			<input type="hidden" name="list[${status.index}].itemNum" value="${list.selectNum}">
+	  						   			<input type="hidden" name="list[${status.index}].quantity" value="${list.volume}">
+	  						   			<input type="hidden" name="list[${status.index}].unitprice" value="${productInfo.productPrice + list.additionalAmount}">
+		  						   		<c:if test="${status.first == true}"> 
+		  						   		<li style="padding:8px; margin: 7px;">
+		  						   			<span>${list.optionName}</span><span style="float: right;"><span style="width: 200px; text-align: right;">${list.volume}개</span>&nbsp;&nbsp;&nbsp;&nbsp;<span class="moneySum">${list.moneySum}</span></span>  
+		  						   		</li>   
+		  						   		</c:if>
+		  						   		<c:if test="${status.first != true}">
+		  						   		<li style="padding:8px; margin: 7px; border-top: 1px solid #BDBDBD; "> 
+		  						   			<span>${list.optionName}</span><span style="float: right;"><span style="width: 200px; text-align: right;">${list.volume}개</span>&nbsp;&nbsp;&nbsp;&nbsp;<span class="moneySum">${list.moneySum}</span></span>  
+		  						   		</li>   
+		  						   		</c:if>
+	  						   		</c:forEach>  
+	  						   	</ul>  
+  						   	</c:if>
+  						   	<c:if test="${productInfo.salesMethod == 0 }"> 
+  						   		<input type="hidden" name="list[0].itemNum" value="0">
+					   			<input type="hidden" name="list[0].quantity" value="${singleSupply}">
+					   			<input type="hidden" name="list[0].unitprice" value="${productInfo.productPrice}">  
+					   			<span style="float: right;"><span style="width: 200px; text-align: right;">${singleSupply}개</span>&nbsp;&nbsp;&nbsp;&nbsp;<span class="moneySum" style="visibility: hidden;">${monySum}</span></span>   
+  						   	</c:if>  
   						   </td>
   						   <td>
   						   	<span class="productMoneySum"></span>
@@ -626,39 +693,39 @@
 						<tr style="border-left: 1px solid #BDBDBD; border-right: 1px solid #BDBDBD; "> 
 							<th style="padding:15px; text-align: center;">수령인</th>
 							<td style="border-right: 1px solid #BDBDBD;  padding:15px;"> 
-								<input type="text" id="recipient_name" value="${sessionScope.login.name}">
+								<input type="text" id="recipient_name" name="recipientName" value="${sessionScope.login.name}">
 							</td>
 							<th style="padding:15px; text-align: center;">배송자</th>
 							<td style="padding:15px;"> 
-								<input type="text" id="buyer_name"  value="${sessionScope.login.name}">  
+								<input type="text" id="buyer_name"  name="buyerName" value="${sessionScope.login.name}">  
 							</td>
 						</tr>
 						<tr style="border-left: 1px solid #BDBDBD; border-right: 1px solid #BDBDBD; ">
 							<th style="text-align: center; padding:15px;">연락처</th>
-							<td style="padding:15px; border-right: 1px solid #BDBDBD; "><input type="text" id="recipient_phonenum" value="${sessionScope.login.phonenum }"></td>
+							<td style="padding:15px; border-right: 1px solid #BDBDBD; "><input type="text" id="recipient_phonenum" name="recipientPhonenum" value="${sessionScope.login.phonenum }"></td>
 							<th style="text-align: center; padding:15px;">연락처</th>
-							<td style="padding:15px;"><input type="text" id="buyer_phonenum"value="${sessionScope.login.phonenum }"></td>
+							<td style="padding:15px;"><input type="text" id="buyer_phonenum" name="buyerPhonenum" value="${sessionScope.login.phonenum }"></td>
 						</tr>
 						<tr style="border-left: 1px solid #BDBDBD; border-right: 1px solid #BDBDBD; "> 
 							<th style="padding:15px; text-align: center;">주소</th> 
 							<td style="padding:15px; border-right: 1px solid #BDBDBD; "> 
-				  		    <input type="text" class="form-control" name="postalCode" id="recipient_postcode" placeholder="우편번호" disabled="disabled"  value="${sessionScope.login.postalCode}" style="width: 150px;float:left;">  
+				  		    <input type="text" class="form-control" name="recipientPostalCode" id="recipient_postcode" placeholder="우편번호" disabled="disabled"  value="${sessionScope.login.postalCode}" style="width: 150px;float:left;">  
 							<input type="button" class="btn btn-b-n" onclick="sample6_execDaumPostcode()" value="우편번호 찾기" style="margin-left: 10px;"><br>
-							<input type="text" class="form-control" name="address" id="recipient_address" placeholder="주소" disabled="disabled" style="margin-top: 10px;">  
-							<input type="text" class="form-control" name="detailAddress"id="recipient_detailAddress" placeholder="상세주소" style="margin-top: 10px;">
+							<input type="text" class="form-control" name="recipientAddress" id="recipient_address" placeholder="주소" disabled="disabled" style="margin-top: 10px;">  
+							<input type="text" class="form-control" name="recipientDetailAddress"id="recipient_detailAddress" placeholder="상세주소" style="margin-top: 10px;">
 							</td>
 							<th style="padding:15px; text-align: center;">주소</th> 
 							<td style="padding:15px;"> 
-				  		    <input type="text" class="form-control" name="postalCode" id="buyer_postcode" placeholder="우편번호" disabled="disabled" value="${sessionScope.login.postalCode}" style="width: 150px;float:left;">  
+				  		    <input type="text" class="form-control" name="buyerPostalCode" id="buyer_postcode" placeholder="우편번호" disabled="disabled" value="${sessionScope.login.postalCode}" style="width: 150px;float:left;">  
 							<input type="button" class="btn btn-b-n" onclick="sample6_execDaumPostcode()" value="우편번호 찾기" style="margin-left: 10px;"><br>
-							<input type="text" class="form-control" name="address" id="buyer_address" placeholder="주소" disabled="disabled" style="margin-top: 10px;">  
-							<input type="text" class="form-control" name="detailAddress"id="buyer_detailAddress" placeholder="상세주소" style="margin-top: 10px;">
+							<input type="text" class="form-control" name="buyerAddress" id="buyer_address" placeholder="주소" disabled="disabled" style="margin-top: 10px;">  
+							<input type="text" class="form-control" name="buyerDetailAddress"id="buyer_detailAddress" placeholder="상세주소" style="margin-top: 10px;">
 							</td>
 						</tr>
 						<tr style="border-left: 1px solid #BDBDBD; border-right: 1px solid #BDBDBD; "> 
 							<th style="text-align: center; padding:15px;">배송 메모</th>
 							<td style="padding:15px; border-right: 1px solid #BDBDBD; ">
-								<textarea rows="5" cols="60"></textarea>
+								<textarea rows="5" cols="60" name="recipientMemo"></textarea>
 								<p>※ 택배기사님께 전할 말씀을 남겨주세요.</p>  
 							</td>      
 						</tr>
@@ -689,7 +756,8 @@
 		  					</td>
 		  					<td rowspan="2" style="border: 2px groove #BDBDBD;">    
 		  						<p style="font-size: xx-large; font-weight: bold; color:#2eca6a; float: left; " id="finalPaymentAmount"></p>     
-								<div style="float:left; width: 30px; font-size: x-large; margin-top: 8px; padding-left: 5px; color: #A4A4A4; ">원</div>   
+								<div style="float:left; width: 30px; font-size: x-large; margin-top: 8px; padding-left: 5px; color: #A4A4A4; ">원</div>
+								<input type="hidden" name="totalPrice" value="">   
 		  					</td> 
 		  				</tr>
 		  				<tr>
@@ -697,8 +765,8 @@
 		  					<td>
 		  						<ul style="list-style: none; padding-left: 0px;">   
 		  							<li style=" border-bottom: 2px solid #BDBDBD;"><input type="checkbox" id="allCheckbox"> 전체동의</li>      
-		  							<li style="padding-left: 10px;"><input type="checkbox"  > 개인정보 제3자 제공 동의(필수)</li> 
-		  							<li style="padding-left: 10px;"><input type="checkbox"> 위 상품 정보 및 거래 조건을 확인하였으며, 구매 진행에 동의합니다.(필수)</li> 
+		  							<li style="padding-left: 10px;"><input type="checkbox" id="agreement1"> 개인정보 제3자 제공 동의(필수)</li> 
+		  							<li style="padding-left: 10px;"><input type="checkbox" id="agreement2"> 위 상품 정보 및 거래 조건을 확인하였으며, 구매 진행에 동의합니다.(필수)</li> 
 		  						</ul>
 		  					</td>
 		  				</tr> 
@@ -707,7 +775,8 @@
 		  	</tr>
 		  	<tr>
 		  		<td style=" border-bottom: none; text-align: center; padding-top: 100px;" > 
-		  			<input class="btn btn-a" type="submit" value="PAYMENT">     
+		  			<input class="btn btn-a" type="submit" id="realSubmit" value="PAYMENT" style="display:none;">      
+		  			<input class="btn btn-a" type="button" id="fakeSubmit" value="PAYMENT" >       
 		  		</td>
 		  	</tr>
 		  </table>
