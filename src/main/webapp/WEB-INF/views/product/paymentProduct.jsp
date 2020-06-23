@@ -363,11 +363,13 @@
 		$('#finalAmount').html(numberWithCommas(moneySum)); 
 		$('#finalPaymentAmount').html(numberWithCommas(moneySum));  
 		$('input[name=totalPrice]').val(moneySum);  
-		
-		$(".shippingCharge").each(function(index, item){
-			var n = parseInt($(item).html().replace(/,/g,"")); 
-			shippingSum += n;  
-		})
+		if(${productInfo.deliveryMethod ==  1 }){  
+			$(".shippingCharge").each(function(index, item){
+				
+				var n = parseInt($(item).html().replace(/,/g,"")); 
+				shippingSum += n;  
+			})
+		}		
 		$('#finalShippingCharge').html(numberWithCommas(shippingSum));
 		$('#finalTotal').html(numberWithCommas(moneySum+shippingSum)); 
 		var adr = '${sessionScope.login.address}'; 
@@ -522,7 +524,7 @@
 			        msg += '상점 거래ID : ' + rsp.merchant_uid;
 			        msg += '결제 금액 : ' + rsp.paid_amount;
 			        msg += '카드 승인번호 : ' + rsp.apply_num; 
-			        
+			        alert('결제완료'); 
 				    $('#realSubmit').trigger('click'); 
 			    } else {
 			        var msg = '결제에 실패하였습니다.';
@@ -645,7 +647,17 @@
   						   	<span class="productMoneySum"></span>
   						   </td>
   						   <td>
-  						   	<span class="shippingCharge">3,000</span> 
+  						   	<span class="shippingCharge">
+  						   	<c:if test="${productInfo.deliveryMethod == 0 }">
+  						   	 무료
+  						   	</c:if>
+  						   	<c:if test="${productInfo.deliveryMethod == 1 }">
+   						     3,000
+  						   	</c:if>
+  						   	<c:if test="${productInfo.deliveryMethod == 2 }">
+   						     직접배달
+  						   	</c:if>
+  						   	</span> 
   						   </td>
   						   <td> 
   						   	<span>${memberNickname}</span>  

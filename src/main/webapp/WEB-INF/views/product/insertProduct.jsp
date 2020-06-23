@@ -52,7 +52,7 @@
 
     width: 400px; /* 원하는 너비설정 */
     padding: .8em .5em; /* 여백으로 높이 설정 */
-    height: 35px;
+    height: 60px;  
     /* font-family: inherit;   폰트 상속 */
     /* background: url('이미지 경로') no-repeat 95% 50%;  네이티브 화살표를 커스텀 화살표로 대체 */
     /*  border: 1px solid9 #99; */
@@ -443,10 +443,10 @@
 		  		
 				   $(document).ready(function () {
 					   
-					  //Photo에서 사진등록버튼을 클릭하고 사진을 선택했을때 발동
+					  //Photo에서 사진등록버튼을 클릭하고 사진을 선택했을때 발동 
 					  $('.filebox').change(function() { 
 						  //alert($(this).find('label').html() 태스트용
-						  
+						  //alert($('input[type=file]').val());   
 						  //ajax로 파일을 보낼때는 FormData를이용한다 
 						  //FoRmData는 ajax로 파일을 보낼 떄 유용하며 생성할떄 기존에 form태그가 있으면 new FormData(form태그);를 입력하면 자동으로 내용들이 append된다.
 						  var formData = new FormData(); //parents는 조상들(여러개) 요소를 선택할떄 사용한다.그렇기에[0]을 이용하여 제일가까운녀석만선택
@@ -481,7 +481,7 @@
 					  });  
 						  
 
-
+ 
 
 					  
 					   // 삭제버튼을 클릭할시에 발동
@@ -490,7 +490,7 @@
 						  var src = $(imgId).attr('src');
 						  var fileboxNum = $(this).closest('td').find('.filebox').attr('num');
 						  var srcFull
-						  
+						  $('input[type=file]').val('');
 						  //필수등록(num =0)과 선택등록(num= 1~4)의 기본값사진의 구분을 위한 if절
 						  if(fileboxNum == '0'){
 							  srcFull ='http://localhost:8888/shop/resources/product/fixedPhoto/img_no_286x286.gif';
@@ -787,7 +787,7 @@
 		  			<select name="deliveryMethod">
 							<option value="0">무료(판매자 부담)</option>
 							<option value="1">착불(구매자 부담)</option>
-							<option value="3">직접배달</option>
+							<option value="2">직접배달</option>
 					</select>   
 		  		</td>
 		  	</tr>

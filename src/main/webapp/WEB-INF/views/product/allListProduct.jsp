@@ -302,7 +302,6 @@
 			form.submit();
 		}
 	</script>
-	
     <!-- ======= Property Grid ======= -->
     <section class="property-grid grid">
       <div class="container">

@@ -437,6 +437,13 @@
 	   });
 	   
 	   function paySubmit(){
+		   if(${productInpo.salesMethod == 1}){
+			   if($('.optionSelRemove').length == 0){ 
+				   alert('옵션을 선택해주세요.')
+			 	   return false;
+		   		}
+		   } 
+		   
 		   $('.amountProduct').removeAttr('disabled');
 	   }
 	   
